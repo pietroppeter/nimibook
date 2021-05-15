@@ -11,3 +11,11 @@ srcDir        = "src"
 
 requires "nim >= 1.4.0"
 requires "nimib >= 0.1.1"
+
+task genbook, "genbook":
+  import os
+  for path in walkDirRec("."):
+    let (dir, name, ext) = path.splitFile()
+    if ext == ".nim" and name not_in ["nbPostInit"]:
+      echo "building ", path
+      selfExec("r " & path)

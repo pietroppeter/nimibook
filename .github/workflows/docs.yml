@@ -1,0 +1,38 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  gh-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: "gh-pages"
+      - name: "install_nim"
+        id: install_nim
+        uses: iffy/install-nim@v3
+      - run: nimble install -y
+      - name: Set CI config github
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+      - name: Fetch
+        run: git fetch
+      - name: Rebase
+        run: git rebase -Xours origin/main
+      - name: Gen Book
+        run: nimble genbook
+      - name: Commit files
+        run: |
+          echo ${{ github.ref }}
+          git add -f docs
+          git commit -m "CI: Automated build push" -a | exit 0
+      - name: Force push to destination branch
+        uses: ad-m/github-push-action@v0.5.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          force: true
+          directory: ./docs
