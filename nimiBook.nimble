@@ -10,7 +10,7 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.4.0"
-requires "nimib >= 0.1.1"
+requires "nimib >= 0.1.2"
 
 import os
 task genbook, "genbook":
