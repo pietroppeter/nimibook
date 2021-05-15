@@ -1,3 +1,5 @@
+import strutils, os
+
 # to implement nbSrcDir
 let nbSrcDir = nbHomeDir / "../src".RelativeDir
 nbDoc.filename = (changeFileExt(nbThisFile, ".html").relativeTo nbSrcDir).string
@@ -17,3 +19,13 @@ nbDoc.context["theme_option"] = {"light": "Light (default)", "rust": "Rust", "co
 nbDoc.context["book_title"] = "example mdbook with nimib"
 nbDoc.context["git_repository_url"] = "https://github.com/pietroppeter/nimibook"
 nbDoc.context["git_repository_icon"] = "fa-github"
+nbDoc.context["parse_active"] =
+  proc(s: string, c: Context): string =
+    let rendered = s.render(c)
+    let splitted = rendered.replace(r"\", "/").split(" ")
+    let here_path = splitted[0].split(".")[0].normalizedPath
+    let this_path = splitted[1].split(".")[0].normalizedPath
+    if here_path == this_path:
+      return "class=\"active\""
+    else:
+      return ""
