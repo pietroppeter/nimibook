@@ -14,8 +14,4 @@ requires "nimib >= 0.1.2"
 
 import os
 task genbook, "genbook":
-  for path in walkDirRec("."):
-    let (dir, name, ext) = path.splitFile()
-    if ext == ".nim" and name not_in ["nbPostInit"]:
-      echo "building ", path
-      selfExec("r " & path)
+  selfExec("r -d:release nbook.nim")
