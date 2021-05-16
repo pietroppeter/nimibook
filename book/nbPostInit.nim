@@ -14,6 +14,6 @@ nbDoc.context["favicon_whale"] = """<link rel="icon" href="data:image/svg+xml,<s
 nbDoc.context["path_to_root"] = nbDoc.context["home_path"].castStr & "/" # I probably should make sure to have / at the end
 nbDoc.context["preferred_dark_theme"] = "false"
 nbDoc.context["theme_option"] = {"light": "Light (default)", "rust": "Rust", "coal": "Coal", "navy": "Navy", "ayu": "Ayu"}.toTable
-nbDoc.context["book_title"] = "example mdbook with nimib"
+nbDoc.context["book_title"] = "nimiBook"
 nbDoc.context["git_repository_url"] = "https://github.com/pietroppeter/nimibook"
 nbDoc.context["git_repository_icon"] = "fa-github"
