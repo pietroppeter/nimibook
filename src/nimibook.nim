@@ -53,6 +53,7 @@ template newToc*(name: string, root: string, body: untyped): Toc =
   toc
 
 iterator items*(toc: Toc): Toc =
+  ## iterate over toc's content
   assert toc.kind == tkContainer, "toc.kind must be container to iterate"
   for content in toc.contents:
     case content.kind:
@@ -60,6 +61,7 @@ iterator items*(toc: Toc): Toc =
         yield content
       of tkContainer:
         for item in content.contents:
+          # todo: how do I manage sections inside sections?
           yield item
 
 # newTok creates a Toc of kind container
