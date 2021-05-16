@@ -1,18 +1,18 @@
 import nimib / paths
 # A Table of Content is a container of (organized) content
 type
-  TocKind = enum
-    container
-    content
-  Toc = ref object
-    label: string
+  TocKind* = enum
+    tkContainer
+    tkContent
+  Toc* = ref object
+    label*: string
     case kind: TocKind
-    of container:
-      folder: RelativeDir
-      contents: seq[Toc]
-    of content:
-      file: RelativeFile
-      is_numbered: bool
+    of tkContainer:
+      folder*: RelativeDir
+      contents*: seq[Toc]
+    of tkContent:
+      file*: RelativeFile
+      is_numbered*: bool
 
 # should this be in print? I cannot test 1.0 since I am on windows and it requires 1.4.6 (which is seen as virus)
 import print
@@ -24,27 +24,27 @@ proc prettyPrint*(x: AnyPath; indent = 0; multiline = false): string =
 # (e.g. title != label), otherwise I cannot set the field name
 template newToc*(name: string, root: string, body: untyped): Toc =
   var
-    toc = Toc(kind: container, label: name, contents: @[])
+    toc = Toc(kind: tkContainer, label: name, contents: @[])
     currContent = Toc()
     currContainer = Toc()
-    oldContainer = Toc()
+    parentContainer = Toc()
 
   template chapter(title: string, path: string, numbered = true) =
-    currContent = Toc(kind: content, label: title, is_numbered: numbered)
+    currContent = Toc(kind: tkContent, label: title, is_numbered: numbered)
     # todo: check that path is an existing file (needs to use folder of container (and container of container!), if not fail.
     currContent.file = RelativeFile(path)
     currContainer.contents.add currContent
 
   template section(title: string, path: string, secBody: untyped) =
-    oldContainer = currContainer
-    currContainer = Toc(kind: container, label: title)
+    parentContainer = currContainer
+    currContainer = Toc(kind: tkContainer, label: title)
     # todo: check that path is an existing folder (relative to container)...
     currContainer.folder = RelativeDir(path)
-    oldContainer.contents.add currContainer
+    parentContainer.contents.add currContainer
     # check if index.nim exists
     chapter(title, "index.nim")
     secBody
-    currContainer = oldContainer
+    currContainer = parentContainer
 
   # todo: check that path is an existing folder, if not fail.
   toc.folder = RelativeDir(root)
@@ -52,6 +52,15 @@ template newToc*(name: string, root: string, body: untyped): Toc =
   body
   toc
 
+iterator items*(toc: Toc): Toc =
+  assert toc.kind == tkContainer, "toc.kind must be container to iterate"
+  for content in toc.contents:
+    case content.kind:
+      of tkContent:
+        yield content
+      of tkContainer:
+        for item in content.contents:
+          yield item
 
 # newTok creates a Toc of kind container
 # publish toc:

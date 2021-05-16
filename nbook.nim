@@ -11,6 +11,9 @@ let toc = newToc("Example", "book"):
 when defined(nbookPrintToc):
   import print
   print toc
+  for content in toc:
+    print content
+
 #publish toc
 # run to generate the book
 # generate automatically table of content from folder,
