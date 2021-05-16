@@ -1,10 +1,32 @@
 import nimibook
+let toc = newToc("Example", "book"):
+  chapter("Introduction", "index.nim")
+
+when defined(nbookPrintToc):
+  import print
+  print toc
+#publish toc
 # run to generate the book
-toc = newToc("book")
 # generate automatically table of content from folder,
 # ordering should take into account a special keyword like index and folder structure
 # in current case basics/data_manipulation will come first and plotting last.
 #[
+
+Automatic syntax:
+
+toc = newToc("book")
+
+semi automatic syntax
+
+toc = newToc("book"):
+  Chapter("index.nim", "Introduction")
+  Chapter("basics", "Basics")
+  Appendix("misc/but/very/far/contributors.nim", "Contributors")
+
+toc = newToc("book", "Introduction"):
+  Chapter("basics", "Basics")
+  Appendix("misc/but/very/far/contributors.nim", "Contributors")
+
 Alternative syntax (manual inclusion of content, more control) could be something like
 
 toc = newToc("book"):
@@ -13,7 +35,7 @@ toc = newToc("book"):
     Section("basics/plotting.nim", "Data Visualization")
     Section("basics/data_manipulation.nim", "Data Manipulation")
     Section("basics/models.nim", "Models")
-  Chapter("misc/but/very/far/contributors.nim", "Contributors", numbered=false)
+  Appendix("misc/but/very/far/contributors.nim", "Contributors")
 
 Alternative mechanism (SUMMARY.md like in mdbook):
 
@@ -32,4 +54,3 @@ where SUMMARY.md is:
   [misc/but/very/far/contributors.nim](Contributors)
     
 ]#
-publish toc
