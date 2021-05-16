@@ -1,6 +1,10 @@
+static: echo "[USING CUSTOM NBPOSTINIT]"
 # to implement nbSrcDir
-let nbSrcDir = nbHomeDir / "../src".RelativeDir
+let nbSrcDir = nbHomeDir / "../book".RelativeDir
 nbDoc.filename = (changeFileExt(nbThisFile, ".html").relativeTo nbSrcDir).string
+import os
+echo "Current directory: ", getCurrentDir()
+echo "Output file: ", nbDoc.filename
 nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string
 nbDoc.context["title"] = nbDoc.context["here_path"]
 nbDoc.context["home_path"] = (nbSrcDir.relativeTo nbThisDir).string
@@ -17,3 +21,4 @@ nbDoc.context["theme_option"] = {"light": "Light (default)", "rust": "Rust", "co
 nbDoc.context["book_title"] = "nimiBook"
 nbDoc.context["git_repository_url"] = "https://github.com/pietroppeter/nimibook"
 nbDoc.context["git_repository_icon"] = "fa-github"
+# todo: use the toc.json that nbook will create

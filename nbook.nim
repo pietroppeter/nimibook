@@ -12,9 +12,11 @@ when defined(nbookPrintToc):
   import print
   print toc
   for content in toc:
-    print content
+    print content.label
+    print content.path
+# I really do not like that paths in windows are \\ (when / works fine and it is need for browser!)
 
-#publish toc
+publish toc
 # run to generate the book
 # generate automatically table of content from folder,
 # ordering should take into account a special keyword like index and folder structure

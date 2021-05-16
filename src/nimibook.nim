@@ -1,4 +1,6 @@
 import nimib / paths
+import os, osproc, strutils
+
 # A Table of Content is a container of (organized) content
 type
   TocKind* = enum
@@ -13,6 +15,7 @@ type
     of tkContent:
       file*: RelativeFile
       is_numbered*: bool
+    parent*: Toc
 
 # should this be in print? I cannot test 1.0 since I am on windows and it requires 1.4.6 (which is seen as virus)
 import print
@@ -33,6 +36,7 @@ template newToc*(name: string, root: string, body: untyped): Toc =
     currContent = Toc(kind: tkContent, label: title, is_numbered: numbered)
     # todo: check that path is an existing file (needs to use folder of container (and container of container!), if not fail.
     currContent.file = RelativeFile(path)
+    currContent.parent = currContainer
     currContainer.contents.add currContent
 
   template section(title: string, path: string, secBody: untyped) =
@@ -40,6 +44,7 @@ template newToc*(name: string, root: string, body: untyped): Toc =
     currContainer = Toc(kind: tkContainer, label: title)
     # todo: check that path is an existing folder (relative to container)...
     currContainer.folder = RelativeDir(path)
+    currContainer.parent = parentContainer
     parentContainer.contents.add currContainer
     # check if index.nim exists
     chapter(title, "index.nim")
@@ -48,6 +53,7 @@ template newToc*(name: string, root: string, body: untyped): Toc =
 
   # todo: check that path is an existing folder, if not fail.
   toc.folder = RelativeDir(root)
+  toc.parent = nil # probably necessary but I want to be explicit
   currContainer = toc
   body
   toc
@@ -64,7 +70,36 @@ iterator items*(toc: Toc): Toc =
           # todo: how do I manage sections inside sections?
           yield item
 
-# newTok creates a Toc of kind container
-# publish toc:
-#   - generates a toc.json (to be ignored by git?)
-#   - run all the code for toc items (and they will generate the html and have a mechanism in nbPostInit to use the toc.json)
+proc path*(x: Toc): string =
+  # ideally I would want to have as return type a RelativeDir / RelativeFile but this is not possible since it depends on runtime
+  if x.parent.isNil:
+    case x.kind:
+      of tkContainer:
+        x.folder.string
+      of tkContent:
+        x.file.string
+  elif x.kind == tkContainer:
+    joinPath(x.parent.path, x.folder.string)  # I kind of prefer a & "/" & b (in windows it will generate paths with DirSep \\)
+  else:
+    joinPath(x.parent.path, x.file.string)
+
+proc publish*(toc: Toc) =
+  # todo: generate a toc.json object
+  # todo: it is easy to support also markdown files!
+  for content in toc:
+    let
+      cmd = "nim"
+      args = ["r", "-d:release", content.path]
+    echo "[Executing] ", cmd, " ", args.join(" ")
+    if execShellCmd(cmd & " " & args.join(" ")) != 0:
+      quit(1)
+    #I like better execShellCmd because I can see interactively the ongoing compilation and running. Alternative is:
+    #echo execProcess(cmd, args=args, options={poUsePath, poEchoCmd, poStdErrToStdOut})
+
+#[
+  Why do I have a single Toc type?
+  Another option would be to have distinct Toc, TocContent, TocContainer types (or at least TocContent and TocContainer).
+  In the end a lot of "methods" require a specific Toc kind (publish is only for top level Toc, items only for container,
+  path would return RelativeDir or RelativeFile depending on which kind of toc...)
+  The issue is that in contents I can have a mix of containers and content... (is this where I need inheritance?)
+]#
