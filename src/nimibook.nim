@@ -22,21 +22,34 @@ proc prettyPrint*(x: AnyPath; indent = 0; multiline = false): string =
 # a template based DSL
 # an issue I run often into when doing this is that parameter name cannot match object field
 # (e.g. title != label), otherwise I cannot set the field name
-template newToc*(title: string, path: string, body: untyped): Toc =
-  let toc = Toc(kind: container, contents: @[])
+template nbToc*(title: string, path: string, body: untyped) =
+  var
+    toc {. inject .} = Toc(kind: container, contents: @[])
+    currContent {. inject .} = Toc()
+    currContainer {. inject .} = Toc()
+    oldContainer {. inject .} = Toc()
   # todo: check that path is an existing folder, if not fail.
   toc.folder = RelativeDir(path)
   toc.label = title
+  currContainer = toc
   body
-  toc
 
-template chapter*(title: string, path: string, numbered = true): untyped =
-  let chp = Toc(kind: content, label: title, is_numbered: numbered)
+template chapter*(title: string, path: string, numbered = true) =
+  currContent = Toc(kind: content, label: title, is_numbered: numbered)
   # todo: check that path is an existing file (needs to use folder of container (and container of container!), if not fail.
-  chp.file = RelativeFile(path)
-  toc.contents.add chp
-# Error: undeclared identifier
-# WHY?
+  currContent.file = RelativeFile(path)
+  currContainer.contents.add currContent
+
+template section*(title: string, path: string, body: untyped) =
+  oldContainer = currContainer
+  currContainer = Toc(kind: container, label: title)
+  # todo: check that path is an existing folder (relative to container)...
+  currContainer.folder = RelativeDir(path)
+  oldContainer.contents.add currContainer
+  # check if index.nim exists
+  chapter(title, "index.nim")
+  body
+  currContainer = oldContainer
 
 # newTok creates a Toc of kind container
 # publish toc:
