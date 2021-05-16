@@ -1,6 +1,6 @@
 import nimibook
 
-nbToc("Example", "book"):
+let toc = newToc("Example", "book"):
   chapter("Introduction", "index.nim")
   section("Basics", "basics"):
     chapter("Plotting", "plotting.nim")
