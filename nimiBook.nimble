@@ -11,6 +11,7 @@ srcDir        = "src"
 
 requires "nim >= 1.4.0"
 requires "nimib >= 0.1.2"
+requires "jsony >= 1.0.1"
 
 import os
 task genbook, "genbook":
@@ -22,4 +23,9 @@ task cleanbook, "cleanbook":
     if file.endsWith(".html"):
       rmFile(file)
       echo "removed ", file
+  for file in ["book/toc.json"]: # hardcoded files to remove (one for now)
+    if fileExists(file):
+      rmFile(file)
+      echo "removed ", file
+  
       

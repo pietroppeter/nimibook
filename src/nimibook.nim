@@ -1,5 +1,6 @@
 import nimib / paths
 import os, strutils
+import jsony
 
 # A Table of Content is a container of (organized) content
 type
@@ -21,6 +22,13 @@ type
 import print
 proc prettyPrint*(x: AnyPath; indent = 0; multiline = false): string =
   prettyPrint(x.string, indent = indent, multiline = multiline)
+
+# PR for Jsony?
+proc dumpHook*(s: var string, v: AnyPath) = dumpHook(s, v.string)
+proc parseHook*(s: string, i: var int, v: var AnyPath) = 
+  var str: string
+  parseHook(s, i, str)
+  v = str.AnyPath
 
 # move this into nimib /paths (eventually this kind of stuff might go into pathutils)
 proc `/`*(x: RelativeDir, y: RelativeFile): RelativeFile =
@@ -76,8 +84,16 @@ iterator items*(toc: Toc): Toc =
           # todo: how do I manage sections inside sections?
           yield item
 
+proc dump*(toc: Toc) =
+  let dest = (toc.pathfolder / "toc.json".RelativeFile).string # should I add a writeFile(x: AnyFile, ...) to nimib / paths?
+  dest.writeFile(toc.toJson())
+
+proc load*(source: string): Toc =
+  source.readFile.fromJson(Toc)
+
 proc publish*(toc: Toc) =
   # todo: generate a toc.json object
+
   # todo: it is easy to support also markdown files!
   for content in toc:
     let

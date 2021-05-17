@@ -16,7 +16,8 @@ when defined(nbookPrintToc):
     print content.pathfile
 # I really do not like that paths in windows are \\ (when / works fine and it is need for browser!)
 
-publish toc
+dump toc
+print (load "book/toc.json")
 # run to generate the book
 # generate automatically table of content from folder,
 # ordering should take into account a special keyword like index and folder structure
