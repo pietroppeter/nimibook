@@ -1,5 +1,5 @@
 import nimib / paths
-import os, osproc, strutils
+import os, strutils
 
 # A Table of Content is a container of (organized) content
 type
@@ -10,17 +10,26 @@ type
     label*: string
     case kind: TocKind
     of tkContainer:
-      folder*: RelativeDir
+      pathfolder*: RelativeDir
       contents*: seq[Toc]
     of tkContent:
-      file*: RelativeFile
+      pathfile*: RelativeFile
       is_numbered*: bool
-    parent*: Toc
 
 # should this be in print? I cannot test 1.0 since I am on windows and it requires 1.4.6 (which is seen as virus)
+# should print be able to manage distinct stuff automatically?
 import print
 proc prettyPrint*(x: AnyPath; indent = 0; multiline = false): string =
   prettyPrint(x.string, indent = indent, multiline = multiline)
+
+# move this into nimib /paths (eventually this kind of stuff might go into pathutils)
+proc `/`*(x: RelativeDir, y: RelativeFile): RelativeFile =
+  # I should do better than this...
+  joinPath(x.string, y.string).RelativeFile
+
+proc `/`*(x: RelativeDir, y: RelativeDir): RelativeDir =
+  # I should do better than this...
+  joinPath(x.string, y.string).RelativeDir
 
 # a template based DSL
 # an issue I run often into when doing this is that parameter name cannot match object field
@@ -32,19 +41,17 @@ template newToc*(name: string, root: string, body: untyped): Toc =
     currContainer = Toc()
     parentContainer = Toc()
 
-  template chapter(title: string, path: string, numbered = true) =
+  template chapter(title: string, file: string, numbered = true) =
     currContent = Toc(kind: tkContent, label: title, is_numbered: numbered)
     # todo: check that path is an existing file (needs to use folder of container (and container of container!), if not fail.
-    currContent.file = RelativeFile(path)
-    currContent.parent = currContainer
+    currContent.pathfile = currContainer.pathfolder / RelativeFile(file)
     currContainer.contents.add currContent
 
-  template section(title: string, path: string, secBody: untyped) =
+  template section(title: string, folder: string, secBody: untyped) =
     parentContainer = currContainer
     currContainer = Toc(kind: tkContainer, label: title)
     # todo: check that path is an existing folder (relative to container)...
-    currContainer.folder = RelativeDir(path)
-    currContainer.parent = parentContainer
+    currContainer.pathfolder = parentContainer.pathfolder / RelativeDir(folder)
     parentContainer.contents.add currContainer
     # check if index.nim exists
     chapter(title, "index.nim")
@@ -52,8 +59,7 @@ template newToc*(name: string, root: string, body: untyped): Toc =
     currContainer = parentContainer
 
   # todo: check that path is an existing folder, if not fail.
-  toc.folder = RelativeDir(root)
-  toc.parent = nil # probably necessary but I want to be explicit
+  toc.pathfolder = RelativeDir(root)
   currContainer = toc
   body
   toc
@@ -70,26 +76,13 @@ iterator items*(toc: Toc): Toc =
           # todo: how do I manage sections inside sections?
           yield item
 
-proc path*(x: Toc): string =
-  # ideally I would want to have as return type a RelativeDir / RelativeFile but this is not possible since it depends on runtime
-  if x.parent.isNil:
-    case x.kind:
-      of tkContainer:
-        x.folder.string
-      of tkContent:
-        x.file.string
-  elif x.kind == tkContainer:
-    joinPath(x.parent.path, x.folder.string)  # I kind of prefer a & "/" & b (in windows it will generate paths with DirSep \\)
-  else:
-    joinPath(x.parent.path, x.file.string)
-
 proc publish*(toc: Toc) =
   # todo: generate a toc.json object
   # todo: it is easy to support also markdown files!
   for content in toc:
     let
       cmd = "nim"
-      args = ["r", "-d:release", content.path]
+      args = ["r", "-d:release", content.pathfile.string]
     echo "[Executing] ", cmd, " ", args.join(" ")
     if execShellCmd(cmd & " " & args.join(" ")) != 0:
       quit(1)

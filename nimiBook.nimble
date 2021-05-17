@@ -14,7 +14,7 @@ requires "nimib >= 0.1.2"
 
 import os
 task genbook, "genbook":
-  selfExec("r -d:release nbook.nim")
+  selfExec(" r -d:release genbook.nim")
 
 task cleanbook, "cleanbook":
   # todo: it should remove all files and directories not tracked in git from docs

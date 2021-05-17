@@ -13,7 +13,7 @@ when defined(nbookPrintToc):
   print toc
   for content in toc:
     print content.label
-    print content.path
+    print content.pathfile
 # I really do not like that paths in windows are \\ (when / works fine and it is need for browser!)
 
 publish toc
