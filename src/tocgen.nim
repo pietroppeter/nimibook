@@ -7,6 +7,7 @@ type
     title: string
     path: string
     levels: seq[int]
+    isNumbered: bool
 #############################################################################
 ## This section is only useful to create a seq of Entries from books files ##
 ## After consideration, it is easier to have an API to construct entries   ##
@@ -88,17 +89,26 @@ proc openSection() : string =
   <ol class="section">
 """
 
-proc addEntryImpl(title, name: string, levels: varargs[int]) : string =
-  debugEcho &"    makeChapter => {title} : {name} => {levels}"
-  var chapNumber  : string
-  for i in levels:
-    chapNumber.add $i
-    chapNumber.add "."
+proc addEntryImpl(e: Entry) : string =
+  debugEcho &"    makeChapter => {e.title} : {e.path} => {e.levels}"
+  if e.isNumbered:
+    var chapNumber  : string
+    for i in e.levels:
+      chapNumber.add $i
+      chapNumber.add "."
 
-  result.add &"""
+    result.add &"""
   <li class="chapter-item expanded ">
-    <a href="{path_to_root}{name}.html" tabindex="0">
-      <strong aria-hidden="true">{chapNumber}</strong> {title}
+    <a href="{path_to_root}{e.path}.html" tabindex="0">
+      <strong aria-hidden="true">{chapNumber}</strong> {e.title}
+    </a>
+  </li>
+"""
+  else:
+    result.add &"""
+  <li class="chapter-item expanded ">
+    <a href="{path_to_root}{e.path}.html" tabindex="0">
+      {e.title}
     </a>
   </li>
 """
@@ -157,7 +167,7 @@ proc write_gentoc(entries: seq[Entry], filename: string) =
       r.add closeSection()
 
     echo "    ", e.title, " ==> ", e.path
-    r.add addEntryImpl(e.title, e.path, e.levels)
+    r.add addEntryImpl(e)
     previousLevel = len(e.levels)
 
   r.add closeGenToc()
@@ -166,12 +176,12 @@ proc write_gentoc(entries: seq[Entry], filename: string) =
   f.write(r)
 
 when isMainModule:
-  var entries = @[Entry(title: "Introduction", path: "index", levels: @[1]),
-                  Entry(title: "Basics", path: "basics/index", levels: @[2]),
-                  Entry(title: "Models", path: "basics/models", levels: @[2, 2]),
-                  Entry(title: "Data Manipulation", path: "basics/data_manipulation", levels: @[2, 1]),
-                  Entry(title: "Plotting", path: "basics/plotting", levels: @[2, 1, 1]),
-                  Entry(title: "Contributors", path: "misc/but/very/far/contributors", levels: @[3])
+  var entries = @[Entry(title: "Introduction", path: "index", levels: @[1], isNumbered: true),
+                  Entry(title: "Basics", path: "basics/index", levels: @[2], isNumbered: true),
+                  Entry(title: "Models", path: "basics/models", levels: @[2, 2], isNumbered: true),
+                  Entry(title: "Data Manipulation", path: "basics/data_manipulation", levels: @[2, 1], isNumbered: true),
+                  Entry(title: "Plotting", path: "basics/plotting", levels: @[2, 1, 1], isNumbered: false),
+                  Entry(title: "Contributors", path: "misc/but/very/far/contributors", levels: @[3], isNumbered: true)
                   ]
   write_gentoc(entries, "books/toc.mustache")
   copyFile("books/toc.mustache", "tocgen.mustache.html")
