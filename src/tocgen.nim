@@ -103,7 +103,7 @@ proc addEntryImpl(title, name: string, levels: varargs[int]) : string =
   </li>
 """
 
-proc openGenToc(rootdir: string) : string =
+proc openGenToc() : string =
   result.add """
 <ol class="chapter">
 """
@@ -141,20 +141,9 @@ proc entrycmp(x, y: Entry): int=
   doAssert(r != 0, "Entry cannot be equal")
   return r
 
-proc write_gentoc(rootdir, filename: string) =
+proc write_gentoc(entries: seq[Entry], filename: string) =
   var r: string
-  r.add openGenToc(rootdir)
-  # You can use gentoc to parse rootdir foler and generate an arborescence
-  # It might be simpler to just expose an API to construct the seq[Entry]
-  # populateEntries(rootdir)
-
-  var entries = @[Entry(title: "Introduction", path: "index", levels: @[1]),
-                  Entry(title: "Basics", path: "basics/index", levels: @[2]),
-                  Entry(title: "Models", path: "basics/models", levels: @[2, 2]),
-                  Entry(title: "Data Manipulation", path: "basics/data_manipulation", levels: @[2, 1]),
-                  Entry(title: "Plotting", path: "basics/plotting", levels: @[2, 1, 1]),
-                  Entry(title: "Contributors", path: "misc/but/very/far/contributors", levels: @[3])
-                  ]
+  r.add openGenToc()
 
   var sortedentries = entries.sorted(entrycmp)
   echo sortedentries
@@ -172,12 +161,18 @@ proc write_gentoc(rootdir, filename: string) =
     previousLevel = len(e.levels)
 
   r.add closeGenToc()
-  # TODO use rootdir / filename
   let f = open(filename, fmWrite)
   defer: f.close()
   f.write(r)
 
 when isMainModule:
-  write_gentoc("books", "books/toc.mustache")
+  var entries = @[Entry(title: "Introduction", path: "index", levels: @[1]),
+                  Entry(title: "Basics", path: "basics/index", levels: @[2]),
+                  Entry(title: "Models", path: "basics/models", levels: @[2, 2]),
+                  Entry(title: "Data Manipulation", path: "basics/data_manipulation", levels: @[2, 1]),
+                  Entry(title: "Plotting", path: "basics/plotting", levels: @[2, 1, 1]),
+                  Entry(title: "Contributors", path: "misc/but/very/far/contributors", levels: @[3])
+                  ]
+  write_gentoc(entries, "books/toc.mustache")
   copyFile("books/toc.mustache", "tocgen.mustache.html")
 
