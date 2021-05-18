@@ -75,8 +75,8 @@ const path_to_root = "{{path_to_root}}"
 
 proc closeSection() : string =
   # First chapter has no opened section so close should do nothing
-  once:
-    return ""
+  # once:
+  #   return ""
 
   result.add """
   </ol>
@@ -105,9 +105,9 @@ proc makeChapterImpl(title, name: string, levels: varargs[int]) : string =
 """
 
 proc makeSectionImpl(title, name: string, levels: varargs[int]) : string =
-  result.add closeSection()
+  # result.add closeSection()
   result.add makeChapterImpl(title, name, levels)
-  result.add openSection()
+  # result.add openSection()
 
 proc openGenToc(rootdir: string) : string =
   result.add """
@@ -116,7 +116,7 @@ proc openGenToc(rootdir: string) : string =
 
 proc closeGenToc() : string =
   # Close last opened section that will not be closed anywhere
-  result.add closeSection()
+  # result.add closeSection()
   result.add """
 </ol>
 """
@@ -154,21 +154,29 @@ proc write_gentoc(rootdir, filename: string) =
   # It might be simpler to just expose an API to construct the seq[Entry]
   # populateEntries(rootdir)
 
-  var entries = @[Entry(title: "Introduction", path: "index", levels: @[1], isSection: false),
+  var entries = @[Entry(title: "Introduction", path: "index", levels: @[1], isSection: true),
                   Entry(title: "Basics", path: "basics/index", levels: @[2], isSection: true),
                   Entry(title: "Models", path: "basics/models", levels: @[2, 2], isSection: false),
-                  Entry(title: "Data Manipulation", path: "basics/data_manipulation", levels: @[2, 1], isSection: false),
-                  Entry(title: "Plotting", path: "basics/plotting", levels: @[2, 3], isSection: false),
+                  Entry(title: "Data Manipulation", path: "basics/data_manipulation", levels: @[2, 1], isSection: true),
+                  Entry(title: "Plotting", path: "basics/plotting", levels: @[2, 1, 1], isSection: false),
                   Entry(title: "Contributors", path: "misc/but/very/far/contributors", levels: @[3], isSection: true)
                   ]
   var sortedentries = entries.sorted(entrycmp)
   echo sortedentries
+  var previousLevel = 1
   for e in sortedentries:
+    if len(e.levels) == previousLevel:
+      discard
+    elif len(e.levels) > previousLevel:
+      r.add openSection()
+    else:
+      r.add closeSection()
     echo "    ", e.title, " ==> ", e.path, " ==> ", e.isSection
     if e.isSection:
       r.add makeSectionImpl(e.title, e.path, e.levels)
     else:
       r.add makeChapterImpl(e.title, e.path, e.levels)
+    previousLevel = len(e.levels)
 
   r.add closeGenToc()
   # TODO use rootdir / filename
