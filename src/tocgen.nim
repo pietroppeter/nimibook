@@ -88,7 +88,7 @@ proc openSection() : string =
   <ol class="section">
 """
 
-proc addEntry(title, name: string, levels: varargs[int]) : string =
+proc addEntryImpl(title, name: string, levels: varargs[int]) : string =
   debugEcho &"    makeChapter => {title} : {name} => {levels}"
   var chapNumber  : string
   for i in levels:
@@ -168,7 +168,7 @@ proc write_gentoc(rootdir, filename: string) =
       r.add closeSection()
 
     echo "    ", e.title, " ==> ", e.path
-    r.add addEntry(e.title, e.path, e.levels)
+    r.add addEntryImpl(e.title, e.path, e.levels)
     previousLevel = len(e.levels)
 
   r.add closeGenToc()
