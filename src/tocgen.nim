@@ -7,7 +7,6 @@ type
     title: string
     path: string
     levels: seq[int]
-    isSection: bool
 #############################################################################
 ## This section is only useful to create a seq of Entries from books files ##
 ## After consideration, it is easier to have an API to construct entries   ##
@@ -16,10 +15,10 @@ type
 # var excludedFile: seq[string]
 #
 # proc makeChapter(title, name: string, levels: varargs[int]) =
-#   entries.add Entry(title: title, path: name, levels: @levels, isSection: false)
+#   entries.add Entry(title: title, path: name, levels: @levels)
 #
 # proc makeSection(title, name: string, levels: varargs[int]) =
-#   entries.add Entry(title: title, path: name, levels: @levels, isSection: true)
+#   entries.add Entry(title: title, path: name, levels: @levels)
 #
 # proc hasContent(folder: string): bool =
 #   for kind, path in walkdir(folder):
@@ -89,7 +88,7 @@ proc openSection() : string =
   <ol class="section">
 """
 
-proc makeChapterImpl(title, name: string, levels: varargs[int]) : string =
+proc addEntry(title, name: string, levels: varargs[int]) : string =
   debugEcho &"    makeChapter => {title} : {name} => {levels}"
   var chapNumber  : string
   for i in levels:
@@ -103,11 +102,6 @@ proc makeChapterImpl(title, name: string, levels: varargs[int]) : string =
     </a>
   </li>
 """
-
-proc makeSectionImpl(title, name: string, levels: varargs[int]) : string =
-  # result.add closeSection()
-  result.add makeChapterImpl(title, name, levels)
-  # result.add openSection()
 
 proc openGenToc(rootdir: string) : string =
   result.add """
@@ -154,13 +148,14 @@ proc write_gentoc(rootdir, filename: string) =
   # It might be simpler to just expose an API to construct the seq[Entry]
   # populateEntries(rootdir)
 
-  var entries = @[Entry(title: "Introduction", path: "index", levels: @[1], isSection: true),
-                  Entry(title: "Basics", path: "basics/index", levels: @[2], isSection: true),
-                  Entry(title: "Models", path: "basics/models", levels: @[2, 2], isSection: false),
-                  Entry(title: "Data Manipulation", path: "basics/data_manipulation", levels: @[2, 1], isSection: true),
-                  Entry(title: "Plotting", path: "basics/plotting", levels: @[2, 1, 1], isSection: false),
-                  Entry(title: "Contributors", path: "misc/but/very/far/contributors", levels: @[3], isSection: true)
+  var entries = @[Entry(title: "Introduction", path: "index", levels: @[1]),
+                  Entry(title: "Basics", path: "basics/index", levels: @[2]),
+                  Entry(title: "Models", path: "basics/models", levels: @[2, 2]),
+                  Entry(title: "Data Manipulation", path: "basics/data_manipulation", levels: @[2, 1]),
+                  Entry(title: "Plotting", path: "basics/plotting", levels: @[2, 1, 1]),
+                  Entry(title: "Contributors", path: "misc/but/very/far/contributors", levels: @[3])
                   ]
+
   var sortedentries = entries.sorted(entrycmp)
   echo sortedentries
   var previousLevel = 1
@@ -171,11 +166,9 @@ proc write_gentoc(rootdir, filename: string) =
       r.add openSection()
     else:
       r.add closeSection()
-    echo "    ", e.title, " ==> ", e.path, " ==> ", e.isSection
-    if e.isSection:
-      r.add makeSectionImpl(e.title, e.path, e.levels)
-    else:
-      r.add makeChapterImpl(e.title, e.path, e.levels)
+
+    echo "    ", e.title, " ==> ", e.path
+    r.add addEntry(e.title, e.path, e.levels)
     previousLevel = len(e.levels)
 
   r.add closeGenToc()
