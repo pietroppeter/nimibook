@@ -74,10 +74,6 @@ type
 const path_to_root = "{{path_to_root}}"
 
 proc closeSection() : string =
-  # First chapter has no opened section so close should do nothing
-  # once:
-  #   return ""
-
   result.add """
   </ol>
   </li>
