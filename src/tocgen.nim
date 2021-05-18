@@ -145,12 +145,12 @@ proc write_gentoc(rootdir, filename: string) =
   r.add openGenToc(rootdir)
   discard gentoc(rootdir)
 
-  var entries = @[Entry(title: "books", name: "index", levels: @[1], isSection: false),
-                  Entry(title: "basics", name: "books/basics/index", levels: @[2], isSection: true),
-                  Entry(title: "models", name: "books/basics/models", levels: @[2, 2], isSection: false),
-                  Entry(title: "data_manipulation", name: "books/basics/data_manipulation", levels: @[2, 1], isSection: false),
-                  Entry(title: "plotting", name: "books/basics/plotting", levels: @[2, 3], isSection: false),
-                  Entry(title: "contributors", name: "books/misc/but/very/far/contributors", levels: @[3], isSection: true)
+  var entries = @[Entry(title: "Introduction", name: "index", levels: @[1], isSection: false),
+                  Entry(title: "Basics", name: "books/basics/index", levels: @[2], isSection: true),
+                  Entry(title: "Models", name: "books/basics/models", levels: @[2, 2], isSection: false),
+                  Entry(title: "Data Manipulation", name: "books/basics/data_manipulation", levels: @[2, 1], isSection: false),
+                  Entry(title: "Plotting", name: "books/basics/plotting", levels: @[2, 3], isSection: false),
+                  Entry(title: "Contributors", name: "books/misc/but/very/far/contributors", levels: @[3], isSection: true)
                   ]
   var sortedentries = entries.sorted(entrycmp)
   echo sortedentries
