@@ -136,17 +136,23 @@ proc mycmp(x, y: seq[int]): int =
   return r
 
 proc entrycmp(x, y: Entry): int=
-  return mycmp(x.levels, y.levels)
-
-proc sortEntries() : seq[Entry] =
-  result = entries.sorted(entrycmp)
+  let r = mycmp(x.levels, y.levels)
+  doAssert(r != 0, "Entry cannot be equal")
+  return r
 
 proc write_gentoc(rootdir, filename: string) =
   var r: string
   r.add openGenToc(rootdir)
   discard gentoc(rootdir)
 
-  var sortedentries = sortEntries()
+  var entries = @[Entry(title: "books", name: "index", levels: @[1], isSection: false),
+                  Entry(title: "basics", name: "books/basics/index", levels: @[2], isSection: true),
+                  Entry(title: "models", name: "books/basics/models", levels: @[2, 2], isSection: false),
+                  Entry(title: "data_manipulation", name: "books/basics/data_manipulation", levels: @[2, 1], isSection: false),
+                  Entry(title: "plotting", name: "books/basics/plotting", levels: @[2, 3], isSection: false),
+                  Entry(title: "contributors", name: "books/misc/but/very/far/contributors", levels: @[3], isSection: true)
+                  ]
+  var sortedentries = entries.sorted(entrycmp)
   echo sortedentries
   for e in sortedentries:
     echo "    ", e.title, " ==> ", e.name, " ==> ", e.isSection
