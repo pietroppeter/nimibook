@@ -13,9 +13,16 @@ requires "nim >= 1.4.0"
 requires "nimib >= 0.1.2"
 
 import os
-task genbook, "genbook":
-  for path in walkDirRec("."):
+task gentoc, "gentoc":
+  selfExec("r -f src/tocgen.nim")
+
+task genhtml, "genhtml":
+  for path in walkDirRec("books"):
     let (dir, name, ext) = path.splitFile()
-    if ext == ".nim" and name not_in ["nbPostInit"]:
+    if ext == ".nim" and name notin ["nbPostInit.nim"]:
       echo "building ", path
-      selfExec("r " & path)
+      selfExec("r -d:nimibCustomPostInit " & path)
+
+task genbook, "genbook":
+  gentocTask()
+  genhtmlTask()

@@ -1,1 +1,8 @@
+!docs/.gitignore
+!docs/css
+!docs/FontAwesome
+!docs/fonts
+!docs/js
 docs/
+# TODO REMOVE
+tocgen.mustache.html
