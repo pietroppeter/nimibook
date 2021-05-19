@@ -1,6 +1,8 @@
 # to implement nbSrcDir
-let nbSrcDir = nbHomeDir / "../src".RelativeDir
-nbDoc.filename = (changeFileExt(nbThisFile, ".html").relativeTo nbSrcDir).string
+import os
+let nbSrcDir = nbHomeDir / RelativeDir(".." / "books")
+nbDoc.filename = relativeTo(changeFileExt(nbThisFile, ".html"), nbSrcDir).string
+
 nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string
 nbDoc.context["title"] = nbDoc.context["here_path"]
 nbDoc.context["home_path"] = (nbSrcDir.relativeTo nbThisDir).string
