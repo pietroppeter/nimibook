@@ -22,8 +22,6 @@ jobs:
         run: git fetch
       - name: Rebase
         run: git rebase -Xours origin/main
-      - name: Temporary fix for #5
-        run: rm -f nimiBook.nimble
       - name: Gen Book
         run: nimble genbook
       - name: Commit files
