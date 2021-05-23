@@ -11,18 +11,26 @@ srcDir        = "src"
 
 requires "nim >= 1.4.0"
 requires "nimib >= 0.1.2"
+requires "jsony >= 1.0.1"
 
 import os
-task gentoc, "gentoc":
-  selfExec("r -f src/tocgen.nim")
-
-task genhtml, "genhtml":
-  for path in walkDirRec("books"):
-    let (dir, name, ext) = path.splitFile()
-    if ext == ".nim" and name notin ["nbPostInit.nim"]:
-      echo "building ", path
-      selfExec("r -d:nimibCustomPostInit " & path)
-
 task genbook, "genbook":
-  gentocTask()
-  genhtmlTask()
+  selfExec(" r -d:release genbook.nim")
+
+task cleanbook, "cleanbook":
+  # todo: it should remove all files and directories not tracked in git from docs
+  for file in walkDirRec("docs"):
+    if file.endsWith(".html"):
+      rmFile(file)
+      echo "removed ", file
+  for file in ["book/toc.json"]: # hardcoded files to remove (one for now)
+    if fileExists(file):
+      rmFile(file)
+      echo "removed ", file
+  # if by mistake I create html in book folder, remove them
+  for file in walkDirRec("book"):
+    if file.endsWith(".html"):
+      rmFile(file)
+      echo "removed ", file
+  
+      
