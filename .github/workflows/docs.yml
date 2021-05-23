@@ -13,6 +13,7 @@ jobs:
       - name: "install_nim"
         id: install_nim
         uses: iffy/install-nim@v3
+      - run: cat nimibook.nimble
       - run: nimble install -y
       - name: Set CI config github
         run: |
@@ -23,7 +24,7 @@ jobs:
       - name: Rebase
         run: git rebase -Xours origin/main
       - name: Gen Book
-        run: nimble genbook
+        run: nimble --verbose genbook
       - name: Commit files
         run: |
           echo ${{ github.ref }}
