@@ -1,13 +1,8 @@
 import os
 import strformat
 import algorithm
+import nimibook / types
 
-type
-  Entry = object
-    title: string
-    path: string
-    levels: seq[int]
-    isNumbered: bool
 #############################################################################
 ## This section is only useful to create a seq of Entries from books files ##
 ## After consideration, it is easier to have an API to construct entries   ##
