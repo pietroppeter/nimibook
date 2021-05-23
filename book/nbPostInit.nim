@@ -22,6 +22,9 @@ nbDoc.context["book_title"] = "nimibook"
 nbDoc.context["git_repository_url"] = "https://github.com/pietroppeter/nimibook"
 nbDoc.context["git_repository_icon"] = "fa-github"
 
-import nimibook
+import nimibook, strutils
 var toc = load("../book/toc.json")
+for entry in toc.entries.mitems:
+  if entry.url == nbDoc.filename.replace('\\', '/'): # replace needed for windows
+    entry.isActive = true
 nbDoc.partials["toc"] = render toc

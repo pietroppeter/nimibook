@@ -8,6 +8,7 @@ type
     path*: string
     levels*: seq[int]
     isNumbered*: bool
+    isActive*: bool
   Toc* = object
     title*: string
     path*: string    
