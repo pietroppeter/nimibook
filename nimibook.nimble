@@ -27,5 +27,10 @@ task cleanbook, "cleanbook":
     if fileExists(file):
       rmFile(file)
       echo "removed ", file
+  # if by mistake I create html in book folder, remove them
+  for file in walkDirRec("book"):
+    if file.endsWith(".html"):
+      rmFile(file)
+      echo "removed ", file
   
       

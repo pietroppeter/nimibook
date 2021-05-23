@@ -1,7 +1,9 @@
-# to implement nbSrcDir
+static: echo "[USING CUSTOM NBPOSTINIT]"
 import os
-let nbSrcDir = nbHomeDir / RelativeDir(".." / "books")
+let nbSrcDir = nbHomeDir / RelativeDir(".." / "book")
 nbDoc.filename = relativeTo(changeFileExt(nbThisFile, ".html"), nbSrcDir).string
+echo "Current directory: ", getCurrentDir()
+echo "Output file: ", nbDoc.filename
 
 nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string
 nbDoc.context["title"] = nbDoc.context["here_path"]
@@ -16,6 +18,10 @@ nbDoc.context["favicon_whale"] = """<link rel="icon" href="data:image/svg+xml,<s
 nbDoc.context["path_to_root"] = nbDoc.context["home_path"].castStr & "/" # I probably should make sure to have / at the end
 nbDoc.context["preferred_dark_theme"] = "false"
 nbDoc.context["theme_option"] = {"light": "Light (default)", "rust": "Rust", "coal": "Coal", "navy": "Navy", "ayu": "Ayu"}.toTable
-nbDoc.context["book_title"] = "example mdbook with nimib"
+nbDoc.context["book_title"] = "nimibook"
 nbDoc.context["git_repository_url"] = "https://github.com/pietroppeter/nimibook"
 nbDoc.context["git_repository_icon"] = "fa-github"
+
+import nimibook
+var toc = load("../book/toc.json")
+nbDoc.partials["toc"] = render toc

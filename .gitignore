@@ -4,5 +4,4 @@
 !docs/fonts
 !docs/js
 docs/
-# TODO REMOVE
-tocgen.mustache.html
+book/toc.json
