@@ -7,7 +7,9 @@ proc inc(levels: var seq[int]) =
   levels[levels.high] = levels[levels.high] + 1
 
 proc add(toc: var Toc, entry: Entry) =
-  doAssert(fileExists(toc.path / entry.path), fmt"Error entry {entry.path} doesn't exist.")
+  let fullPath = toc.path / entry.path
+  if not fileExists(fullPath):
+    raise newException(IOError, fmt"Error entry {fullpath} doesn't exist.")
   toc.entries.add entry
 
 proc joinPath(parts: seq[string], tail: string) : string =
@@ -50,8 +52,10 @@ template newToc*(booklabel: string, rootfolder: string, body: untyped): Toc =
     discard pop folders
     inc levels
 
-  template draft(label: string, file: string) =
-    toc.add Entry(title: label, path: joinPath(folders, file), levels: @[], isNumbered: false)
+  template draft(label: string, rfile: string) =
+    let inputs = rfile.splitFile
+    let file = formatFileName(inputs)
+    toc.add Entry(title: label, path: joinPath(inputs.dir, file), levels: @[], isNumbered: false)
   body
   toc
 
