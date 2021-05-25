@@ -77,7 +77,7 @@ proc publish*(toc: Toc) =
     let
       cmd = "nim"
       args = ["r", "-d:release", "-d:nimibCustomPostInit", normalizedPath(joinPath(toc.path, entry.path))]
-    debugEcho "[Executing] ", cmd, " ", args.join(" ")
+    # debugEcho "[Executing] ", cmd, " ", args.join(" ")
     if execShellCmd(cmd & " " & args.join(" ")) != 0:
       quit(1)
   clean toc

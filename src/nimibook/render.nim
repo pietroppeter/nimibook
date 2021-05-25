@@ -16,7 +16,7 @@ proc openSection(): string =
 """
 
 proc addEntryImpl(e: Entry): string =
-  debugEcho &"    makeChapter => {e.title} : {e.url} => {e.levels}"
+  # debugEcho &"    makeChapter => {e.title} : {e.url} => {e.levels}"
   let active = if e.isActive: " class=\"active\"" else: ""
   if e.isNumbered:
     var chapNumber: string
