@@ -6,6 +6,13 @@ powered by [nimib](https://pietroppeter.github.io/nimib/).
 
 Currently a PoC with minimal functionality hacked together to support [sciNim/getting-started](https://github.com/SciNim/getting-started).
 
+# Usage
+
+* 1) Write your content using [nimib](https://pietroppeter.github.io/nimib/) in the ``book`` folder.
+
+* 2) Use the Toc DSL to link chapters to Nim file in ``genbook.nim``.
+
+* 3) Generate your books in the ``docs`` folder using ``nimble benbook``.
 
 <!-- index.hbs adapted from mdbook to mustache
 required fields:
