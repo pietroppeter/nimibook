@@ -15,5 +15,9 @@ type
     entries*: seq[Entry]
 
 proc url*(e: Entry): string =
-  normalizedPath(e.path).changeFileExt("html")
+  var path = normalizedPath(e.path)
+  when defined(windows):
+    path.changeFileExt("html").replace('\\', '/')
+  else:
+    path.changeFileExt("html")
 
