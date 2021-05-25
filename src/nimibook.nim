@@ -33,7 +33,7 @@ template newToc*(booklabel: string, rootfolder: string, body: untyped): Toc =
     # debugEcho "==> entry <=="
     # debugEcho "    file>", rfile
     let inputs = rfile.splitFile
-    let file = formatFileName(inputs)
+    let file = inputs.dir / formatFileName(inputs)
     toc.add Entry(title: label, path: joinPath(folders, file), levels: levels, isNumbered: true)
     inc levels
 
@@ -74,10 +74,5 @@ proc load*(path: string): Toc =
 proc publish*(toc: Toc) =
   dump toc
   for entry in toc.entries:
-    let
-      cmd = "nim"
-      args = ["r", "-d:release", "-d:nimibCustomPostInit", normalizedPath(joinPath(toc.path, entry.path))]
-    # debugEcho "[Executing] ", cmd, " ", args.join(" ")
-    if execShellCmd(cmd & " " & args.join(" ")) != 0:
-      quit(1)
+    entry.output(toc.path)
   clean toc

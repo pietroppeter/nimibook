@@ -1,4 +1,4 @@
-import strformat
+import std/strformat
 import nimibook / types
 
 const path_to_root = "{{path_to_root}}"
