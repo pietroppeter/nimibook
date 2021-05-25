@@ -5,7 +5,6 @@ author        = "Pietro Peterlongo"
 description   = "A port of mdbook to nim"
 license       = "MIT"
 srcDir        = "src"
-bin           = @["genbook"]
 
 
 # Dependencies
