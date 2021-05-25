@@ -23,7 +23,7 @@ proc mycmp(x, y: seq[int]): int =
       r = intcmp(x[idx], y[idx])
   return r
 
-proc entrycmp(x, y: Entry): int=
+proc entrycmp(x, y: Entry): int =
   let r = mycmp(x.levels, y.levels)
   doAssert(r != 0, "Entry cannot be equal")
   return r

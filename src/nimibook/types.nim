@@ -11,10 +11,10 @@ type
     isActive*: bool
   Toc* = object
     title*: string
-    path*: string    
+    path*: string
     entries*: seq[Entry]
 
-proc url*(e: Entry): string = 
+proc url*(e: Entry): string =
   when defined(windows):
     e.path.changeFileExt("html").replace('\\', '/')
   else:

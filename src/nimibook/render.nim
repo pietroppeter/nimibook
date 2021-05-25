@@ -3,23 +3,23 @@ import nimibook / types
 
 const path_to_root = "{{path_to_root}}"
 
-proc closeSection() : string =
+proc closeSection(): string =
   result.add """
   </ol>
   </li>
 """
 
-proc openSection() : string =
+proc openSection(): string =
   result.add """
   <li>
   <ol class="section">
 """
 
-proc addEntryImpl(e: Entry) : string =
+proc addEntryImpl(e: Entry): string =
   debugEcho &"    makeChapter => {e.title} : {e.url} => {e.levels}"
   let active = if e.isActive: " class=\"active\"" else: ""
   if e.isNumbered:
-    var chapNumber  : string
+    var chapNumber: string
     for i in e.levels:
       chapNumber.add $i
       chapNumber.add "."
@@ -40,12 +40,12 @@ proc addEntryImpl(e: Entry) : string =
   </li>
 """
 
-proc openGenToc() : string =
+proc openGenToc(): string =
   result.add """
 <ol class="chapter">
 """
 
-proc closeGenToc() : string =
+proc closeGenToc(): string =
   # Close last opened section that will not be closed anywhere
   # result.add closeSection()
   result.add """
