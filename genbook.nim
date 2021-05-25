@@ -2,9 +2,9 @@ import nimibook, os
 
 let toc = newToc("Example", "book"):
   entry("Introduction", "index.nim")
-  entry("Basics", "basics/index.nim"):
-    entry("Plotting", "plotting.nim")
-    entry("Data Manipulation", "data_manipulation.nim")
+  section("Basics", "basics/index.nim"):
+    section("Plotting", "plotting.nim"):
+      entry("Data Manipulation", "data_manipulation")
     entry("Models", "models.nim")
   draft("Contributors", "misc/but/very/far/contributors.nim")
 
