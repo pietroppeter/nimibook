@@ -1,56 +1,78 @@
 import nimibook / [types, render]
 export types, render
-import os, strutils
+import std/[os, strutils, strformat]
 import jsony
 
 proc inc(levels: var seq[int]) =
   levels[levels.high] = levels[levels.high] + 1
 
 proc add(toc: var Toc, entry: Entry) =
+  let fullPath = entry.path
+  if not fileExists(fullPath):
+    raise newException(IOError, fmt"Error entry {fullpath} doesn't exist.")
   toc.entries.add entry
 
-template newToc*(name: string, folder: string, body: untyped): Toc =
-  # todo: check folder exists (and is a folder)
-  var toc = Toc(title: name, path: folder)
+proc joinPath(parts: seq[string], tail: string) : string =
+  var parts = parts
+  parts.add tail
+  normalizedPath(joinPath(parts))
+
+proc formatFileName(inputs: tuple[dir: string, name: string, ext: string]) : string =
+  result = inputs.name
+  if inputs.ext.isEmptyOrWhitespace():
+    result &= ".nim"
+  else:
+    result &= inputs.ext
+
+template newToc*(booklabel: string, rootfolder: string, body: untyped): Toc =
+  var toc = Toc(title: booklabel, path: rootfolder)
   var levels: seq[int] = @[1]
-  var currFolder = ""
-  var parentFolder = ""
-  template entry(label: string, file: string) =
-    # todo: check folder + file is an existing file
-    toc.add Entry(title: label, path: joinPath(currFolder, file), levels: levels, isNumbered: true)
+  var folders : seq[string] = @[rootfolder]
+
+  template entry(label, rfile: string) =
+    # debugEcho "==> entry <=="
+    # debugEcho "    file>", rfile
+    let inputs = rfile.splitFile
+    let file = inputs.dir / formatFileName(inputs)
+    toc.add Entry(title: label, path: joinPath(folders, file).normalizedPath(), levels: levels, isNumbered: true)
     inc levels
-  template entry(label: string, file: string, sectionBody: untyped) =
-    # todo: check folder + file is an existing file
-    toc.add Entry(title: label, path: joinPath(currFolder, file), levels: levels, isNumbered: true)
-    parentFolder = currFolder
-    currFolder = joinPath(currFolder, file).splitfile.dir
+
+  template section(label, rfile: string, sectionBody: untyped) =
+    let inputs = rfile.splitFile
+    let curfolder = inputs.dir
+    let file = formatFileName(inputs)
+    folders.add curfolder
+    toc.add Entry(title: label, path: joinPath(folders, file).normalizedPath(), levels: levels, isNumbered: true)
+    # debugEcho "==> section <=="
+    # debugEcho "    file>", file
+    # debugEcho "    folders>", folders
     levels.add 1
     sectionBody
     discard pop levels
+    discard pop folders
     inc levels
-    currFolder = parentFolder
-  template draft(label: string, file: string) =
-    # todo: check folder + file is an existing file
-    toc.add Entry(title: label, path: joinPath(currFolder, file), levels: @[], isNumbered: false)
+
+  template draft(label: string, rfile: string) =
+    let inputs = joinPath(rootfolder, rfile).normalizedPath().splitFile()
+    let file = formatFileName(inputs)
+    toc.add Entry(title: label, path: joinPath(inputs.dir, file), levels: @[], isNumbered: false)
   body
   toc
 
 proc dump*(toc: Toc) =
-  writeFile(toc.path / "toc.json", toc.toJson)
+  let uri = normalizedPath(toc.path / "toc.json")
+  writeFile(uri, toc.toJson)
 
 proc clean*(toc: Toc) =
-  removeFile(toc.path / "toc.json")
+  let uri = normalizedPath(toc.path / "toc.json")
+  removeFile(uri)
 
 proc load*(path: string): Toc =
-  readFile(path).fromJson(Toc)
+  let uri = normalizedPath(path)
+  readFile(uri).fromJson(Toc)
 
 proc publish*(toc: Toc) =
   dump toc
   for entry in toc.entries:
-    let
-      cmd = "nim"
-      args = ["r", "-d:release", "-d:nimibCustomPostInit", joinPath(toc.path, entry.path)]
-    echo "[Executing] ", cmd, " ", args.join(" ")
-    if execShellCmd(cmd & " " & args.join(" ")) != 0:
-      quit(1)
+    entry.publish()
   clean toc

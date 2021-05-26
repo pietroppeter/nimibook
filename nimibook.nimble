@@ -32,5 +32,5 @@ task cleanbook, "cleanbook":
     if file.endsWith(".html"):
       rmFile(file)
       echo "removed ", file
-  
-      
+
+

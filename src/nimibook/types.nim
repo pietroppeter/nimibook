@@ -1,6 +1,5 @@
-when defined(windows):
-  import strutils
-import os
+import std/strutils
+import std/os
 
 type
   Entry* = object
@@ -11,11 +10,33 @@ type
     isActive*: bool
   Toc* = object
     title*: string
-    path*: string    
+    path*: string
     entries*: seq[Entry]
 
-proc url*(e: Entry): string = 
-  when defined(windows):
-    e.path.changeFileExt("html").replace('\\', '/')
+proc nimPublish*(entry: Entry) =
+  let
+    cmd = "nim"
+    args = ["r", "-d:release", "-d:nimibCustomPostInit", entry.path]
+  # debugEcho "[Executing] ", cmd, " ", args.join(" ")
+  if execShellCmd(cmd & " " & args.join(" ")) != 0:
+    quit(1)
+
+proc mdPublish*(entry: Entry) =
+  raise newException(IOError, "Markdown not yet supported. We advise listening to elevators music while we are working on this feature.")
+
+proc publish*(entry: Entry) =
+  let splitted = entry.path.splitFile()
+  if splitted.ext == ".nim":
+    nimPublish(entry)
+  elif splitted.ext == ".md":
+    mdPublish(entry)
   else:
-    e.path.changeFileExt("html")
+    raise newException(IOError, "Error invalid file extension.")
+
+proc url*(e: Entry): string =
+  var path = changeFileExt(e.path, "html")
+  when defined(windows):
+    path.replace('\\', '/')
+  else:
+    path
+
