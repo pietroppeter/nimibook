@@ -7,7 +7,7 @@ proc inc(levels: var seq[int]) =
   levels[levels.high] = levels[levels.high] + 1
 
 proc add(toc: var Toc, entry: Entry) =
-  let fullPath = toc.path / entry.path
+  let fullPath = entry.path
   if not fileExists(fullPath):
     raise newException(IOError, fmt"Error entry {fullpath} doesn't exist.")
   toc.entries.add entry
@@ -27,14 +27,14 @@ proc formatFileName(inputs: tuple[dir: string, name: string, ext: string]) : str
 template newToc*(booklabel: string, rootfolder: string, body: untyped): Toc =
   var toc = Toc(title: booklabel, path: rootfolder)
   var levels: seq[int] = @[1]
-  var folders : seq[string] = newSeq[string]()
+  var folders : seq[string] = @[rootfolder]
 
   template entry(label, rfile: string) =
     # debugEcho "==> entry <=="
     # debugEcho "    file>", rfile
     let inputs = rfile.splitFile
     let file = inputs.dir / formatFileName(inputs)
-    toc.add Entry(title: label, path: joinPath(folders, file), levels: levels, isNumbered: true)
+    toc.add Entry(title: label, path: joinPath(folders, file).normalizedPath(), levels: levels, isNumbered: true)
     inc levels
 
   template section(label, rfile: string, sectionBody: untyped) =
@@ -42,7 +42,7 @@ template newToc*(booklabel: string, rootfolder: string, body: untyped): Toc =
     let curfolder = inputs.dir
     let file = formatFileName(inputs)
     folders.add curfolder
-    toc.add Entry(title: label, path: joinPath(folders, file), levels: levels, isNumbered: true)
+    toc.add Entry(title: label, path: joinPath(folders, file).normalizedPath(), levels: levels, isNumbered: true)
     # debugEcho "==> section <=="
     # debugEcho "    file>", file
     # debugEcho "    folders>", folders
@@ -53,7 +53,7 @@ template newToc*(booklabel: string, rootfolder: string, body: untyped): Toc =
     inc levels
 
   template draft(label: string, rfile: string) =
-    let inputs = rfile.splitFile
+    let inputs = joinPath(rootfolder, rfile).normalizedPath().splitFile()
     let file = formatFileName(inputs)
     toc.add Entry(title: label, path: joinPath(inputs.dir, file), levels: @[], isNumbered: false)
   body
@@ -74,5 +74,5 @@ proc load*(path: string): Toc =
 proc publish*(toc: Toc) =
   dump toc
   for entry in toc.entries:
-    entry.output(toc.path)
+    entry.publish()
   clean toc

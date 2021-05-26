@@ -1,5 +1,4 @@
 import std/strutils
-import std/strformat
 import std/os
 
 type
@@ -14,30 +13,30 @@ type
     path*: string
     entries*: seq[Entry]
 
-proc nimOutput*(entry: Entry, rootfolder: string) =
+proc nimPublish*(entry: Entry) =
   let
     cmd = "nim"
-    args = ["r", "-d:release", "-d:nimibCustomPostInit", joinPath(rootfolder, entry.path)]
+    args = ["r", "-d:release", "-d:nimibCustomPostInit", entry.path]
   # debugEcho "[Executing] ", cmd, " ", args.join(" ")
   if execShellCmd(cmd & " " & args.join(" ")) != 0:
     quit(1)
 
-proc mdOutput*(entry: Entry, rootfolder: string) =
+proc mdPublish*(entry: Entry) =
   raise newException(IOError, "Markdown not yet supported. We advise listening to elevators music while we are working on this feature.")
 
-proc output*(entry: Entry, rootfolder: string) =
+proc publish*(entry: Entry) =
   let splitted = entry.path.splitFile()
   if splitted.ext == ".nim":
-    nimOutput(entry, rootfolder)
+    nimPublish(entry)
   elif splitted.ext == ".md":
-    mdOutput(entry, rootfolder)
+    mdPublish(entry)
   else:
     raise newException(IOError, "Error invalid file extension.")
 
 proc url*(e: Entry): string =
-  var path = normalizedPath(e.path)
+  var path = changeFileExt(e.path, "html")
   when defined(windows):
-    path.changeFileExt("html").replace('\\', '/')
+    path.replace('\\', '/')
   else:
-    path.changeFileExt("html")
+    path
 

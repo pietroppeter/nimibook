@@ -12,7 +12,7 @@ Currently a PoC with minimal functionality hacked together to support [sciNim/ge
 
 * 2) Use the Toc DSL to link chapters to Nim file in ``genbook.nim``.
 
-* 3) Generate your books in the ``docs`` folder using ``nimble benbook``.
+* 3) Generate your books in the ``docs`` folder using ``nimble genbook``.
 
 <!-- index.hbs adapted from mdbook to mustache
 required fields:
