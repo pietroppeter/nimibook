@@ -71,8 +71,14 @@ proc load*(path: string): Toc =
   let uri = normalizedPath(path)
   readFile(uri).fromJson(Toc)
 
+proc check*(toc: Toc) =
+  for entry in toc.entries:
+    entry.check()
+  echo "Check toc => OK"
+
 proc publish*(toc: Toc) =
   dump toc
   for entry in toc.entries:
     entry.publish()
   clean toc
+  check(toc)

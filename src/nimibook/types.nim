@@ -1,4 +1,4 @@
-import std/strutils
+import std/[strutils, strformat]
 import std/os
 
 type
@@ -40,3 +40,7 @@ proc url*(e: Entry): string =
   else:
     path
 
+proc check*(e: Entry) =
+  let entryurl = url(e)
+  if not fileExists("docs" / entryurl):
+    raise newException(IOError, fmt"Error finding {entryurl} : no such file or directory")
