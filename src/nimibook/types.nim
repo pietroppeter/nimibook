@@ -16,7 +16,7 @@ type
 proc nimPublish*(entry: Entry) =
   let
     cmd = "nim"
-    args = ["r", "-d:release", "-d:nimibCustomPostInit", entry.path]
+    args = ["r", "-d:release", entry.path]
   # debugEcho "[Executing] ", cmd, " ", args.join(" ")
   if execShellCmd(cmd & " " & args.join(" ")) != 0:
     quit(1)
