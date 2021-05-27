@@ -34,7 +34,7 @@ proc publish*(entry: Entry) =
     raise newException(IOError, "Error invalid file extension.")
 
 proc url*(e: Entry): string =
-  var path = changeFileExt(e.path, "html")
+  var path = changeFileExt(e.path, "html").tailDir()
   when defined(windows):
     path.replace('\\', '/')
   else:
