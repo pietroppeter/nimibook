@@ -1,5 +1,6 @@
-import nimib
+import nimib, bookcfg
 nbInit
+nbDoc.applyCfg
 nbText: """# Introduction
 
 I should say something very wise about this book.
