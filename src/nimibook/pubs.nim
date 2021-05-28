@@ -11,8 +11,6 @@ proc nimPublish*(entry: Entry) =
   if execShellCmd(cmd & " " & args.join(" ")) != 0:
     quit(1)
 
-import print
-
 proc mdPublish*(entry: Entry) =
   nbInit
   nbDoc.filename = (nbThisDir / ("../../" & entry.path).RelativeDir).string
@@ -34,8 +32,6 @@ proc publish*(entry: Entry) =
 proc publish*(toc: Toc) =
   dump toc
   for entry in toc.entries:
-    print entry
     entry.publish()
-    print "OK publish entry"
   clean toc
   check(toc)
