@@ -1,7 +1,7 @@
 
 import std / [os, strutils]
-import nimibook / [types, tocs]
-import nimib, ../../book/bookcfg
+import nimibook / [types, tocs, cfg]
+import nimib
 
 proc nimPublish*(entry: Entry) =
   let
