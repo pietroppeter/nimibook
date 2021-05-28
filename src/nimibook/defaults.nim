@@ -1,7 +1,7 @@
 import nimib, strutils, os, nimib / paths
 import nimibook / [types, tocs, render, entries]
 
-proc applyCfg*(nbDoc: var NbDoc) =
+proc useNimibook*(nbDoc: var NbDoc) =
   let
     nbThisFile = changeFileExt(nbDoc.filename.AbsoluteFile, ".nim")
     thisTuple = nbThisFile.splitFile

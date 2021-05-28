@@ -1,6 +1,6 @@
 
 import std / [os, strutils]
-import nimibook / [types, tocs, cfg]
+import nimibook / [types, tocs, defaults]
 import nimib
 
 proc nimPublish*(entry: Entry) =
@@ -14,7 +14,7 @@ proc nimPublish*(entry: Entry) =
 proc mdPublish*(entry: Entry) =
   nbInit
   nbDoc.filename = (nbThisDir / ("../../" & entry.path).RelativeDir).string
-  nbDoc.applyCfg
+  nbDoc.useNimibook
   withDir(nbHomeDir / "..".RelativeDir):
     nbText entry.path.readFile
   nbSave

@@ -1,6 +1,4 @@
-import nimib, nimibook / cfg
-nbInit
-nbDoc.applyCfg
+include nimibook / prelude
 nbText: """## Data Manipulation
 
 I like less data manipulation
