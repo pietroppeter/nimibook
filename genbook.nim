@@ -2,6 +2,7 @@ import nimibook, os
 
 let toc = newToc("Example", "book"):
   entry("Introduction", "index")
+  entry("Pure Markdown", "pure.md")
   # .nim extension is optionnal but you can add it if you want to
   section("Basics", "basics/index.nim"):
     section("Plotting", "plotting.nim"):

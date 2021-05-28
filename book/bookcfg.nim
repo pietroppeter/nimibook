@@ -1,4 +1,5 @@
-import nimib, nimibook, strutils, os, nimib / paths
+import nimib, strutils, os, nimib / paths
+import nimibook / [types, tocs, render, entries]
 
 proc applyCfg*(nbDoc: var NbDoc) =
   let

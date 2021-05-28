@@ -1,5 +1,5 @@
 import std/strformat
-import nimibook / types
+import nimibook / [types, entries]
 
 const path_to_root = "{{path_to_root}}"
 
