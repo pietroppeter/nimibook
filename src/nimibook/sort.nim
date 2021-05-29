@@ -1,6 +1,6 @@
 # in case you need to sort entries (it can be useful for automatically generated entries)
+import std / algorithm
 import nimibook / types
-import std/algorithm
 
 proc intcmp(x, y: int): int =
   if x < y:

@@ -1,4 +1,5 @@
-import nimib, strutils, os, nimib / paths
+import std / [strutils, os]
+import nimib, nimib / paths
 import nimibook / [types, tocs, render, entries]
 
 proc useNimibook*(nbDoc: var NbDoc) =

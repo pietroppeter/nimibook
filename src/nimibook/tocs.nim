@@ -1,6 +1,6 @@
-import nimibook / [types, entries]
 import std / [os, strutils, strformat]
 import jsony
+import nimibook / [types, entries]
 
 proc inc(levels: var seq[int]) =
   levels[levels.high] = levels[levels.high] + 1
