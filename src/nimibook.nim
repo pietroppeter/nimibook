@@ -1,2 +1,2 @@
-import nimibook / [types, render, tocs, pubs]
-export types, render, tocs, pubs
+import nimibook / [types, render, tocs, publishers, defaults]
+export types, render, tocs, publishers, defaults

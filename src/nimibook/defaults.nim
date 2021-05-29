@@ -1,14 +1,15 @@
-import nimib, strutils, os, nimib / paths
+import std / [strutils, os]
+import nimib, nimib / paths
 import nimibook / [types, tocs, render, entries]
 
-proc applyCfg*(nbDoc: var NbDoc) =
+proc useNimibook*(nbDoc: var NbDoc) =
   let
     nbThisFile = changeFileExt(nbDoc.filename.AbsoluteFile, ".nim")
     thisTuple = nbThisFile.splitFile
     nbThisDir: AbsoluteDir = thisTuple.dir
     nbHomeDir: AbsoluteDir = findNimbleDir(nbThisDir) / "docs".RelativeDir
     nbSrcDir = nbHomeDir / RelativeDir(".." / "book")
-  
+
   nbDoc.filename = relativeTo(changeFileExt(nbThisFile, ".html"), nbSrcDir).string
   nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string
   nbDoc.context["home_path"] = (nbSrcDir.relativeTo nbThisDir).string

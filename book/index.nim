@@ -1,6 +1,4 @@
-import nimib, bookcfg
-nbInit
-nbDoc.applyCfg
+include nimibook / prelude
 nbText: """# Introduction
 
 I should say something very wise about this book.

@@ -1,7 +1,6 @@
-
 import std / [os, strutils]
-import nimibook / [types, tocs]
-import nimib, ../../book/bookcfg
+import nimibook / [types, tocs, defaults]
+import nimib
 
 proc nimPublish*(entry: Entry) =
   let
@@ -14,11 +13,11 @@ proc nimPublish*(entry: Entry) =
 proc mdPublish*(entry: Entry) =
   nbInit
   nbDoc.filename = (nbThisDir / ("../../" & entry.path).RelativeDir).string
-  nbDoc.applyCfg
+  nbDoc.useNimibook
   withDir(nbHomeDir / "..".RelativeDir):
     nbText entry.path.readFile
   nbSave
-  setCurrentDir nbInitDir  # reset current directory
+  setCurrentDir nbInitDir # reset current directory
 
 proc publish*(entry: Entry) =
   let splitted = entry.path.splitFile()

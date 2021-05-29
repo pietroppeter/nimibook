@@ -1,6 +1,4 @@
-import nimib, bookcfg
-nbInit
-nbDoc.applyCfg
+include nimibook / prelude
 nbText: """## Plotting
 
 I like data visualization

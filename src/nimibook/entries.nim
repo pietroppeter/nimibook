@@ -1,5 +1,5 @@
-import nimibook / types
 import std / [os, strutils, strformat]
+import nimibook / types
 
 proc url*(e: Entry): string =
   var path = changeFileExt(e.path, "html").tailDir()
