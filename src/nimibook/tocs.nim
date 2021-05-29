@@ -11,12 +11,12 @@ proc add(toc: var Toc, entry: Entry) =
     raise newException(IOError, fmt"Error entry {fullpath} doesn't exist.")
   toc.entries.add entry
 
-proc joinPath(parts: seq[string], tail: string) : string =
+proc joinPath(parts: seq[string], tail: string): string =
   var parts = parts
   parts.add tail
   normalizedPath(joinPath(parts))
 
-proc formatFileName(inputs: tuple[dir: string, name: string, ext: string]) : string =
+proc formatFileName(inputs: tuple[dir: string, name: string, ext: string]): string =
   result = inputs.name
   if inputs.ext.isEmptyOrWhitespace():
     result &= ".nim"
@@ -26,7 +26,7 @@ proc formatFileName(inputs: tuple[dir: string, name: string, ext: string]) : str
 template newToc*(booklabel: string, rootfolder: string, body: untyped): Toc =
   var toc = Toc(title: booklabel, path: rootfolder)
   var levels: seq[int] = @[1]
-  var folders : seq[string] = @[rootfolder]
+  var folders: seq[string] = @[rootfolder]
 
   template entry(label, rfile: string) =
     # debugEcho "==> entry <=="

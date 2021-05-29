@@ -17,7 +17,7 @@ proc mdPublish*(entry: Entry) =
   withDir(nbHomeDir / "..".RelativeDir):
     nbText entry.path.readFile
   nbSave
-  setCurrentDir nbInitDir  # reset current directory
+  setCurrentDir nbInitDir # reset current directory
 
 proc publish*(entry: Entry) =
   let splitted = entry.path.splitFile()

@@ -9,7 +9,7 @@ proc useNimibook*(nbDoc: var NbDoc) =
     nbThisDir: AbsoluteDir = thisTuple.dir
     nbHomeDir: AbsoluteDir = findNimbleDir(nbThisDir) / "docs".RelativeDir
     nbSrcDir = nbHomeDir / RelativeDir(".." / "book")
-  
+
   nbDoc.filename = relativeTo(changeFileExt(nbThisFile, ".html"), nbSrcDir).string
   nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string
   nbDoc.context["home_path"] = (nbSrcDir.relativeTo nbThisDir).string

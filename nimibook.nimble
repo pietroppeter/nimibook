@@ -34,3 +34,9 @@ task cleanbook, "cleanbook":
       echo "removed ", file
 
 
+task srcpretty, "run nimpretty on nim files in src folder":
+  for file in walkDirRec("src"):
+    if file.endsWith(".nim"):
+      let cmd = "nimpretty --maxLineLen:160 " & file
+      echo "[executing] ", cmd
+      exec(cmd)
