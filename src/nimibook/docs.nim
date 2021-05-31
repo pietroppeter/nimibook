@@ -11,14 +11,15 @@ proc useNimibook*(nbDoc: var NbDoc) =
     nbHomeDir: AbsoluteDir = findNimbleDir(nbThisDir) / "docs".RelativeDir
     nbSrcDir = nbHomeDir / RelativeDir(".." / "book")
 
+  # are these two actually needed? well, home_path is needed in path_to_root, but other than that?
+  nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string
+  nbDoc.context["home_path"] = (nbSrcDir.relativeTo nbThisDir).string
+
   nbDoc.filename = relativeTo(changeFileExt(nbThisFile, ".html"), nbSrcDir).string
   nbDoc.context["path_to_root"] = nbDoc.context["home_path"].castStr & "/" # I probably should make sure to have / at the end
   # debugEcho "Current directory: ", getCurrentDir()
   # debugEcho "Output file: ", nbDoc.filename
 
-  # are these two actually needed?
-  nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string
-  nbDoc.context["home_path"] = (nbSrcDir.relativeTo nbThisDir).string
 
   # templates are in nbSrcDir
   nbDoc.templateDirs = @[nbSrcDir.string]
