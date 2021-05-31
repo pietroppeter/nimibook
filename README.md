@@ -1,60 +1,50 @@
 # nimibook
 
-A port of [mdbook](https://rust-lang.github.io/mdBook/index.html)
-to [nim](https://nim-lang.org/),
-powered by [nimib](https://pietroppeter.github.io/nimib/).
+**nimibook** is a port of [mdbook] to [Nim], powered by [nimib].
+It is a young Nim library to create books starting from nimib documents or Markdown files.
+An example book is [nimibook documentation][nimibook] itself.
 
-Currently a PoC with minimal functionality hacked together to support [sciNim/getting-started](https://github.com/SciNim/getting-started).
+[mdBook] is a command line tool and Rust crate to create books
+using Markdown (as by the CommonMark specification) files.
+It's very similar to [Gitbook], which is a command line tool (and Node.js library)
+for building beautiful books using GitHub/Git and Markdown (or AsciiDoc).
 
-# Usage
+[nimib] is a Nim library to convert your Nim code and its outputs to html documents.
+The html output can be easily customized thanks to [nim-mustache],
+and this is what allows it to use it to build nimibook.
 
-* 1) Write your content using [nimib](https://pietroppeter.github.io/nimib/) in the ``book`` folder.
+The Markdown dialect supported by both nimib and nimibook is the subset of [Github Flavored Markdown][GFM]
+provided by [nim-markdown]. For a quick reference of supported syntax see the [cheatsheet].
 
-* 2) Use the Toc DSL to link chapters to Nim file in ``genbook.nim``.
+### Status
 
-* 3) Generate your books in the ``docs`` folder using ``nimble genbook``.
+nimibook currently provides minimal functionality to create a book, notably missing is
+a command line interface to automate common task (e.g. initialization of a new nimibook).
 
-<!-- index.hbs adapted from mdbook to mustache
-required fields:
-- language
-- default_theme
-- description
-- path_to_root
-- preferred_dark_theme
-- theme_option (light, rust, coal, navy, ayu)
-- book_title
-optional stuff:
-- is_print
-- base_url
-- favicon_svg/favicon_png
-- print_enable
-- additional_css
-- mathjax_support
-- search_enable
-- git_repository_url (git_repository_icon)
-- git_repository_edit_url
-- previous (link)
-- next (link)
-- livereload
-- google_analytics
-- playground_line_numbers
-- playground_copyable
-- playground_js
-- search_js
-- additional_js
-partials:
-- head
-- header
-- toc
-assets required:
-- css/variables.css
-- css/general.css
-- css/chrome.css
-- FontAwesome/css/font-awesome.css
-- highlight.css
-- tomorrow-night.css
-- ayu-highlight.css
-- clipboard.min.js
-- highlight.js
-- book.js
+## Installation
+
+To be able to use nimibook, currently the only way is to recreate the same content of the repository
+and adjust it to your content. You can do that using the template feature from github
+or with a checkout of the repo and copying and pasting.
+
+Discussion of further options is ongoing in [issue #12](https://github.com/pietroppeter/nimibook/issues/12).
+
+## Usage
+
+1. Write your content using [nimib] or simple markdown files in the ``book`` folder.
+2. Use the Toc DSL to link chapters to content in ``genbook.nim``.
+3. Generate your books in the ``docs`` folder using ``nimble genbook``.
+
+<!--refs-->
+[mdbook]: https://rust-lang.github.io/mdBook/index.html
+[Nim]: https://nim-lang.org/
+[nimib]: https://pietroppeter.github.io/nimib/
+[Gitbook]: https://github.com/GitbookIO/gitbook
+[nim-mustache]: https://github.com/soasme/nim-mustache
+[nimibook]: https://pietroppeter.github.io/nimibook/
+[GFM]: https://github.github.com/gfm/
+[nim-markdown]: https://github.com/soasme/nim-markdown
+
+<!--SKIP
+All content before this sign is replicated in the Introduction chapter of nimibook documentation
 -->

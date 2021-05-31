@@ -14,10 +14,13 @@ requires "nimib >= 0.1.2"
 requires "jsony >= 1.0.1"
 
 import os
-task genbook, "genbook":
+task genbook, "build book":
   selfExec(" r -d:release genbook.nim")
 
-task cleanbook, "cleanbook":
+task dumptoc, "dump toc.json":
+  selfExec(" r -d:release -d:dumpToc genbook.nim")
+
+task cleanbook, "remove all files created during build":
   # todo: it should remove all files and directories not tracked in git from docs
   for file in walkDirRec("docs"):
     if file.endsWith(".html"):

@@ -1,21 +1,10 @@
-import nimibook, os
+import nimibook, os # os is used inside Toc DSL
 
-let toc = newToc("Example", "book"):
-  entry("Introduction", "index")
-  entry("Pure Markdown", "pure.md")
-  # .nim extension is optionnal but you can add it if you want to
-  section("Basics", "basics/index.nim"):
-    section("Plotting", "plotting.nim"):
-      entry("Data Manipulation", "data_manipulation")
-    entry("Models", "models")
-  draft("Contributors", "misc/but/very/far/contributors")
+let toc = newToc("nimibook", "book"):
+  section("Introduction", "index"): # .nim extension is optional
+    entry("Content", "content")
+    entry("Toc DSL", "tocdsl")
+    draft("Configuration", "configuration.md")
+    entry("Tasks", "tasks")
 
-when defined(printToc):
-  import print
-  print toc
-elif defined(dumpToc):
-  dump toc
-elif defined(cleanToc):
-  clean toc
-else:
-  publish toc
+nbBookTasks

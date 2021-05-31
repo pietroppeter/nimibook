@@ -1,10 +1,13 @@
-include nimibook / prelude
-nbText: """# Introduction
+import nimib, nimibook
+import strutils
+nbInit
+nbUseNimibook # overrides nimib defaults with nimibooks and loads book configuration
 
-I should say something very wise about this book.
+proc readFileUntil(filename: string, text: string): string =
+  for line in filename.lines:
+    if line.startsWith(text):
+      return result
+    result &= line & '\n'
 
-Instead I will just post some nim code:
-"""
-nbCode:
-  echo "hello mdbook!"
+nbText: "../README.md".readFileUntil("<!--SKIP")
 nbSave
