@@ -12,6 +12,7 @@ for building beautiful books using GitHub/Git and Markdown (or AsciiDoc).
 [nimib] is a Nim library to convert your Nim code and its outputs to html documents.
 The html output can be easily customized thanks to [nim-mustache],
 and this is what allows it to use it to build nimibook.
+_nimib documents_ are normal nim files which use nimib library to produce an output document.
 
 The Markdown dialect supported by both nimib and nimibook is the subset of [Github Flavored Markdown][GFM]
 provided by [nim-markdown]. For a quick reference of supported syntax see the [cheatsheet].
