@@ -4,7 +4,7 @@ var book = newBookFromToc("nimibook", "book"):
   section("Introduction", "index"): # .nim extension is optional
     entry("Content", "content")
     entry("Toc DSL", "tocdsl")
-    draft("Configuration", "configuration.md")
+    entry("Configuration", "configuration")
     entry("Tasks", "tasks")
   section("Example toc structure", "tocexample/index.md"):
     section("Nested section", "nested.md"):

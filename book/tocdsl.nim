@@ -12,7 +12,7 @@ Here is an example on how it looks like
 ```nim
 import nimibook, os # os is used inside Toc DSL
 
-let toc = newToc("Example", "book"):
+let book = newBookFromToc("Example book", "book"):
   entry("Introduction", "index") # .nim extension is optional
   entry("Pure Markdown", "pure.md") # for md files you need to use extension
   # every entry in this section will have a path relative to basics
