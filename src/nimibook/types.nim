@@ -1,4 +1,5 @@
 import tables
+export tables
 
 type
   Entry* = object

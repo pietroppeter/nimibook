@@ -1,5 +1,5 @@
 import std / [os, strutils]
-import nimibook / [types, tocs, defaults]
+import nimibook / [types, books, docs]
 import nimib
 
 proc nimPublish*(entry: Entry) =

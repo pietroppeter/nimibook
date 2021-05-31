@@ -1,6 +1,5 @@
-import std / [os, strutils, strformat]
-import jsony
-import nimibook / [types, entries]
+import std / [os, strformat]
+import nimibook / [types, defaults, paths]
 
 proc inc(levels: var seq[int]) =
   levels[levels.high] = levels[levels.high] + 1
@@ -12,20 +11,9 @@ proc add(toc: var Toc, entry: Entry) =
     raise newException(IOError, fmt"Error entry {fullpath} doesn't exist.")
   toc.entries.add entry
 
-proc joinPath(parts: seq[string], tail: string): string =
-  var parts = parts
-  parts.add tail
-  normalizedPath(joinPath(parts))
-
-proc formatFileName(inputs: tuple[dir: string, name: string, ext: string]): string =
-  result = inputs.name
-  if inputs.ext.isEmptyOrWhitespace():
-    result &= ".nim"
-  else:
-    result &= inputs.ext
-
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
   var book = Book(book_title: booklabel)
+  book.setDefaults
 
   var toc = Toc(path: rootfolder)
   var levels: seq[int] = @[1]
@@ -62,20 +50,3 @@ template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): 
   body
   book.toc = toc
   book
-
-proc dump*(book: Book) =
-  let uri = normalizedPath(book.toc.path / "book.json")
-  writeFile(uri, book.toJson)
-
-proc clean*(book: Book) =
-  let uri = normalizedPath(book.toc.path / "book.json")
-  removeFile(uri)
-
-proc load*(path: string): Book =
-  let uri = normalizedPath(path)
-  readFile(uri).fromJson(Book)
-
-proc check*(book: Book) =
-  for entry in book.toc.entries:
-    entry.check()
-  echo "Check toc => OK"

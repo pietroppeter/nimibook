@@ -7,4 +7,5 @@ var book = newBookFromToc("nimibook", "book"):
     draft("Configuration", "configuration.md")
     entry("Tasks", "tasks")
 
+book.git_repository_url = "https://github.com/pietroppeter/nimibook"
 nbBookTasks
