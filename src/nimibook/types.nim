@@ -8,7 +8,6 @@ type
     isNumbered*: bool
     isActive*: bool
   Toc* = object
-    title*: string # remove?
     path*: string
     entries*: seq[Entry]
   Book* = object

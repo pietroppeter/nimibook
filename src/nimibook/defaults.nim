@@ -31,12 +31,12 @@ proc useNimibook*(nbDoc: var NbDoc) =
   nbDoc.context["git_repository_url"] = "https://github.com/pietroppeter/nimibook"
   nbDoc.context["git_repository_icon"] = "fa-github"
 
-  let tocPath = "../book/toc.json"
-  if not tocPath.fileExists:
+  let bookPath = "../book/book.json"
+  if not bookPath.fileExists:
     withDir("..".AbsoluteDir): # todo: add a withDir for RelativeDir in nimib /paths
-      discard execShellCmd("nimble dumptoc")
-  var toc = load(tocPath)
-  for entry in toc.entries.mitems:
+      discard execShellCmd("nimble dumpbook")
+  var book = load(bookPath)
+  for entry in book.toc.entries.mitems:
     if entry.url == nbDoc.filename.replace('\\', '/'): # replace needed for windows
       entry.isActive = true
-  nbDoc.partials["toc"] = render toc
+  nbDoc.partials["toc"] = render book.toc

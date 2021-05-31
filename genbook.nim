@@ -1,6 +1,6 @@
 import nimibook, os # os is used inside Toc DSL
 
-let toc = newToc("nimibook", "book"):
+var book = newBookFromToc("nimibook", "book"):
   section("Introduction", "index"): # .nim extension is optional
     entry("Content", "content")
     entry("Toc DSL", "tocdsl")

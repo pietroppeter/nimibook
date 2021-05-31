@@ -17,8 +17,8 @@ import os
 task genbook, "build book":
   selfExec(" r -d:release genbook.nim")
 
-task dumptoc, "dump toc.json":
-  selfExec(" r -d:release -d:dumpToc genbook.nim")
+task dumpbook, "dump book.json":
+  selfExec(" r -d:release -d:dumpBook genbook.nim")
 
 task cleanbook, "remove all files created during build":
   # todo: it should remove all files and directories not tracked in git from docs
@@ -26,7 +26,7 @@ task cleanbook, "remove all files created during build":
     if file.endsWith(".html"):
       rmFile(file)
       echo "removed ", file
-  for file in ["book/toc.json"]: # hardcoded files to remove (one for now)
+  for file in ["book/book.json"]: # hardcoded files to remove (one for now)
     if fileExists(file):
       rmFile(file)
       echo "removed ", file

@@ -5,12 +5,12 @@ template nbUseNimibook* =
   nbDoc.useNimibook
 
 template nbBookTasks* =
-  when defined(printToc):
+  when defined(printBook):
     import print
-    print toc
-  elif defined(dumpToc):
-    dump toc
-  elif defined(cleanToc):
-    clean toc
+    print book
+  elif defined(dumpBook):
+    dump book
+  elif defined(cleanBook):
+    clean book
   else:
-    publish toc
+    publish book

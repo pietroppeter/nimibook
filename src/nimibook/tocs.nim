@@ -24,8 +24,10 @@ proc formatFileName(inputs: tuple[dir: string, name: string, ext: string]): stri
   else:
     result &= inputs.ext
 
-template newToc*(booklabel: string, rootfolder: string, body: untyped): Toc =
-  var toc = Toc(title: booklabel, path: rootfolder)
+template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
+  var book = Book(book_title: booklabel)
+
+  var toc = Toc(path: rootfolder)
   var levels: seq[int] = @[1]
   var folders: seq[string] = @[rootfolder]
 
@@ -58,21 +60,22 @@ template newToc*(booklabel: string, rootfolder: string, body: untyped): Toc =
     inc levels
 
   body
-  toc
+  book.toc = toc
+  book
 
-proc dump*(toc: Toc) =
-  let uri = normalizedPath(toc.path / "toc.json")
-  writeFile(uri, toc.toJson)
+proc dump*(book: Book) =
+  let uri = normalizedPath(book.toc.path / "book.json")
+  writeFile(uri, book.toJson)
 
-proc clean*(toc: Toc) =
-  let uri = normalizedPath(toc.path / "toc.json")
+proc clean*(book: Book) =
+  let uri = normalizedPath(book.toc.path / "book.json")
   removeFile(uri)
 
-proc load*(path: string): Toc =
+proc load*(path: string): Book =
   let uri = normalizedPath(path)
-  readFile(uri).fromJson(Toc)
+  readFile(uri).fromJson(Book)
 
-proc check*(toc: Toc) =
-  for entry in toc.entries:
+proc check*(book: Book) =
+  for entry in book.toc.entries:
     entry.check()
   echo "Check toc => OK"
