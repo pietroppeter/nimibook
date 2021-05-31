@@ -1,7 +1,8 @@
 # nimibook
 
 **nimibook** is a port of [mdbook] to [Nim], powered by [nimib].
-It is a young Nim library to create books starting from nimib documents or Markdown files.
+Nimibook allows to create a nice looking book from nim code and markdown,
+making sure that nim code is running correctly and being able to incorporate code outputs in the final book.
 An example book is [nimibook documentation][nimibook] itself.
 
 [mdBook] is a command line tool and Rust crate to create books
