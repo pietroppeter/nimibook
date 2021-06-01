@@ -27,7 +27,7 @@ template initBook(rootfolder: string) =
       # debugEcho "copyFile(", file, ", ", mustacheTarget, ") "
       copyFile(file, mustacheTarget / name)
 
-  if dirExists(assetsTarget):
+  if not dirExists(assetsTarget):
     # debugEcho "==> copyDir(", src, ", ", target, ")"
     copyDir(assetsSrc, assetsTarget)
 
