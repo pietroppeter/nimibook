@@ -14,27 +14,22 @@ proc add(toc: var Toc, entry: Entry) =
 
 template initBook(rootfolder: string) =
   let
-    src = currentSourcePath().parentDir() / "assets"
-    target = getProjectPath() / "docs" / "assets"
+    assetsSrc = currentSourcePath().parentDir() / "assets"
+    assetsTarget = getProjectPath() / "docs" / "assets"
 
-    booktarget = getProjectPath() / rootfolder
-    mustachesrc = currentSourcePath().parentDir() / "mustache"
+    mustacheSrc = currentSourcePath().parentDir() / "mustache"
+    mustacheTarget = getProjectPath() / rootfolder
 
-  echo ">>> ", target
-  echo ">>> ", booktarget
-
-  for file in walkFiles(mustachesrc / "*.mustache"):
+  for file in walkFiles(mustacheSrc / "*.mustache"):
     let name = file.splitPath().tail
     # Copy default mustache file
-    if not fileExists(booktarget / name):
-      # debugEcho "copyFile(", file, ", ", booktarget, ") "
-      copyFile(file, booktarget / name)
+    if not fileExists(mustacheTarget / name):
+      # debugEcho "copyFile(", file, ", ", mustacheTarget, ") "
+      copyFile(file, mustacheTarget / name)
 
-  # debugEcho "==> copyDir(", src, ", ", target, ")"
-  if dirExists(target):
-    removeDir(target)
-  createDir(target)
-  copyDir(src, target)
+  if dirExists(assetsTarget):
+    # debugEcho "==> copyDir(", src, ", ", target, ")"
+    copyDir(assetsSrc, assetsTarget)
 
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
   initBook(rootfolder)
