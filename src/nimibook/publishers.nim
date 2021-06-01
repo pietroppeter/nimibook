@@ -5,7 +5,7 @@ import nimib
 proc nimPublish*(entry: Entry) =
   let
     cmd = "nim"
-    args = ["r", "-d:release", entry.path]
+    args = ["r", "-d:release", "-f", entry.path]
   debugEcho "[Executing] ", cmd, " ", args.join(" ")
   if execShellCmd(cmd & " " & args.join(" ")) != 0:
     quit(1)
@@ -29,8 +29,8 @@ proc publish*(entry: Entry) =
     raise newException(IOError, "Error invalid file extension.")
 
 proc publish*(book: Book) =
-  dump book
+  # dump book
   for entry in book.toc.entries:
     entry.publish()
-  clean book
+  # clean book
   check book
