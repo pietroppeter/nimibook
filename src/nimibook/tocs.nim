@@ -6,15 +6,26 @@ proc inc(levels: var seq[int]) =
 
 proc add(toc: var Toc, entry: Entry) =
   let fullPath = entry.path
-  # debugEcho "==> toc.add Entry <==\n    fullPath>", fullPath
+  debugEcho "==> toc.add Entry <==\n    fullPath>", fullPath
   if not fileExists(fullPath):
     raise newException(IOError, fmt"Error entry {fullpath} doesn't exist.")
   toc.entries.add entry
 
-template initBook*() =
+template initBook(rootfolder: string) =
   let
     src = currentSourcePath().parentDir() / "assets"
     target = getProjectPath() / "docs" / "assets"
+
+    booktarget = getProjectPath() / rootfolder
+    mustachesrc = currentSourcePath().parentDir() / "mustache"
+
+  for file in walkFiles(mustachesrc / "*.mustache"):
+    let name = file.splitPath().tail
+    # Copy default mustache file
+    if not fileExists(booktarget / name):
+      debugEcho "copyFile(", file, ", ", booktarget, ") "
+      copyFile(file, booktarget / name)
+
   # debugEcho "==> copyDir(", src, ", ", target, ")"
   if dirExists(target):
     removeDir(target)
@@ -22,6 +33,7 @@ template initBook*() =
   copyDir(src, target)
 
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
+  initBook(rootfolder)
   var book = Book(book_title: booklabel)
   book.setDefaults
   var toc = Toc(path: rootfolder)
@@ -29,12 +41,8 @@ template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): 
   var folders: seq[string] = @[rootfolder]
 
   template entry(label, rfile: string, numbered = true) =
-    # debugEcho "==> entry <=="
-    # debugEcho "    file>", rfile
     let inputs = rfile.splitFile
     let file = inputs.dir / formatFileName(inputs)
-    # debugEcho "    inputs>", inputs
-    # debugEcho "    file>", file
     toc.add Entry(title: label, path: joinPath(folders, file).normalizedPath(), levels: levels, isNumbered: numbered)
     if numbered:
       inc levels
@@ -47,9 +55,6 @@ template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): 
     let file = formatFileName(inputs)
     folders.add curfolder
     toc.add Entry(title: label, path: joinPath(folders, file).normalizedPath(), levels: levels, isNumbered: true)
-    # debugEcho "==> section <=="
-    # debugEcho "    file>", file
-    # debugEcho "    folders>", folders
     levels.add 1
     sectionBody
     discard pop levels

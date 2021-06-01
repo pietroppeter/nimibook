@@ -11,6 +11,11 @@ proc useNimibook*(nbDoc: var NbDoc) =
     nbHomeDir: AbsoluteDir = findNimbleDir(nbThisDir) / "docs".RelativeDir
     nbSrcDir = nbHomeDir / RelativeDir(".." / "book")
 
+  echo "-------------------------------"
+  echo "##", nbHomeDir
+  echo "##", nbSrcDir
+  echo "-------------------------------"
+
   # are these two actually needed? well, home_path is needed in path_to_root, but other than that?
   nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string
   nbDoc.context["home_path"] = (nbSrcDir.relativeTo nbThisDir).string

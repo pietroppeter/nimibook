@@ -1,7 +1,5 @@
 import nimibook, os # os is used inside Toc DSL
 
-initBook
-
 var book = newBookFromToc("nimibook", "book"):
   section("Introduction", "index"): # .nim extension is optional
     entry("Content", "content")
