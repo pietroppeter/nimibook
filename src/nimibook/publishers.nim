@@ -1,5 +1,5 @@
 import std / [os, strutils]
-import nimibook / [types, tocs, defaults]
+import nimibook / [types, books, docs]
 import nimib
 
 proc nimPublish*(entry: Entry) =
@@ -28,9 +28,9 @@ proc publish*(entry: Entry) =
   else:
     raise newException(IOError, "Error invalid file extension.")
 
-proc publish*(toc: Toc) =
-  dump toc
-  for entry in toc.entries:
+proc publish*(book: Book) =
+  dump book
+  for entry in book.toc.entries:
     entry.publish()
-  clean toc
-  check(toc)
+  clean book
+  check book
