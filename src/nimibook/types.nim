@@ -1,4 +1,4 @@
-import tables
+import std / tables
 export tables
 
 type
@@ -22,7 +22,7 @@ type
     #
     # required fields (in the sense the mustache template will work bad if they are not present):
     book_title*: string ## Title of the book as specified in `newBookFromToc`
-    # chapter_title: not needed? 
+    # chapter_title: not needed?
     title*: string # title of the page (what appears in browser tab); default in mdbook is "<chapter_title> - <book_title>" where chapter_title comes from toc
     language*: string ## The main language of the book, which is used as a language attribute `<html lang="en">` for example (defaults to en)
     description*: string ## A description for the book, which is added as meta information in the html <head> of each page
@@ -76,4 +76,4 @@ list of assets required as mentioned directly in document.mustache (other assets
 - highlight.js
 - book.js
 
-]# 
+]#

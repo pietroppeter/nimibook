@@ -1,5 +1,5 @@
 import std / os
-import nimibook /  [types, entries]
+import nimibook / [types, entries]
 import jsony
 
 # fix for jsony: quote in string. https://github.com/treeform/jsony/issues/14

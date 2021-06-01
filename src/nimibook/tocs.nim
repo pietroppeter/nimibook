@@ -1,4 +1,4 @@
-import std / [os, strformat]
+import std / [os, strformat, macros]
 import nimibook / [types, defaults, paths]
 
 proc inc(levels: var seq[int]) =
@@ -11,7 +11,18 @@ proc add(toc: var Toc, entry: Entry) =
     raise newException(IOError, fmt"Error entry {fullpath} doesn't exist.")
   toc.entries.add entry
 
+template initBook() =
+  let
+    src = currentSourcePath().parentDir() / "assets"
+    target = getCurrentDir() / "docs" / "assets"
+  debugEcho "==> copyDir(", src, ", ", target, ")"
+  if dirExists(target):
+    removeDir(target)
+  createDir(target)
+  copyDir(src, target)
+
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
+  initBook()
   var book = Book(book_title: booklabel)
   book.setDefaults
 
@@ -19,7 +30,7 @@ template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): 
   var levels: seq[int] = @[1]
   var folders: seq[string] = @[rootfolder]
 
-  template entry(label, rfile: string, numbered=true) =
+  template entry(label, rfile: string, numbered = true) =
     # debugEcho "==> entry <=="
     # debugEcho "    file>", rfile
     let inputs = rfile.splitFile
@@ -30,7 +41,7 @@ template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): 
     if numbered:
       inc levels
 
-  template draft(label, rfile: string) = entry(label, rfile, numbered=false)
+  template draft(label, rfile: string) = entry(label, rfile, numbered = false)
 
   template section(label, rfile: string, sectionBody: untyped) =
     let inputs = rfile.splitFile
