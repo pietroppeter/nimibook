@@ -31,5 +31,6 @@ proc publish*(entry: Entry) =
 proc publish*(book: Book) =
   for entry in book.toc.entries:
     entry.publish()
+  # TODO : For debug only remove before merge
   # clean book
   check book

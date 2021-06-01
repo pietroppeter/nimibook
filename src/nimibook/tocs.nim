@@ -4,6 +4,7 @@ import nimibook / [types, defaults, paths]
 proc inc(levels: var seq[int]) =
   levels[levels.high] = levels[levels.high] + 1
 
+# TODO comment debugEcho before merge
 proc add(toc: var Toc, entry: Entry) =
   let fullPath = entry.path
   debugEcho "==> toc.add Entry <==\n    fullPath>", fullPath
@@ -23,7 +24,7 @@ template initBook(rootfolder: string) =
     let name = file.splitPath().tail
     # Copy default mustache file
     if not fileExists(booktarget / name):
-      debugEcho "copyFile(", file, ", ", booktarget, ") "
+      # debugEcho "copyFile(", file, ", ", booktarget, ") "
       copyFile(file, booktarget / name)
 
   # debugEcho "==> copyDir(", src, ", ", target, ")"
