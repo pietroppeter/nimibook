@@ -20,6 +20,9 @@ template initBook(rootfolder: string) =
     booktarget = getProjectPath() / rootfolder
     mustachesrc = currentSourcePath().parentDir() / "mustache"
 
+  echo ">>> ", target
+  echo ">>> ", booktarget
+
   for file in walkFiles(mustachesrc / "*.mustache"):
     let name = file.splitPath().tail
     # Copy default mustache file
@@ -35,6 +38,10 @@ template initBook(rootfolder: string) =
 
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
   initBook(rootfolder)
+  static:
+    let path_to_rootfolder = getProjectPath() / rootfolder
+    putEnv("nimibook_path_to_rootfolder", path_to_rootfolder)
+
   var book = Book(book_title: booklabel)
   book.setDefaults
   var toc = Toc(path: rootfolder)

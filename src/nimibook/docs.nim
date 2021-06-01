@@ -7,9 +7,16 @@ proc useNimibook*(nbDoc: var NbDoc) =
   let
     nbThisFile = changeFileExt(nbDoc.filename.AbsoluteFile, ".nim")
     thisTuple = nbThisFile.splitFile
-    nbThisDir: AbsoluteDir = thisTuple.dir
-    nbHomeDir: AbsoluteDir = findNimbleDir(nbThisDir) / "docs".RelativeDir
-    nbSrcDir = nbHomeDir / RelativeDir(".." / "book")
+    pathToRootFolder = getEnv("nimibook_path_to_rootfolder")
+    nbThisDir: AbsoluteDir = pathToRootFolder.toAbsoluteDir
+    nbHomeDir: AbsoluteDir = nbThisDir / RelativeDir("..") / "docs".RelativeDir
+    nbSrcDir = nbThisDir
+
+# TODO comment debugEcho before merge
+  debugecho "-------------------------------"
+  debugecho nbThisDir
+  debugecho nbSrcDir
+  debugecho "-------------------------------"
 
   # Are these two actually needed? well, home_path is needed in path_to_root, but other than that?
   nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string
@@ -24,10 +31,10 @@ proc useNimibook*(nbDoc: var NbDoc) =
   nbDoc.templateDirs = @[nbSrcDir.string]
   nbDoc.context["title"] = nbDoc.context["here_path"]
 
+  # Use nbSrcDir instead another relative path
+  let bookPath = nbSrcDir.string / "book.json"
   # load book object
-  var book : Book
-  let bookPath = "../book/book.json"
-  book = load(bookPath)
+  var book = load(bookPath)
 
   # book configuration
   nbDoc.context["language"] = book.language
