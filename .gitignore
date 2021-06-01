@@ -1,7 +1,2 @@
-# !docs/.gitignore
-# !docs/css
-# !docs/FontAwesome
-# !docs/fonts
-# !docs/js
 docs/
 book/book.json

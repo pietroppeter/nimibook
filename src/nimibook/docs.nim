@@ -20,17 +20,14 @@ proc useNimibook*(nbDoc: var NbDoc) =
   # debugEcho "Current directory: ", getCurrentDir()
   # debugEcho "Output file: ", nbDoc.filename
 
-
   # templates are in nbSrcDir
   nbDoc.templateDirs = @[nbSrcDir.string]
   nbDoc.context["title"] = nbDoc.context["here_path"]
 
   # load book object
+  var book : Book
   let bookPath = "../book/book.json"
-  if not bookPath.fileExists:
-    withDir("..".AbsoluteDir): # todo: add a withDir for RelativeDir in nimib /paths
-      discard execShellCmd("nimble dumpbook")
-  var book = load(bookPath)
+  book = load(bookPath)
 
   # book configuration
   nbDoc.context["language"] = book.language

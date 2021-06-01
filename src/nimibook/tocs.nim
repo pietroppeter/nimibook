@@ -11,21 +11,19 @@ proc add(toc: var Toc, entry: Entry) =
     raise newException(IOError, fmt"Error entry {fullpath} doesn't exist.")
   toc.entries.add entry
 
-template initBook() =
+template initBook*() =
   let
     src = currentSourcePath().parentDir() / "assets"
-    target = getCurrentDir() / "docs" / "assets"
-  debugEcho "==> copyDir(", src, ", ", target, ")"
+    target = getProjectPath() / "docs" / "assets"
+  # debugEcho "==> copyDir(", src, ", ", target, ")"
   if dirExists(target):
     removeDir(target)
   createDir(target)
   copyDir(src, target)
 
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
-  initBook()
   var book = Book(book_title: booklabel)
   book.setDefaults
-
   var toc = Toc(path: rootfolder)
   var levels: seq[int] = @[1]
   var folders: seq[string] = @[rootfolder]
@@ -60,4 +58,6 @@ template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): 
 
   body
   book.toc = toc
+  # Dump json here so we avoid having to use Nimble in use Nimibook
+  dump(book)
   book
