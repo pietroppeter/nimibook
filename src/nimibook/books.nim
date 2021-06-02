@@ -59,7 +59,7 @@ proc dump*(book: Book) =
 
 proc clean*(book: Book) =
   let uri = normalizedPath(book.toc.path / "book.json")
-  # removeFile(uri)
+  removeFile(uri)
 
 proc load*(path: string): Book =
   let uri = normalizedPath(path)
