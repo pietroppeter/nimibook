@@ -34,9 +34,7 @@ template initBook(rootfolder: string) =
 
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
   initBook(rootfolder)
-  static:
-    let path_to_rootfolder = getProjectPath() / rootfolder
-    putEnv("nimibook_path_to_rootfolder", path_to_rootfolder)
+  putEnv("nimibook_rootfolder", rootfolder)
 
   var book = Book(book_title: booklabel)
   book.setDefaults

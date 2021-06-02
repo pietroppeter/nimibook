@@ -52,11 +52,8 @@ proc dumpHook*(s: var string, v: string) =
 
 proc dump*(book: Book) =
   var book = book
-  let pathToRootFolder = relativePath(
-    getEnv("nimibook_path_to_rootfolder"),
-    getCurrentDir()
-  )
-  book.path_to_root = pathToRootFolder
+  let rootFolder = getEnv("nimibook_rootfolder")
+  book.path_to_root = rootFolder
   let uri = normalizedPath(book.toc.path / "book.json")
   writeFile(uri, book.toJson)
 

@@ -7,14 +7,14 @@ proc useNimibook*(nbDoc: var NbDoc) =
   let
     nbThisFile = changeFileExt(nbDoc.filename.AbsoluteFile, ".nim")
     thisTuple = nbThisFile.splitFile
-    pathToRootFolder = getEnv("nimibook_path_to_rootfolder")
+    # Use non-compile time value; this means it is dependent upon where the binary is called from instead of where it gets compiled
+    pathToRootFolder = getCurrentDir() / getEnv("nimibook_path_to_rootfolder")
     nbThisDir: AbsoluteDir = pathToRootFolder.toAbsoluteDir
     nbHomeDir: AbsoluteDir = nbThisDir / RelativeDir("..") / "docs".RelativeDir
     nbSrcDir = nbThisDir
 
 # TODO comment debugEcho before merge
   debugEcho "-------------------------------"
-  debugEcho ">> ", pathToRootFolder
   debugEcho ">> ", nbThisDir
   debugEcho ">> ", nbSrcDir
   debugEcho "-------------------------------"
