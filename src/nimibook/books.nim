@@ -51,12 +51,18 @@ proc dumpHook*(s: var string, v: string) =
     s.setLen(at)
 
 proc dump*(book: Book) =
+  var book = book
+  let pathToRootFolder = relativePath(
+    getEnv("nimibook_path_to_rootfolder"),
+    getCurrentDir()
+  )
+  book.path_to_root = pathToRootFolder
   let uri = normalizedPath(book.toc.path / "book.json")
   writeFile(uri, book.toJson)
 
 proc clean*(book: Book) =
   let uri = normalizedPath(book.toc.path / "book.json")
-  removeFile(uri)
+  # removeFile(uri)
 
 proc load*(path: string): Book =
   let uri = normalizedPath(path)

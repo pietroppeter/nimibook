@@ -13,10 +13,11 @@ proc useNimibook*(nbDoc: var NbDoc) =
     nbSrcDir = nbThisDir
 
 # TODO comment debugEcho before merge
-  debugecho "-------------------------------"
-  debugecho nbThisDir
-  debugecho nbSrcDir
-  debugecho "-------------------------------"
+  debugEcho "-------------------------------"
+  debugEcho ">> ", pathToRootFolder
+  debugEcho ">> ", nbThisDir
+  debugEcho ">> ", nbSrcDir
+  debugEcho "-------------------------------"
 
   # Are these two actually needed? well, home_path is needed in path_to_root, but other than that?
   nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string
