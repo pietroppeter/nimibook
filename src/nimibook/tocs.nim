@@ -14,10 +14,11 @@ proc add(toc: var Toc, entry: Entry) =
 
 template initBook(rootfolder: string) =
   let
-    assetsSrc = currentSourcePath().parentDir() / "assets"
+    baseRessources = currentSourcePath().parentDir() / "ressources"
+    assetsSrc =  baseRessources / "assets"
     assetsTarget = getProjectPath() / "docs" / "assets"
 
-    mustacheSrc = currentSourcePath().parentDir() / "mustache"
+    mustacheSrc = baseRessources / "template"
     mustacheTarget = getProjectPath() / rootfolder
 
   for file in walkFiles(mustacheSrc / "*.mustache"):
