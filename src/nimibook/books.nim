@@ -75,7 +75,7 @@ proc cleanRootFolder(book: Book) =
   for f in walkDirRec(book.toc.path):
     let ext = f.splitFile().ext
     if f notin srcurls and ext != ".mustache" and ext != ".nims" and ext != ".cfg" and not f.contains(".git"):
-      # debugEcho(">> removeFile ", f)
+      # debugEcho("    >> removeFile ", f)
       removeFile(f)
 
 proc shouldDelete(book: Book, dir, f: string) : bool =
@@ -96,17 +96,18 @@ proc shouldDelete(book: Book, dir, f: string) : bool =
   return true
 
 proc cleanDocFolder(book: Book) =
-  let docDir = getEnv("nimibook_rootfolder") / ".." / "docs"
+  # Since getCurrentDir() is used it assumes that the binary is called from the rootfolder
+  let docDir = "docs"
   # debugEcho("walkDirRec ", docDir)
   for f in walkDirRec(docDir):
     if shouldDelete(book, docDir, f):
-      # debugEcho(">> removeFile ", f)
+      # debugEcho("    >> removeFile ", f)
       removeFile(f)
 
   for f in walkDirRec(docDir, yieldFilter={pcDir}):
     # Remove leftover folders
     if shouldDelete(book, docDir, f):
-      # debugEcho(">> removeDir", f)
+      # debugEcho("    >> removeDir", f)
       removeDir(f)
 
 proc clean*(book: Book) =
@@ -125,8 +126,8 @@ proc check*(book: Book) =
 
 proc initBookFile(book: Book) =
   let srcurls = book.files
-  for f in walkDirRec(book.toc.path):
-    if f notin srcurls:
+  for f in srcurls:
+    if not fileExists(f):
       let file = open(f, fmWrite)
       file.close()
 
