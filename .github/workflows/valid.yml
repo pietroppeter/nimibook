@@ -10,6 +10,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: "install_nim"
         id: install_nim
         uses: iffy/install-nim@v3
@@ -18,5 +19,9 @@ jobs:
       - name: Gen Book
         run: nimble genbook
       - name: Gen Book outside repo
-        run: cd examples && nim r examplebook.nim
+        run: nim r examplebook.nim build
+        working-directory: examples
+      - name: Check book outside repo
+        run: nim r examplebook.nim clean
+        working-directory: examples
 
