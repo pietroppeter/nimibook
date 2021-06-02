@@ -71,11 +71,11 @@ proc htmlFiles(book: Book) : seq[string] =
 proc cleanRootFolder(book: Book) =
   # All source files
   let srcurls : seq[string] = book.files
-  debugEcho("walkDirRec ", book.toc.path)
+  # debugEcho("walkDirRec ", book.toc.path)
   for f in walkDirRec(book.toc.path):
     let ext = f.splitFile().ext
     if f notin srcurls and ext != ".mustache" and ext != ".nims" and ext != ".cfg" and not f.contains(".git"):
-      debugEcho(">> removeFile ", f)
+      # debugEcho(">> removeFile ", f)
       removeFile(f)
 
 proc shouldDelete(book: Book, dir, f: string) : bool =
@@ -97,16 +97,16 @@ proc shouldDelete(book: Book, dir, f: string) : bool =
 
 proc cleanDocFolder(book: Book) =
   let docDir = getEnv("nimibook_rootfolder") / ".." / "docs"
-  debugEcho("walkDirRec ", docDir)
+  # debugEcho("walkDirRec ", docDir)
   for f in walkDirRec(docDir):
     if shouldDelete(book, docDir, f):
-      debugEcho(">> removeFile ", f)
+      # debugEcho(">> removeFile ", f)
       removeFile(f)
 
   for f in walkDirRec(docDir, yieldFilter={pcDir}):
     # Remove leftover folders
     if shouldDelete(book, docDir, f):
-      debugEcho(">> removeDir", f)
+      # debugEcho(">> removeDir", f)
       removeDir(f)
 
 proc clean*(book: Book) =
@@ -121,7 +121,7 @@ proc load*(path: string): Book =
 proc check*(book: Book) =
   for entry in book.toc.entries:
     entry.check()
-  debugEcho "Check Book: OK"
+  echo "Check Book: OK"
 
 proc initBookFile(book: Book) =
   let srcurls = book.files

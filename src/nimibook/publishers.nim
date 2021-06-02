@@ -10,7 +10,7 @@ proc nimPublish*(entry: Entry) =
     # So here's a little trick to propagate the info
     # See comment in docs.nim useNimibook() proc
     rootFolder = getEnv("nimibook_rootfolder")
-    args = ["r", "-d:release", "-f", &"-d:rootFolder={rootFolder}", entry.path]
+    args = ["r", "-d:release", "-f", &"-d:rootFolder={rootFolder}", "--verbosity:0", "--hints:off", entry.path]
   debugEcho "[Executing] ", cmd, " ", args.join(" ")
   if execShellCmd(cmd & " " & args.join(" ")) != 0:
     quit(1)
