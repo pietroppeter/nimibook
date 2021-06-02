@@ -1,4 +1,4 @@
-import std / [os, strformat]
+import std / [os, strformat, strutils]
 import nimibook / types
 
 proc url*(e: Entry): string =
