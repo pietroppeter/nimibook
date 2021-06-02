@@ -51,5 +51,7 @@ template nbBookTasks* =
         publish book
       elif p.key == "update":
         update book
+      elif p.key == "dump":
+        dump book
       else:
         printHelp()
