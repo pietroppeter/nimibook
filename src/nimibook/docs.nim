@@ -3,21 +3,34 @@ import nimib, nimib / paths
 import nimibook / [types, books, entries, render]
 
 proc useNimibook*(nbDoc: var NbDoc) =
+  # Between separate process variable env do not gets passed so I use this little trick.
+  # This means :
+  # Nim Files in books are not meant to be compiled indiviually
+  # But you can do so with -d:rootFolder=... option passed manually
+  const rootFolder {.strdefine.} = currentSourcePath()
+  var pathToRootFolder = ""
+  if existsEnv("nimibook_rootfolder"):
+    pathToRootFolder = getEnv("nimibook_rootfolder")
+  else:
+    pathToRootFolder = rootFolder
+
   # path handling (fix upstream in nimib)
   let
     nbThisFile = changeFileExt(nbDoc.filename.AbsoluteFile, ".nim")
     thisTuple = nbThisFile.splitFile
     # Use non-compile time value; this means it is dependent upon where the binary is called from instead of where it gets compiled
-    pathToRootFolder = getCurrentDir() / getEnv("nimibook_path_to_rootfolder")
+
+  let
     nbThisDir: AbsoluteDir = pathToRootFolder.toAbsoluteDir
     nbHomeDir: AbsoluteDir = nbThisDir / RelativeDir("..") / "docs".RelativeDir
     nbSrcDir = nbThisDir
 
 # TODO comment debugEcho before merge
-  debugEcho "-------------------------------"
-  debugEcho ">> ", nbThisDir
-  debugEcho ">> ", nbSrcDir
-  debugEcho "-------------------------------"
+  # debugEcho "-------------------------------"
+  # debugEcho ">> ", pathToRootFolder
+  # debugEcho ">> ", nbThisDir
+  # debugEcho ">> ", nbSrcDir
+  # debugEcho "-------------------------------"
 
   # Are these two actually needed? well, home_path is needed in path_to_root, but other than that?
   nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string

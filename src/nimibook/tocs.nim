@@ -12,7 +12,7 @@ proc add(toc: var Toc, entry: Entry) =
     raise newException(IOError, fmt"Error entry {fullpath} doesn't exist.")
   toc.entries.add entry
 
-template initBook(rootfolder: string) =
+template populateAssets*(rootfolder: string, force: bool = false) =
   let
     baseRessources = currentSourcePath().parentDir() / "ressources"
     assetsSrc =  baseRessources / "assets"
@@ -31,10 +31,14 @@ template initBook(rootfolder: string) =
   if not dirExists(assetsTarget):
     # debugEcho "==> copyDir(", src, ", ", target, ")"
     copyDir(assetsSrc, assetsTarget)
+  else:
+    if force:
+      removeDir(assetsTarget)
+      copyDir(assetsSrc, assetsTarget)
 
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
-  initBook(rootfolder)
-  putEnv("nimibook_rootfolder", rootfolder)
+  populateAssets(rootfolder)
+  putEnv("nimibook_rootfolder", getCurrentDir() / rootfolder)
 
   var book = Book(book_title: booklabel)
   book.setDefaults

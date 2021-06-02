@@ -1,11 +1,16 @@
-import std / [os, strutils]
+import std / [os, strutils, strformat]
 import nimibook / [types, books, docs]
 import nimib
 
 proc nimPublish*(entry: Entry) =
   let
     cmd = "nim"
-    args = ["r", "-d:release", "-f", entry.path]
+    # Apparently when used as a binary this generate a process in another shell
+    # Which means env variable are not going to be available
+    # So here's a little trick to propagate the info
+    # See comment in docs.nim useNimibook() proc
+    rootFolder = getEnv("nimibook_rootfolder")
+    args = ["r", "-d:release", "-f", &"-d:rootFolder={rootFolder}", entry.path]
   debugEcho "[Executing] ", cmd, " ", args.join(" ")
   if execShellCmd(cmd & " " & args.join(" ")) != 0:
     quit(1)
@@ -31,5 +36,5 @@ proc publish*(entry: Entry) =
 proc publish*(book: Book) =
   for entry in book.toc.entries:
     entry.publish()
-  clean book
+  cleanjson book
   check book

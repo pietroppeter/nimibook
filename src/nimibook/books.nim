@@ -1,5 +1,5 @@
-import std / os
-import nimibook / [types, entries]
+import std / [os, sequtils, sugar]
+import nimibook / [types, entries, tocs]
 import jsony
 
 # fix for jsony: quote in string. https://github.com/treeform/jsony/issues/14
@@ -57,9 +57,46 @@ proc dump*(book: Book) =
   let uri = normalizedPath(book.toc.path / "book.json")
   writeFile(uri, book.toJson)
 
-proc clean*(book: Book) =
+proc cleanjson*(book: Book) =
   let uri = normalizedPath(book.toc.path / "book.json")
   removeFile(uri)
+
+proc files(book: Book) : seq[string] =
+  result = collect(newSeq):
+    for p in book.toc.entries: p.path
+
+proc htmlFiles(book: Book) : seq[string] =
+  result = book.toc.entries.map(x => "docs" / url(x))
+
+proc cleanRootFolder(book: Book) =
+  # All source files
+  let srcurls : seq[string] = book.files
+  debugEcho("walkDirRec ", book.toc.path)
+  for f in walkDirRec(book.toc.path):
+    let ext = f.splitFile().ext
+    if f notin srcurls and ext != ".mustache":
+      debugEcho(">> tryRemoveFile ", f)
+      discard tryRemoveFile(f)
+
+proc cleanDocFolder(book: Book) =
+  let docDir = getEnv("nimibook_rootfolder") / ".." / "docs"
+  debugEcho("walkDirRec ", docDir)
+  for f in walkDirRec(docDir):
+    # Remove anything that's not in "docs/assets" or "docs/statis" (for image and shit like that).
+    if not isRelativeTo(f, docDir / "assets") and not isRelativeTo(f, docDir / "static"):
+      debugEcho(">> tryRemoveFile ", f)
+      discard tryRemoveFile(f)
+
+  for f in walkDirRec(docDir, yieldFilter={pcDir}):
+    # Remove anything that's not in "docs/assets" or "docs/statis" (for image and shit like that).
+    if not isRelativeTo(f, docDir / "assets") and not isRelativeTo(f, docDir / "static"):
+      debugEcho(">> removeDir", f)
+      removeDir(f)
+
+proc clean*(book: Book) =
+  cleanjson(book)
+  cleanRootFolder(book)
+  cleanDocFolder(book)
 
 proc load*(path: string): Book =
   let uri = normalizedPath(path)
@@ -68,4 +105,19 @@ proc load*(path: string): Book =
 proc check*(book: Book) =
   for entry in book.toc.entries:
     entry.check()
-  echo "Check toc => OK"
+  debugEcho "Check Book: OK"
+
+proc initBookFile(book: Book) =
+  let srcurls = book.files
+  for f in walkDirRec(book.toc.path):
+    if f notin srcurls:
+      let file = open(f, fmWrite)
+      file.close()
+
+proc init*(book: Book) =
+  populateAssets(book.toc.path, false)
+  initBookFile(book)
+
+proc update*(book: Book) =
+  populateAssets(book.toc.path, true)
+  initBookFile(book)
