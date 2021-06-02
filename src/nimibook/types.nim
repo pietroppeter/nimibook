@@ -34,6 +34,7 @@ type
     git_repository_url*: string ## A url to the git repository for the book. If provided an icon link will be output in the menu bar of the book.
     git_repository_icon*: string ## The FontAwesome icon class to use for the git repository link. Defaults to `fa-github`.
     favicon_escaped*: string ## (new in nimibook) provide your fully custom `<link rel="icon" href="...">. defaults to whale emoji as in nimib.
+    keep*: seq[string]
     # toc object. in mdbook there is a similar `chapters` field but toc is handled differently anyway. not present in document.mustache
     toc*: Toc
 

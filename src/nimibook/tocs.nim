@@ -7,7 +7,7 @@ proc inc(levels: var seq[int]) =
 # TODO comment debugEcho before merge
 proc add(toc: var Toc, entry: Entry) =
   let fullPath = entry.path
-  debugEcho "==> toc.add Entry <==\n    fullPath>", fullPath
+  # debugEcho "==> toc.add Entry <==\n    fullPath>", fullPath
   if not fileExists(fullPath):
     raise newException(IOError, fmt"Error entry {fullpath} doesn't exist.")
   toc.entries.add entry

@@ -1,4 +1,4 @@
-import std / [os, sequtils, sugar]
+import std / [os, strutils, sequtils, sugar]
 import nimibook / [types, entries, tocs]
 import jsony
 
@@ -74,22 +74,38 @@ proc cleanRootFolder(book: Book) =
   debugEcho("walkDirRec ", book.toc.path)
   for f in walkDirRec(book.toc.path):
     let ext = f.splitFile().ext
-    if f notin srcurls and ext != ".mustache":
-      debugEcho(">> tryRemoveFile ", f)
-      discard tryRemoveFile(f)
+    if f notin srcurls and ext != ".mustache" and ext != ".nims" and ext != ".cfg" and not f.contains(".git"):
+      debugEcho(">> removeFile ", f)
+      removeFile(f)
+
+proc shouldDelete(book: Book, dir, f: string) : bool =
+  # Remove anything that's not in "docs/assets" or "docs/statis" (for image and shit like that).
+  if isRelativeTo(f, dir / "assets"):
+    return false
+
+  if f in book.keep:
+    return false
+
+  if f.contains(".git"):
+    return false
+
+  for keep in book.keep:
+    if isRelativeTo(f, dir / keep):
+      return false
+
+  return true
 
 proc cleanDocFolder(book: Book) =
   let docDir = getEnv("nimibook_rootfolder") / ".." / "docs"
   debugEcho("walkDirRec ", docDir)
   for f in walkDirRec(docDir):
-    # Remove anything that's not in "docs/assets" or "docs/statis" (for image and shit like that).
-    if not isRelativeTo(f, docDir / "assets") and not isRelativeTo(f, docDir / "static"):
-      debugEcho(">> tryRemoveFile ", f)
-      discard tryRemoveFile(f)
+    if shouldDelete(book, docDir, f):
+      debugEcho(">> removeFile ", f)
+      removeFile(f)
 
   for f in walkDirRec(docDir, yieldFilter={pcDir}):
-    # Remove anything that's not in "docs/assets" or "docs/statis" (for image and shit like that).
-    if not isRelativeTo(f, docDir / "assets") and not isRelativeTo(f, docDir / "static"):
+    # Remove leftover folders
+    if shouldDelete(book, docDir, f):
       debugEcho(">> removeDir", f)
       removeDir(f)
 
