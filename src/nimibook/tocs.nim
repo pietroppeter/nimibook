@@ -14,7 +14,7 @@ proc add(toc: var Toc, entry: Entry) =
 
 template populateAssets*(rootfolder: string, force: bool = false) =
   let
-    baseRessources = currentSourcePath().parentDir() / "ressources"
+    baseRessources = currentSourcePath().parentDir() / "resources"
     assetsSrc =  baseRessources / "assets"
     assetsTarget = getProjectPath() / "docs" / "assets"
 
@@ -37,8 +37,6 @@ template populateAssets*(rootfolder: string, force: bool = false) =
       copyDir(assetsSrc, assetsTarget)
 
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
-  populateAssets(rootfolder)
-
   var book = Book(book_title: booklabel)
   book.setDefaults
   book.path_to_root = rootfolder
