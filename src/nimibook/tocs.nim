@@ -38,10 +38,12 @@ template populateAssets*(rootfolder: string, force: bool = false) =
 
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
   populateAssets(rootfolder)
-  putEnv("nimibook_rootfolder", getCurrentDir() / rootfolder)
 
   var book = Book(book_title: booklabel)
   book.setDefaults
+  book.path_to_root = rootfolder
+  putEnv("nimibook_rootfolder", getCurrentDir() / rootfolder)
+
   var toc = Toc(path: rootfolder)
   var levels: seq[int] = @[1]
   var folders: seq[string] = @[rootfolder]

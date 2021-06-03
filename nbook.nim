@@ -13,5 +13,4 @@ var book = newBookFromToc("nimibook", "book"):
     draft("Draft chapter", "draft.md")
 
 book.git_repository_url = "https://github.com/pietroppeter/nimibook"
-book.keep = @["tocexample"]
 nbBookTasks

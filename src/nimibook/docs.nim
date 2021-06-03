@@ -8,7 +8,7 @@ proc useNimibook*(nbDoc: var NbDoc) =
   # Nim Files in books are not meant to be compiled indiviually
   # But you can do so with -d:rootFolder=... option passed manually
   const rootFolder {.strdefine.} = currentSourcePath()
-  var pathToRootFolder = ""
+  var pathToRootFolder =  ""
   if existsEnv("nimibook_rootfolder"):
     pathToRootFolder = getEnv("nimibook_rootfolder")
   else:
@@ -24,13 +24,6 @@ proc useNimibook*(nbDoc: var NbDoc) =
     nbThisDir: AbsoluteDir = pathToRootFolder.toAbsoluteDir
     nbHomeDir: AbsoluteDir = nbThisDir / RelativeDir("..") / "docs".RelativeDir
     nbSrcDir = nbThisDir
-
-# TODO comment debugEcho before merge
-  # debugEcho "-------------------------------"
-  # debugEcho ">> ", pathToRootFolder
-  # debugEcho ">> ", nbThisDir
-  # debugEcho ">> ", nbSrcDir
-  # debugEcho "-------------------------------"
 
   # Are these two actually needed? well, home_path is needed in path_to_root, but other than that?
   nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string

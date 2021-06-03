@@ -4,17 +4,6 @@ export types, render, tocs, publishers, defaults, docs, books
 template nbUseNimibook* =
   nbDoc.useNimibook
 
-# template nbBookTasks* =
-  # when defined(printBook):
-  #   import print
-  #   print book
-  # elif defined(dumpBook):
-  #   dump book
-  # elif defined(cleanBook):
-  #   clean book
-  # else:
-  #   publish book
-
 proc printHelp() =
   echo """
 Choose one of the following options : init, clean, check, build, update
