@@ -16,6 +16,7 @@ requires "jsony >= 1.0.1"
 import os
 
 task genbook, "build book":
+  selfExec(" r -d:release nbook.nim init")
   selfExec(" r -d:release nbook.nim build")
 
 task dumpbook, "dump book.json":
