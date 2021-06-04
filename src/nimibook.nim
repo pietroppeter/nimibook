@@ -14,8 +14,9 @@ build  : Build your book !
 update : Update assets and mustache template.
 """
 
-template nimibookCli* =
-  import parseopt
+import std/[os, parseopt]
+export os, parseopt
+template nimibookCli*(book: Book) =
   var p = initOptParser()
   var hasArgs = false
   while true:
