@@ -15,7 +15,7 @@ proc add(toc: var Toc, entry: Entry) =
 template populateAssets*(rootfolder: string, force: bool = false) =
   let
     baseRessources = currentSourcePath().parentDir() / "resources"
-    assetsSrc =  baseRessources / "assets"
+    assetsSrc = baseRessources / "assets"
     assetsTarget = getProjectPath() / "docs" / "assets"
 
     mustacheSrc = baseRessources / "template"

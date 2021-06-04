@@ -8,7 +8,7 @@ proc useNimibook*(nbDoc: var NbDoc) =
   # Nim Files in books are not meant to be compiled indiviually
   # But you can do so with -d:nimibSrcDir=... option passed manually
   const nimibSrcDir {.strdefine.} = currentSourcePath()
-  var nbThisDir =  ""
+  var nbThisDir = ""
   if existsEnv("nimibook_rootfolder"):
     nbThisDir = getEnv("nimibook_rootfolder")
   else:

@@ -59,16 +59,16 @@ proc cleanjson*(book: Book) =
   let uri = normalizedPath(book.toc.path / "book.json")
   removeFile(uri)
 
-proc files(book: Book) : seq[string] =
+proc files(book: Book): seq[string] =
   result = collect(newSeq):
     for p in book.toc.entries: p.path
 
-proc htmlFiles(book: Book) : seq[string] =
+proc htmlFiles(book: Book): seq[string] =
   result = book.toc.entries.map(x => "docs" / url(x))
 
 proc cleanRootFolder(book: Book) =
   # All source files
-  let srcurls : seq[string] = book.files
+  let srcurls: seq[string] = book.files
   # debugEcho("walkDirRec ", book.toc.path)
   for f in walkDirRec(book.toc.path):
     let ext = f.splitFile().ext
@@ -76,7 +76,7 @@ proc cleanRootFolder(book: Book) =
       # debugEcho("    >> removeFile ", f)
       removeFile(f)
 
-proc shouldDelete(book: Book, dir, f: string) : bool =
+proc shouldDelete(book: Book, dir, f: string): bool =
   # Remove anything that's not in "docs/assets" or "docs/statis" (for image and shit like that).
   if isRelativeTo(f, dir / "assets"):
     return false
@@ -102,7 +102,7 @@ proc cleanDocFolder(book: Book) =
       # debugEcho("    >> removeFile ", f)
       removeFile(f)
 
-  for f in walkDirRec(docDir, yieldFilter={pcDir}):
+  for f in walkDirRec(docDir, yieldFilter = {pcDir}):
     # Remove leftover folders
     if shouldDelete(book, docDir, f):
       # debugEcho("    >> removeDir", f)

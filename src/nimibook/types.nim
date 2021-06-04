@@ -27,10 +27,10 @@ type
     language*: string ## The main language of the book, which is used as a language attribute `<html lang="en">` for example (defaults to en)
     description*: string ## A description for the book, which is added as meta information in the html <head> of each page
     path_to_root*: string ## This is a path containing exclusively `../`'s that points to the root of the book from the current file. Since the original directory structure is maintained, it is useful to prepend relative links with this `path_to_root`.
-    default_theme*: string  ## The theme color scheme to select by default in the 'Change Theme' dropdown. Defaults to light.
+    default_theme*: string ## The theme color scheme to select by default in the 'Change Theme' dropdown. Defaults to light.
     preferred_dark_theme*: string ## The default dark theme. This theme will be used if the browser requests the dark version of the site via the ['prefers-color-scheme'](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) CSS media query. Defaults to navy.
     theme_option*: Table[string, string] # cannot find it mentioned in mdbook docs. by default is a Table with available themes and their names.
-    # optional stuff:
+                                           # optional stuff:
     git_repository_url*: string ## A url to the git repository for the book. If provided an icon link will be output in the menu bar of the book.
     git_repository_icon*: string ## The FontAwesome icon class to use for the git repository link. Defaults to `fa-github`.
     favicon_escaped*: string ## (new in nimibook) provide your fully custom `<link rel="icon" href="...">. defaults to whale emoji as in nimib.
