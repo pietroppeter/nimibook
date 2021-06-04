@@ -7,11 +7,11 @@ template nbUseNimibook* =
 proc printHelp() =
   echo """
 Choose one of the following options : init, clean, check, build, update
-init   : It init stuff. Do it at least once.
-clean  : delete files that are generated or not supposed to be here
-check  : check stuff is correct
-build  : It build your book ? Really, what else did you expect...
-update : It update stuff.
+init   : Initialize book structure.
+clean  : Delete generated files and files that are not supposed to be here (use this with caution).
+check  : Check generated book is correct.
+build  : Build your book !
+update : Update assets and mustache template.
 """
 
 template nbBookTasks* =

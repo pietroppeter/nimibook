@@ -34,8 +34,13 @@ Discussion of further options is ongoing in [issue #12](https://github.com/pietr
 ## Usage
 
 1. Write your content using [nimib] or simple markdown files in the ``book`` folder.
-2. Use the Toc DSL to link chapters to content in ``genbook.nim``.
-3. Generate your books in the ``docs`` folder using ``nimble genbook``.
+2. Use the Toc DSL to link chapters to content in ``nbook.nim``.
+3. Generate your very own CLI tools or use Nimble tasks:
+  * Compile nbook ``nim c nbook.nim``
+  * ``./nbook init`` to init your book content
+  * ``./nbook build`` to build your book
+  * ``./nbook clean`` to remove generated files and start from a clean state
+  * ``./nbook update`` to updated assets and mustache template
 
 <!--refs-->
 [mdbook]: https://rust-lang.github.io/mdBook/index.html
