@@ -13,31 +13,37 @@ proc add(toc: var Toc, entry: Entry) =
   toc.entries.add entry
 
 template populateAssets*(rootfolder: string, force: bool = false) =
+  const baseRessources = currentSourcePath().parentDir() / "resources"
   let
-    baseRessources = currentSourcePath().parentDir() / "resources"
     assetsSrc = baseRessources / "assets"
-    assetsTarget = getProjectPath() / "docs" / "assets"
+    assetsTarget = getCurrentDir() / "docs" / "assets"
+    mustacheSrc = baseRessources / "templates/"
+    mustacheTarget = getCurrentDir() / rootfolder
 
-    mustacheSrc = baseRessources / "template"
-    mustacheTarget = getProjectPath() / rootfolder
+  # debugEcho("assetsSrc >> ", assetsSrc)
+  # debugEcho("assetsTarget >> ", assetsTarget)
+  # debugEcho("mustacheSrc >> ", mustacheSrc)
+  # debugEcho("mustacheTarget >> ", mustacheTarget)
 
-  for file in walkFiles(mustacheSrc / "*.mustache"):
+  for file in walkDir(mustacheSrc):
+    let file = file.path
     let name = file.splitPath().tail
     # Copy default mustache file
     if not fileExists(mustacheTarget / name):
-      # debugEcho "copyFile(", file, ", ", mustacheTarget, ") "
+      # debugEcho "copyFile(", file , ", ", mustacheTarget, ") "
       copyFile(file, mustacheTarget / name)
 
   if not dirExists(assetsTarget):
-    # debugEcho "==> copyDir(", src, ", ", target, ")"
+    # debugEcho "==> copyDir(", assetsSrc, ", ", assetsTarget, ")"
     copyDir(assetsSrc, assetsTarget)
   else:
     if force:
       removeDir(assetsTarget)
+      # debugEcho "==> copyDir(", assetsSrc, ", ", assetsTarget, ")"
       copyDir(assetsSrc, assetsTarget)
 
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
-  populateAssets(rootfolder, false)
+  # populateAssets(rootfolder, false)
   var book = Book(book_title: booklabel)
   book.setDefaults
   book.path_to_root = rootfolder

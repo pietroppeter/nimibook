@@ -8,11 +8,11 @@ proc useNimibook*(nbDoc: var NbDoc) =
   # Nim Files in books are not meant to be compiled indiviually
   # But you can do so with -d:nimibSrcDir=... option passed manually
   const nimibSrcDir {.strdefine.} = currentSourcePath()
-  var nbThisDir = ""
+  var pathSrcDir = ""
   if existsEnv("nimibSrcDir"):
-    nbThisDir = getEnv("nimibSrcDir")
+    pathSrcDir = getEnv("nimibSrcDir")
   else:
-    nbThisDir = nimibSrcDir
+    pathSrcDir = nimibSrcDir
 
   # path handling (fix upstream in nimib)
   let
@@ -21,13 +21,13 @@ proc useNimibook*(nbDoc: var NbDoc) =
     # Use non-compile time value; this means it is dependent upon where the binary is called from instead of where it gets compiled
 
   let
-    nbSrcDir: AbsoluteDir = nbThisDir.toAbsoluteDir
+    nbThisDir = (thisTuple.dir)
+    nbSrcDir: AbsoluteDir = pathSrcDir.toAbsoluteDir
     nbHomeDir: AbsoluteDir = nbSrcDir / RelativeDir("..") / "docs".RelativeDir
 
   # Are these two actually needed? well, home_path is needed in path_to_root, but other than that?
   nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string
-  nbDoc.context["home_path"] = (nbSrcDir.relativeTo nbSrcDir).string
-
+  nbDoc.context["home_path"] = (nbSrcDir.relativeTo nbThisDir).string
   nbDoc.filename = relativeTo(changeFileExt(nbThisFile, ".html"), nbSrcDir).string
   nbDoc.context["path_to_root"] = nbDoc.context["home_path"].castStr & "/" # I probably should make sure to have / at the end
   # debugEcho "Current directory: ", getCurrentDir()
