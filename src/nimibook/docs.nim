@@ -9,8 +9,8 @@ proc useNimibook*(nbDoc: var NbDoc) =
   # But you can do so with -d:nimibSrcDir=... option passed manually
   const nimibSrcDir {.strdefine.} = currentSourcePath()
   var nbThisDir = ""
-  if existsEnv("nimibook_rootfolder"):
-    nbThisDir = getEnv("nimibook_rootfolder")
+  if existsEnv("nimibSrcDir"):
+    nbThisDir = getEnv("nimibSrcDir")
   else:
     nbThisDir = nimibSrcDir
 
