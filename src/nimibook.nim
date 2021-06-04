@@ -14,7 +14,7 @@ build  : Build your book !
 update : Update assets and mustache template.
 """
 
-template nbBookTasks* =
+template nimibookCli* =
   import parseopt
   var p = initOptParser()
   var hasArgs = false
