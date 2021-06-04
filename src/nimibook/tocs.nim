@@ -43,7 +43,7 @@ template populateAssets*(rootfolder: string, force: bool = false) =
       copyDir(assetsSrc, assetsTarget)
 
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
-  # populateAssets(rootfolder, false)
+  populateAssets(rootfolder, false)
   var book = Book(book_title: booklabel)
   book.setDefaults
   book.path_to_root = rootfolder

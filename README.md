@@ -31,13 +31,22 @@ or with a checkout of the repo and copying and pasting.
 ## Usage
 
 1. Write your content using [nimib] or simple markdown files in the ``book`` folder.
-2. Use the Toc DSL to link chapters to content in ``nbook.nim``.
-3. Generate your very own CLI tools or use Nimble tasks:
-  * Compile nbook ``nim c nbook.nim``. The generated binary is your very own CLI to work with your book !
-  * ``./nbook init`` to init your book content
-  * ``./nbook build`` to build your book
-  * ``./nbook clean`` to remove generated files and start from a clean state
-  * ``./nbook update`` to updated assets and mustache template
+2. Use the Table of Content (Toc) DSL to link chapters to content in ``nbook.nim``.
+3. Generate your very own CLI tools or use Nimble tasks with ``nim c -d:release nbook.nim``.
+  * ``./nbook init`` to init your book structure. **This command must be ran at least once**.
+  * ``./nbook build`` to build your book.
+  * ``./nbook clean`` to remove generated files and restart from a clean state.
+  * ``./nbook update`` to updated assets and mustache template.
+
+4. Whenever your Table of Content changes (add/remove files, changes sections organization), recompile your ``nbook``.
+  * It is possible to compile and run in one command : ``nim r -d:release nbook.nim build`` 
+  * Rinse and repeat !
+
+## Tips and Tricks 
+
+* Each book requires its own ToC and thus will be its own CLI Apps
+* ``nbook.nim`` is the default name used - it is possible to use another name.
+* Multiple books ``nbook.nim`` cannot share the same folder. Instead, either split them into two separate books, or merge them into one.
 
 <!--refs-->
 [mdbook]: https://rust-lang.github.io/mdBook/index.html
