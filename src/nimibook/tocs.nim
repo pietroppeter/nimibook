@@ -29,7 +29,7 @@ template populateAssets*(rootfolder: string, force: bool = false) =
     let file = file.path
     let name = file.splitPath().tail
     # Copy default mustache file
-    if not fileExists(mustacheTarget / name):
+    if not fileExists(mustacheTarget / name) or force:
       # debugEcho "copyFile(", file , ", ", mustacheTarget, ") "
       copyFile(file, mustacheTarget / name)
 
