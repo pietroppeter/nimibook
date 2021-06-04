@@ -22,29 +22,29 @@
 
         {{&favicon_escaped}}
         {{#favicon_svg}}
-        <link rel="icon" href="{{ path_to_root }}favicon.svg">
+        <link rel="icon" href="{{ path_to_root }}assets/favicon.svg">
         {{/favicon_svg}}
         {{#favicon_png}}
-        <link rel="shortcut icon" href="{{ path_to_root }}favicon.png">
+        <link rel="shortcut icon" href="{{ path_to_root }}assets/favicon.png">
         {{/favicon_png}}
-        <link rel="stylesheet" href="{{ path_to_root }}css/variables.css">
-        <link rel="stylesheet" href="{{ path_to_root }}css/general.css">
-        <link rel="stylesheet" href="{{ path_to_root }}css/chrome.css">
+        <link rel="stylesheet" href="{{ path_to_root }}assets/css/variables.css">
+        <link rel="stylesheet" href="{{ path_to_root }}assets/css/general.css">
+        <link rel="stylesheet" href="{{ path_to_root }}assets/css/chrome.css">
         {{#print_enable}}
-        <link rel="stylesheet" href="{{ path_to_root }}css/print.css" media="print">
+        <link rel="stylesheet" href="{{ path_to_root }}assets/css/print.css" media="print">
         {{/print_enable}}
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="{{ path_to_root }}FontAwesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{ path_to_root }}assets/FontAwesome/css/font-awesome.min.css">
         {{#copy_fonts}}
-        <link rel="stylesheet" href="{{ path_to_root }}fonts/fonts.css">
+        <link rel="stylesheet" href="{{ path_to_root }}assets/fonts/fonts.css">
         {{/copy_fonts}}
 
         <!-- Highlight.js Stylesheets - I could use nimib native highlight but let's keep it for styling... -->
-        <link rel="stylesheet" href="{{ path_to_root }}css/highlight.css">
-        <link rel="stylesheet" href="{{ path_to_root }}css/tomorrow-night.css">
-        <link rel="stylesheet" href="{{ path_to_root }}css/ayu-highlight.css">
-        
+        <link rel="stylesheet" href="{{ path_to_root }}assets/css/highlight.css">
+        <link rel="stylesheet" href="{{ path_to_root }}assets/css/tomorrow-night.css">
+        <link rel="stylesheet" href="{{ path_to_root }}assets/css/ayu-highlight.css">
+
         <!-- Custom theme stylesheets - why the "../"? -->
         {{#additional_css}}
         <link rel="stylesheet" href="../{{ path_to_root }}{{ . }}">
@@ -58,7 +58,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "{{ path_to_root }}";
+            var path_to_root = "{{ path_to_root }}/assets";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "{{ preferred_dark_theme }}" : "{{ default_theme }}";
         </script>
 
@@ -282,9 +282,9 @@
         <script src="{{ path_to_root }}searcher.js" type="text/javascript" charset="utf-8"></script>
         {{/search_js}}
 
-        <script src="{{ path_to_root }}js/clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="{{ path_to_root }}js/highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="{{ path_to_root }}js/book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ path_to_root }}assets/js/clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ path_to_root }}assets/js/highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ path_to_root }}assets/js/book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         {{#additional_js}}

@@ -20,22 +20,48 @@ provided by [nim-markdown]. For a quick reference of supported syntax see the [c
 
 ### Status
 
-nimibook currently provides minimal functionality to create a book, notably missing is
-a command line interface to automate common task (e.g. initialization of a new nimibook).
+nimibook currently provides minimal functionality to create a book and support a local CLI mode.
 
 ## Installation
 
-To be able to use nimibook, currently the only way is to recreate the same content of the repository
-and adjust it to your content. You can do that using the template feature from github
-or with a checkout of the repo and copying and pasting.
-
-Discussion of further options is ongoing in [issue #12](https://github.com/pietroppeter/nimibook/issues/12).
+To install Nimibook simply use : ``nimble install nimibook``
 
 ## Usage
 
 1. Write your content using [nimib] or simple markdown files in the ``book`` folder.
-2. Use the Toc DSL to link chapters to content in ``genbook.nim``.
-3. Generate your books in the ``docs`` folder using ``nimble genbook``.
+
+2. Use the Table of Content (ToC) DSL to link chapters to content in ``nbook.nim``.
+Example : 
+```nim
+import nimibook
+
+var book = newBookFromToc("Dummy Book", "book"): # Create a new book called "Dummy", whose content is in the folder "book"
+  section("Dummy", "index"): # Create a new section called "Dummy", its content is the file "index.nim". Notice how the .nim extensions is optionnal
+    entry("Simple example", "page_1.nim") # Create a new entry called "Simple example", its content is the file "page_1.nim"
+
+nimibookCli(book)
+```
+See [nimibook] or [Nimibook repo](https://github.com/pietroppeter/nimibook
+) for more documentations and examples.
+
+3. Generate your very own CLI tools or use Nimble tasks with ``nim c -d:release nbook.nim``.
+  * ``./nbook init`` to init your book structure. **This command must be ran at least once**. 
+  * ``./nbook build`` to build your book.
+
+4. Whenever your Table of Content changes (add/remove files, changes sections organization), recompile your ``nbook`` and run the ``build`` command : ``nim c -d:release nbook.nim && ./nbook build``
+  * It is also doable in one command : ``nim r -d:release nbook.nim build``
+  * You don't need to call the ``init`` command again.
+  * Rinse and repeat until your ToC is done ! Then you can just edit files and call ``build`` without recompiling.
+
+## Tips and Tricks 
+
+* Each book requires its own ToC and thus will be its own CLI Apps
+* ``nbook.nim`` is the default name used - it is possible to use another name.
+* Multiple books ``nbook.nim`` cannot share the same folder. Instead, either split them into two separate books, or merge them into one.
+* Some commands : 
+  * ``./nbook clean`` will remove generated files and restart from a clean state.
+  * ``./nbook update`` will update assets and mustache template.
+  * These two commands will modify installed files, use them with cuation if you customized files locally.
 
 <!--refs-->
 [mdbook]: https://rust-lang.github.io/mdBook/index.html

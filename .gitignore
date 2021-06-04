@@ -1,7 +1,5 @@
-!docs/.gitignore
-!docs/css
-!docs/FontAwesome
-!docs/fonts
-!docs/js
+bin/
 docs/
 book/book.json
+nbook
+

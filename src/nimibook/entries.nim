@@ -1,4 +1,4 @@
-import std / [os, strutils, strformat]
+import std / [os, strformat, strutils]
 import nimibook / types
 
 proc url*(e: Entry): string =
@@ -9,6 +9,6 @@ proc url*(e: Entry): string =
     path
 
 proc check*(e: Entry) =
-  let entryurl = url(e)
-  if not fileExists("docs" / entryurl):
+  let entryurl = "docs" / url(e)
+  if not fileExists(entryurl):
     raise newException(IOError, fmt"Error finding {entryurl} : no such file or directory")

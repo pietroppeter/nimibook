@@ -10,32 +10,20 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.4.0"
-requires "nimib >= 0.1.2"
+requires "nimib >= 0.1.3"
 requires "jsony >= 1.0.1"
 
 import os
+
 task genbook, "build book":
-  selfExec(" r -d:release genbook.nim")
+  selfExec(" r -d:release nbook.nim init")
+  selfExec(" r -d:release nbook.nim build")
 
 task dumpbook, "dump book.json":
-  selfExec(" r -d:release -d:dumpBook genbook.nim")
+  selfExec(" r -d:release nbook.nim dump")
 
 task cleanbook, "remove all files created during build":
-  # todo: it should remove all files and directories not tracked in git from docs
-  for file in walkDirRec("docs"):
-    if file.endsWith(".html"):
-      rmFile(file)
-      echo "removed ", file
-  for file in ["book/book.json"]: # hardcoded files to remove (one for now)
-    if fileExists(file):
-      rmFile(file)
-      echo "removed ", file
-  # if by mistake I create html in book folder, remove them
-  for file in walkDirRec("book"):
-    if file.endsWith(".html"):
-      rmFile(file)
-      echo "removed ", file
-
+  selfExec(" r -d:release nbook.nim clean ")
 
 task srcpretty, "run nimpretty on nim files in src folder":
   for file in walkDirRec("src"):
