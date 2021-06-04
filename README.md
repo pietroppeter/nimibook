@@ -41,7 +41,8 @@ var book = newBookFromToc("Dummy Book", "book"): # Create a new book called "Dum
 
 nimibookCli(book)
 ```
-See [Nimibook documentation](nimibook) or [Nimibook repo](git_nimibook) for more documentations and examples. 
+See [nimibook] or [Nimibook repo](https://github.com/pietroppeter/nimibook
+) for more documentations and examples.
 
 3. Generate your very own CLI tools or use Nimble tasks with ``nim c -d:release nbook.nim``.
   * ``./nbook init`` to init your book structure. **This command must be ran at least once**. 
@@ -69,7 +70,6 @@ See [Nimibook documentation](nimibook) or [Nimibook repo](git_nimibook) for more
 [Gitbook]: https://github.com/GitbookIO/gitbook
 [nim-mustache]: https://github.com/soasme/nim-mustache
 [nimibook]: https://pietroppeter.github.io/nimibook/
-[git_nimibook]: https://github.com/pietroppeter/nimibook
 [GFM]: https://github.github.com/gfm/
 [nim-markdown]: https://github.com/soasme/nim-markdown
 
