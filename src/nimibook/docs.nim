@@ -6,13 +6,13 @@ proc useNimibook*(nbDoc: var NbDoc) =
   # Between separate process variable env do not gets passed so I use this little trick.
   # This means :
   # Nim Files in books are not meant to be compiled indiviually
-  # But you can do so with -d:rootFolder=... option passed manually
-  const rootFolder {.strdefine.} = currentSourcePath()
-  var pathToRootFolder =  ""
+  # But you can do so with -d:nimibSrcDir=... option passed manually
+  const nimibSrcDir {.strdefine.} = currentSourcePath()
+  var nbThisDir =  ""
   if existsEnv("nimibook_rootfolder"):
-    pathToRootFolder = getEnv("nimibook_rootfolder")
+    nbThisDir = getEnv("nimibook_rootfolder")
   else:
-    pathToRootFolder = rootFolder
+    nbThisDir = nimibSrcDir
 
   # path handling (fix upstream in nimib)
   let
@@ -21,13 +21,12 @@ proc useNimibook*(nbDoc: var NbDoc) =
     # Use non-compile time value; this means it is dependent upon where the binary is called from instead of where it gets compiled
 
   let
-    nbThisDir: AbsoluteDir = pathToRootFolder.toAbsoluteDir
-    nbHomeDir: AbsoluteDir = nbThisDir / RelativeDir("..") / "docs".RelativeDir
-    nbSrcDir = nbThisDir
+    nbSrcDir: AbsoluteDir = nbThisDir.toAbsoluteDir
+    nbHomeDir: AbsoluteDir = nbSrcDir / RelativeDir("..") / "docs".RelativeDir
 
   # Are these two actually needed? well, home_path is needed in path_to_root, but other than that?
   nbDoc.context["here_path"] = (nbThisFile.relativeTo nbSrcDir).string
-  nbDoc.context["home_path"] = (nbSrcDir.relativeTo nbThisDir).string
+  nbDoc.context["home_path"] = (nbSrcDir.relativeTo nbSrcDir).string
 
   nbDoc.filename = relativeTo(changeFileExt(nbThisFile, ".html"), nbSrcDir).string
   nbDoc.context["path_to_root"] = nbDoc.context["home_path"].castStr & "/" # I probably should make sure to have / at the end

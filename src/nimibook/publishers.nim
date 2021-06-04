@@ -9,8 +9,9 @@ proc nimPublish*(entry: Entry) =
     # Which means env variable are not going to be available
     # So here's a little trick to propagate the info
     # See comment in docs.nim useNimibook() proc
-    rootFolder = getEnv("nimibook_rootfolder")
-    args = ["r", "-d:release", "-f", &"-d:rootFolder={rootFolder}", "--verbosity:0", "--hints:off", entry.path]
+    nimibSrcDir = getEnv("nimibook_rootfolder")
+    nimibOutDir = nimibSrcDir.parentDir() / "docs"
+    args = ["r", "-d:release", "-f", &"-d:nimibSrcDir={nimibSrcDir}", &"-d:nimibOutDir={nimibOutDir}", "--verbosity:0", "--hints:off", entry.path]
   debugEcho "[Executing] ", cmd, " ", args.join(" ")
   if execShellCmd(cmd & " " & args.join(" ")) != 0:
     quit(1)
