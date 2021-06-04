@@ -20,8 +20,7 @@ provided by [nim-markdown]. For a quick reference of supported syntax see the [c
 
 ### Status
 
-nimibook currently provides minimal functionality to create a book, notably missing is
-a command line interface to automate common task (e.g. initialization of a new nimibook).
+nimibook currently provides minimal functionality to create a book and support a local CLI mode.
 
 ## Installation
 
@@ -29,14 +28,12 @@ To be able to use nimibook, currently the only way is to recreate the same conte
 and adjust it to your content. You can do that using the template feature from github
 or with a checkout of the repo and copying and pasting.
 
-Discussion of further options is ongoing in [issue #12](https://github.com/pietroppeter/nimibook/issues/12).
-
 ## Usage
 
 1. Write your content using [nimib] or simple markdown files in the ``book`` folder.
 2. Use the Toc DSL to link chapters to content in ``nbook.nim``.
 3. Generate your very own CLI tools or use Nimble tasks:
-  * Compile nbook ``nim c nbook.nim``
+  * Compile nbook ``nim c nbook.nim``. The generated binary is your very own CLI to work with your book !
   * ``./nbook init`` to init your book content
   * ``./nbook build`` to build your book
   * ``./nbook clean`` to remove generated files and start from a clean state
