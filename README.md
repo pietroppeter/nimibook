@@ -29,7 +29,20 @@ To install Nimibook simply use : ``nimble install nimibook``
 ## Usage
 
 1. Write your content using [nimib] or simple markdown files in the ``book`` folder.
+
 2. Use the Table of Content (ToC) DSL to link chapters to content in ``nbook.nim``.
+Example : 
+```nim
+import nimibook
+
+var book = newBookFromToc("Dummy Book", "book"): # Create a new book called "Dummy", whose content is in the folder "book"
+  section("Dummy", "index"): # Create a new section called "Dummy", its content is the file "index.nim". Notice how the .nim extensions is optionnal
+    entry("Simple example", "page_1.nim") # Create a new entry called "Simple example", its content is the file "page_1.nim"
+
+nimibookCli(book)
+```
+See [Nimibook documentation](nimibook) or [Nimibook repo](git_nimibook) for more documentations and examples. 
+
 3. Generate your very own CLI tools or use Nimble tasks with ``nim c -d:release nbook.nim``.
   * ``./nbook init`` to init your book structure. **This command must be ran at least once**. 
   * ``./nbook build`` to build your book.
@@ -56,6 +69,7 @@ To install Nimibook simply use : ``nimble install nimibook``
 [Gitbook]: https://github.com/GitbookIO/gitbook
 [nim-mustache]: https://github.com/soasme/nim-mustache
 [nimibook]: https://pietroppeter.github.io/nimibook/
+[git_nimibook]: https://github.com/pietroppeter/nimibook
 [GFM]: https://github.github.com/gfm/
 [nim-markdown]: https://github.com/soasme/nim-markdown
 
