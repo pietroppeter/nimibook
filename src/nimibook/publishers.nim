@@ -35,6 +35,7 @@ proc publish*(entry: Entry) =
     raise newException(IOError, "Error invalid file extension.")
 
 proc publish*(book: Book) =
+  dump book
   for entry in book.toc.entries:
     entry.publish()
   cleanjson book
