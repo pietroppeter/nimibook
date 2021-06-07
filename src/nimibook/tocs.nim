@@ -76,6 +76,4 @@ template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): 
 
   body
   book.toc = toc
-  # Dump json here so we avoid having to use Nimble in use Nimibook
-  dump(book)
   book
