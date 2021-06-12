@@ -61,7 +61,12 @@ See [nimibook] or [Nimibook repo](https://github.com/pietroppeter/nimibook
 * Some commands : 
   * ``./nbook clean`` will remove generated files and restart from a clean state.
   * ``./nbook update`` will update assets and mustache template.
-  * These two commands will modify installed files, use them with cuation if you customized files locally.
+  * These two commands will modify installed files, use them with caution if you customized files locally.
+
+### Analytics
+
+This website is tracking analytics with [plausible.io](https://plausible.io/index.html), a lightweight and open-source website analytics tool with no cookies and fully compliant with GDPR, CCPA and PECR.
+Analytics for this website are publicly available [here](https://plausible.io/pietroppeter.github.io%2Fnimibook). You can opt out from analytics tracking with [standard ad-blocking](https://plausible.io/docs/excluding) or with a simple command in browser console: https://plausible.io/docs/excluding-localstorage
 
 <!--refs-->
 [mdbook]: https://rust-lang.github.io/mdBook/index.html
@@ -72,6 +77,8 @@ See [nimibook] or [Nimibook repo](https://github.com/pietroppeter/nimibook
 [nimibook]: https://pietroppeter.github.io/nimibook/
 [GFM]: https://github.github.com/gfm/
 [nim-markdown]: https://github.com/soasme/nim-markdown
+
+##
 
 <!--SKIP
 All content before this sign is replicated in the Introduction chapter of nimibook documentation
