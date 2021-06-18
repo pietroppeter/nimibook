@@ -58,7 +58,6 @@ proc useNimibook*(nbDoc: var NbDoc) =
     if entry.url == nbDoc.filename.replace('\\', '/'): # replace needed for windows
       entry.isActive = true
       if i > 0:
-        debugEcho "Previous url: ", book.toc.entries[i-1].url
         nbDoc.context["previous"] = book.toc.entries[i-1].url
       if i < book.toc.entries.high:
         nbDoc.context["next"] = book.toc.entries[i+1].url
