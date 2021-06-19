@@ -1,4 +1,4 @@
-import std / [strutils, os]
+import std / [strutils, os, enumerate]
 import nimib, nimib / paths
 import nimibook / [types, books, entries, render]
 
@@ -54,7 +54,12 @@ proc useNimibook*(nbDoc: var NbDoc) =
   nbDoc.context["git_repository_icon"] = book.git_repository_icon
 
   # process toc
-  for entry in book.toc.entries.mitems:
+  for i, entry in enumerate(book.toc.entries.mitems):
     if entry.url == nbDoc.filename.replace('\\', '/'): # replace needed for windows
       entry.isActive = true
+      if i > 0:
+        nbDoc.context["previous"] = book.toc.entries[i-1].url
+      if i < book.toc.entries.high:
+        nbDoc.context["next"] = book.toc.entries[i+1].url
+      break
   nbDoc.partials["toc"] = render book.toc
