@@ -115,7 +115,10 @@ proc clean*(book: Book) =
 
 proc load*(path: string): Book =
   let uri = normalizedPath(path)
-  readFile(uri).fromJson(Book)
+  if fileExists(uri):
+    result = readFile(uri).fromJson(Book)
+  else:
+    result = Book()
 
 proc check*(book: Book) =
   for entry in book.toc.entries:
