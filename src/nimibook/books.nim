@@ -118,6 +118,7 @@ proc load*(path: string): Book =
   if fileExists(uri):
     result = readFile(uri).fromJson(Book)
   else:
+    echo "Warning! No book.json was found!"
     result = Book()
 
 proc check*(book: Book) =
