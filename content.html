@@ -1,0 +1,253 @@
+<!DOCTYPE HTML>
+<html lang="en-us" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using nimibook -->
+        <meta charset="UTF-8">
+        <title>content.nim</title>
+        <!-- removed temporarily to fix usage of base_url for plausible analytics
+        <base href="pietroppeter.github.io/nimibook/">
+        -->
+
+        <!-- Custom HTML head -->
+        <!-- custom head content -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="a book built with nimibook">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐳</text></svg>">
+        <link rel="stylesheet" href="./assets/css/variables.css">
+        <link rel="stylesheet" href="./assets/css/general.css">
+        <link rel="stylesheet" href="./assets/css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="./assets/FontAwesome/css/font-awesome.min.css">
+
+        <!-- Highlight.js Stylesheets - I could use nimib native highlight but let's keep it for styling... -->
+        <link rel="stylesheet" href="./assets/css/highlight.css">
+        <link rel="stylesheet" href="./assets/css/tomorrow-night.css">
+        <link rel="stylesheet" href="./assets/css/ayu-highlight.css">
+
+        <!-- Custom theme stylesheets - why the "../"? -->
+
+
+        <!-- plausible analytics (new in nimibook) -->
+        <script defer data-domain="pietroppeter.github.io/nimibook/" src="https://plausible.io/js/plausible.js"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = ".//assets";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                                <ol class="chapter">
+                  <li class="chapter-item expanded ">
+                    <a href="./index.html" tabindex="0">
+                      <strong aria-hidden="true">1.</strong> Introduction
+                    </a>
+                  </li>
+                  <li>
+                  <ol class="section">
+                  <li class="chapter-item expanded ">
+                    <a href="./content.html" class="active" tabindex="0">
+                      <strong aria-hidden="true">1.1.</strong> Content
+                    </a>
+                  </li>
+                  <li class="chapter-item expanded ">
+                    <a href="./tocdsl.html" tabindex="0">
+                      <strong aria-hidden="true">1.2.</strong> Toc DSL
+                    </a>
+                  </li>
+                  <li class="chapter-item expanded ">
+                    <a href="./configuration.html" tabindex="0">
+                      <strong aria-hidden="true">1.3.</strong> Configuration
+                    </a>
+                  </li>
+                  <li class="chapter-item expanded ">
+                    <a href="./tasks.html" tabindex="0">
+                      <strong aria-hidden="true">1.4.</strong> Tasks
+                    </a>
+                  </li>
+                  </ol>
+                  </li>
+                  <li class="chapter-item expanded ">
+                    <a href="./tocexample/index.html" tabindex="0">
+                      <strong aria-hidden="true">2.</strong> Example toc structure
+                    </a>
+                  </li>
+                  <li>
+                  <ol class="section">
+                  <li class="chapter-item expanded ">
+                    <a href="./tocexample/nested.html" tabindex="0">
+                      <strong aria-hidden="true">2.1.</strong> Nested section
+                    </a>
+                  </li>
+                  <li>
+                  <ol class="section">
+                  <li class="chapter-item expanded ">
+                    <a href="./tocexample/nested_entry.html" tabindex="0">
+                      <strong aria-hidden="true">2.1.1.</strong> Entry in nested section
+                    </a>
+                  </li>
+                  </ol>
+                  </li>
+                  <li class="chapter-item expanded ">
+                    <a href="./tocexample/back_to_parent.html" tabindex="0">
+                      <strong aria-hidden="true">2.2.</strong> Back to parent section
+                    </a>
+                  </li>
+                  <li class="chapter-item expanded ">
+                    <a href="./tocexample/draft.html" tabindex="0">
+                      Draft chapter
+                    </a>
+                  </li>
+                </ol>
+<!-- I could use also an unescaped context value -->
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <!-- custom header content -->                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                    </div>
+
+                    <h1 class="menu-title">nimibook</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/pietroppeter/nimibook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1>Content</h1>
+<p>The content of a chapter of a book can be a standard Markdown file or a nim file.</p>
+<p>For the nim file the structure is the following:</p>
+<pre><code class="language-nim">import nimib, nimibook
+... # other imports
+
+nbInit # initializes a nimib document
+nbUseNimibook # overrides nimib defaults with nimibooks and loads book configuration
+
+... # content of chapter using nbText, nbCode and other nimib functionalities
+
+nbSave # save the document to html output
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="./index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="./tocdsl.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="./index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="./tocdsl.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+
+
+
+        <script src="./assets/js/clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="./assets/js/highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="./assets/js/book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
