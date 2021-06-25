@@ -52,6 +52,8 @@ proc useNimibook*(nbDoc: var NbDoc) =
   nbDoc.context["book_title"] = book.book_title
   nbDoc.context["git_repository_url"] = book.git_repository_url
   nbDoc.context["git_repository_icon"] = book.git_repository_icon
+  nbDoc.context["base_url"] = book.base_url
+  nbDoc.context["plausible_analytics"] = book.plausible_analytics
 
   # process toc
   for i, entry in enumerate(book.toc.entries.mitems):
