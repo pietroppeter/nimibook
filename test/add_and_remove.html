@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using nimibook -->
         <meta charset="UTF-8">
-        <title>tocexample/back_to_parent.nim</title>
+        <title>test/add_and_remove.nim</title>
         <!-- removed temporarily to fix usage of base_url for plausible analytics
         <base href="pietroppeter.github.io/nimibook/">
         -->
@@ -114,7 +114,7 @@
                   </ol>
                   </li>
                   <li class="chapter-item expanded ">
-                    <a href="../test/add_and_remove.html" tabindex="0">
+                    <a href="../test/add_and_remove.html" class="active" tabindex="0">
                       <strong aria-hidden="true">2.</strong> test
                     </a>
                   </li>
@@ -140,7 +140,7 @@
                   </ol>
                   </li>
                   <li class="chapter-item expanded ">
-                    <a href="../tocexample/back_to_parent.html" class="active" tabindex="0">
+                    <a href="../tocexample/back_to_parent.html" tabindex="0">
                       <strong aria-hidden="true">3.2.</strong> Back to parent section
                     </a>
                   </li>
@@ -198,17 +198,26 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1>Back to parent section</h1>
+                        <pre><code class="nim hljs"><span class="hljs-keyword">let</span> text = <span class="hljs-string">&quot;appear&quot;</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">0</span> .. text.<span class="hljs-keyword">high</span>:
+  <span class="hljs-keyword">echo</span> text[<span class="hljs-number">0</span> .. i]</code></pre>
+<pre><samp>a
+ap
+app
+appe
+appea
+appear
+</samp></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../tocexample/nested_entry.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../tasks.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../tocexample/draft.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../tocexample/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -218,11 +227,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../tocexample/nested_entry.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../tasks.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../tocexample/draft.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../tocexample/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
