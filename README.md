@@ -66,7 +66,7 @@ See [nimibook] or [Nimibook repo](https://github.com/pietroppeter/nimibook
 ### Analytics
 
 This website is tracking analytics with [plausible.io](https://plausible.io/index.html), a lightweight and open-source website analytics tool with no cookies and fully compliant with GDPR, CCPA and PECR.
-Analytics for this website are publicly available [here](https://plausible.io/pietroppeter.github.io%2Fnimibook). You can opt out from analytics tracking with [standard ad-blocking](https://plausible.io/docs/excluding) or with a simple command in browser console: https://plausible.io/docs/excluding-localstorage
+Analytics for this website are publicly available [here](https://plausible.io/pietroppeter.github.io%2Fnimibook). You can opt out from analytics tracking with [standard ad-blocking](https://plausible.io/docs/excluding) or typing [`localStorage.plausible_ignore=true`](https://plausible.io/docs/excluding-localstorage) in browser console.
 
 <!--refs-->
 [mdbook]: https://rust-lang.github.io/mdBook/index.html
