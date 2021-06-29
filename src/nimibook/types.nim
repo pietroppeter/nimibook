@@ -34,8 +34,7 @@ type
     git_repository_url*: string ## A url to the git repository for the book. If provided an icon link will be output in the menu bar of the book.
     git_repository_icon*: string ## The FontAwesome icon class to use for the git repository link. Defaults to `fa-github`.
     favicon_escaped*: string ## (new in nimibook) provide your fully custom `<link rel="icon" href="...">. defaults to whale emoji as in nimib.
-    base_url*: string ## (new in nimibook) base url of the site (e.g. `pietroppeter.github.io/nimibook/`); sed for setting up plausible analytics.
-    plausible_analytics*: bool ## (new in nimibook) if true it will include plausible analytics script in every page (using `base_url`).
+    plausible_analytics_url*: string ## (new in nimibook) if non empty it will include plausible analytics script in every page.
     keep*: seq[string]
     # toc object. in mdbook there is a similar `chapters` field but toc is handled differently anyway. not present in document.mustache
     toc*: Toc
