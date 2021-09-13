@@ -51,7 +51,6 @@ template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): 
   var book = Book(book_title: booklabel)
   book.setDefaults
   book.path_to_root = rootfolder
-  putEnv("nimibSrcDir", getCurrentDir() / rootfolder)
 
   var toc = Toc(path: rootfolder)
   var levels: seq[int] = @[1]

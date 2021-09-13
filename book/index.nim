@@ -1,7 +1,6 @@
 import nimib, nimibook
 import strutils
-nbInit
-nbUseNimibook # overrides nimib defaults with nimibooks and loads book configuration
+nbInit(theme = useNimibook)
 
 proc readFileUntil(filename: string, text: string): string =
   for line in filename.lines:

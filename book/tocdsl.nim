@@ -1,6 +1,6 @@
 import nimib, nimibook
-nbInit
-nbUseNimibook
+
+nbInit(theme = useNimibook)
 
 nbText: """
 # Table of Contents DSL

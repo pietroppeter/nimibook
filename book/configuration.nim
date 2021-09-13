@@ -1,8 +1,7 @@
 import nimib, nimibook
 import std / [os, strutils, strscans, strformat]
 
-nbInit
-nbUseNimibook
+nbInit(theme = useNimibook)
 
 # the following is very dependent on how source is written
 proc readBookConfigFields: seq[string] =

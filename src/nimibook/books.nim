@@ -25,7 +25,7 @@ proc cleanRootFolder(book: Book) =
   for f in walkDirRec(book.toc.path):
     let ext = f.splitFile().ext
     if f notin srcurls and ext != ".mustache" and ext != ".nims" and ext != ".cfg" and not f.contains(".git"):
-      # debugEcho("    >> removeFile ", f)
+      echo "[nimibook] remove file: ", f
       removeFile(f)
 
 proc shouldDelete(book: Book, dir, f: string): bool =
@@ -51,7 +51,7 @@ proc cleanDocFolder(book: Book) =
   # debugEcho("walkDirRec ", docDir)
   for f in walkDirRec(docDir):
     if shouldDelete(book, docDir, f):
-      # debugEcho("    >> removeFile ", f)
+      echo "[nimibook] remove file: ", f
       removeFile(f)
 
   for f in walkDirRec(docDir, yieldFilter = {pcDir}):
