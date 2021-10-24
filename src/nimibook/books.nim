@@ -90,7 +90,18 @@ proc initBookFile(book: Book) =
       echo "[nimibook] creating file ", f
       file.close()
 
+proc addConfig() =
+  const cfg = """
+[nimib]
+srcDir = "book"
+homeDir = "docs"
+"""
+  if not fileExists("nimib.toml"):
+    echo "[nimibook] adding nimib.toml"
+    writeFile("nimib.toml", cfg)
+
 proc init*(book: Book) =
+  addConfig()
   populateAssets(book.toc.path, false)
   initBookFile(book)
 
