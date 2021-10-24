@@ -4,16 +4,16 @@ import nimibook / [types, defaults, paths]
 proc inc(levels: var seq[int]) =
   levels[levels.high] = levels[levels.high] + 1
 
-# TODO comment debugEcho before merge
 proc add(toc: var Toc, entry: Entry) =
   let fullPath = entry.path
   # debugEcho "==> toc.add Entry <==\n    fullPath>", fullPath
   if not fileExists(fullPath):
-    raise newException(IOError, fmt"Error entry {fullpath} doesn't exist.")
+    echo fmt"[nimibook.warning] Toc entry {fullpath} doesn't exist."
   toc.entries.add entry
 
 template populateAssets*(rootfolder: string, force: bool = false) =
   const baseRessources = currentSourcePath().parentDir() / "resources"
+  # debugEcho "[nimibook] baseResources", baseRessources
   let
     assetsSrc = baseRessources / "assets"
     assetsTarget = getCurrentDir() / "docs" / "assets"
@@ -25,21 +25,25 @@ template populateAssets*(rootfolder: string, force: bool = false) =
   # debugEcho("mustacheSrc >> ", mustacheSrc)
   # debugEcho("mustacheTarget >> ", mustacheTarget)
 
+  if not dirExists(mustacheTarget):
+    echo "[nimibook] creating template directory: ", mustacheTarget
+    createDir(mustacheTarget)
+
   for file in walkDir(mustacheSrc):
     let file = file.path
     let name = file.splitPath().tail
     # Copy default mustache file
     if not fileExists(mustacheTarget / name) or force:
-      # debugEcho "copyFile(", file , ", ", mustacheTarget, ") "
+      echo fmt"[nimibook] creating/overwriting template file:", mustacheTarget
       copyFile(file, mustacheTarget / name)
 
   if not dirExists(assetsTarget):
-    # debugEcho "==> copyDir(", assetsSrc, ", ", assetsTarget, ")"
+    echo "[nimibook] creating assets directory: ", assetsTarget
     copyDir(assetsSrc, assetsTarget)
   else:
     if force:
       removeDir(assetsTarget)
-      # debugEcho "==> copyDir(", assetsSrc, ", ", assetsTarget, ")"
+      echo "[nimibook] removing and creating again assets directory: ", assetsTarget
       copyDir(assetsSrc, assetsTarget)
 
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
