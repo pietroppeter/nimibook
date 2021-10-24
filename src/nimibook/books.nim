@@ -82,7 +82,12 @@ proc initBookFile(book: Book) =
   let srcurls = book.files
   for f in srcurls:
     if not fileExists(f):
+      let (dir, _, _) = f.splitFile()
+      if not dir.dirExists:
+        echo "[nimibook] creating directory ", dir
+        createDir(dir)
       let file = open(f, fmWrite)
+      echo "[nimibook] creating file ", f
       file.close()
 
 proc init*(book: Book) =
