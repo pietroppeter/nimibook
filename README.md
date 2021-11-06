@@ -55,13 +55,13 @@ See [nimibook] or [Nimibook repo](https://github.com/pietroppeter/nimibook
 
 ## Tips and Tricks 
 
+* to build a single page (e.g. `book/mypage.nim`) run first `./nbook dump` (which dumps table of contents and other context data). If `book.json` is present, then you can build your page with: `nim r book/mypage.nim`
 * Each book requires its own ToC and thus will be its own CLI Apps
 * `nbook.nim` is the default name used - it is possible to use another name.
 * Multiple books `nbook.nim` cannot share the same folder. Instead, either split them into two separate books, or merge them into one.
 * Some commands : 
   * `./nbook clean` will remove generated files and restart from a clean state.
   * `./nbook update` will update assets and mustache template.
-  * 
   * These two commands will modify installed files, use them with caution if you customized files locally.
 
 ### Analytics
