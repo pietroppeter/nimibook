@@ -24,13 +24,13 @@ nimibook currently provides minimal functionality to create a book and support a
 
 ## Installation
 
-To install Nimibook simply use : ``nimble install nimibook``
+To install Nimibook simply use : `nimble install nimibook`
 
 ## Usage
 
-1. Write your content using [nimib] or simple markdown files in the ``book`` folder.
+1. Write your content using [nimib] or simple markdown files in the `book` folder.
 
-2. Use the Table of Content (ToC) DSL to link chapters to content in ``nbook.nim``.
+2. Use the Table of Content (ToC) DSL to link chapters to content in `nbook.nim`.
 Example : 
 ```nim
 import nimibook
@@ -44,23 +44,24 @@ nimibookCli(book)
 See [nimibook] or [Nimibook repo](https://github.com/pietroppeter/nimibook
 ) for more documentations and examples.
 
-3. Generate your very own CLI tools or use Nimble tasks with ``nim c -d:release nbook.nim``.
-  * ``./nbook init`` to init your book structure. **This command must be ran at least once**. 
-  * ``./nbook build`` to build your book.
+3. Generate your very own CLI tools or use Nimble tasks with `nim c -d:release nbook.nim`.
+  * `./nbook init` to init your book structure. **This command must be ran at least once**. 
+  * `./nbook build` to build your book.
 
-4. Whenever your Table of Content changes (add/remove files, changes sections organization), recompile your ``nbook`` and run the ``build`` command : ``nim c -d:release nbook.nim && ./nbook build``
-  * It is also doable in one command : ``nim r -d:release nbook.nim build``
-  * You don't need to call the ``init`` command again.
-  * Rinse and repeat until your ToC is done ! Then you can just edit files and call ``build`` without recompiling.
+4. Whenever your Table of Content changes (add/remove files, changes sections organization), recompile your `nbook` and run the `build` command : `nim c -d:release nbook.nim && ./nbook build`
+  * It is also doable in one command : `nim r -d:release nbook.nim build`
+  * You don't need to call the `init` command again.
+  * Rinse and repeat until your ToC is done ! Then you can just edit files and call `build` without recompiling.
 
 ## Tips and Tricks 
 
 * Each book requires its own ToC and thus will be its own CLI Apps
-* ``nbook.nim`` is the default name used - it is possible to use another name.
-* Multiple books ``nbook.nim`` cannot share the same folder. Instead, either split them into two separate books, or merge them into one.
+* `nbook.nim` is the default name used - it is possible to use another name.
+* Multiple books `nbook.nim` cannot share the same folder. Instead, either split them into two separate books, or merge them into one.
 * Some commands : 
-  * ``./nbook clean`` will remove generated files and restart from a clean state.
-  * ``./nbook update`` will update assets and mustache template.
+  * `./nbook clean` will remove generated files and restart from a clean state.
+  * `./nbook update` will update assets and mustache template.
+  * 
   * These two commands will modify installed files, use them with caution if you customized files locally.
 
 ### Analytics
