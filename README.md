@@ -29,16 +29,28 @@ To install Nimibook simply use : `nimble install nimibook`
 ## Usage
 
 1. Write your content using [nimib] or simple markdown files in the `book` folder.
+   The basic template for an empty page is:
+```nim
+import nimib, nimibook
+
+nbInit(theme = useNimibook)
+# content here
+nbSave
+```
 
 2. Use the Table of Content (ToC) DSL to link chapters to content in `nbook.nim`.
 Example : 
 ```nim
 import nimibook
 
-var book = newBookFromToc("Dummy Book", "book"): # Create a new book called "Dummy", whose content is in the folder "book"
-  section("Dummy", "index"): # Create a new section called "Dummy", its content is the file "index.nim". Notice how the .nim extensions is optionnal
-    entry("Simple example", "page_1.nim") # Create a new entry called "Simple example", its content is the file "page_1.nim"
+# Create a new book called "Dummy", whose content is in the folder "book"
+var book = newBookFromToc("Dummy Book", "book"):
+  # Create a new section called "Dummy", its content is the file "index.nim"
+  section("Dummy", "index"): # Note how the .nim extensions is optional
+    # Create a new entry called "Simple example", its content is the file "page_1.nim"
+    entry("Simple example", "page_1.nim")
 
+# access to nimibook cli which will allow to build the book
 nimibookCli(book)
 ```
 See [nimibook] or [Nimibook repo](https://github.com/pietroppeter/nimibook
@@ -55,7 +67,9 @@ See [nimibook] or [Nimibook repo](https://github.com/pietroppeter/nimibook
 
 ## Tips and Tricks 
 
-* to build a single page (e.g. `book/mypage.nim`) run first `./nbook dump` (which dumps table of contents and other context data). If `book.json` is present, then you can build your page with: `nim r book/mypage.nim`
+* to build a single page (e.g. `book/mypage.nim`) run first `./nbook dump`
+(which dumps a `book.json` file that contains a table of contents and other context data).
+If `book.json` is present, then you can build your page with: `nim r book/mypage.nim`
 * Each book requires its own ToC and thus will be its own CLI Apps
 * `nbook.nim` is the default name used - it is possible to use another name.
 * Multiple books `nbook.nim` cannot share the same folder. Instead, either split them into two separate books, or merge them into one.
