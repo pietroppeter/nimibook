@@ -1,8 +1,7 @@
 import nimib, nimibook
 import osproc, sugar, strutils, strformat
 
-nbInit
-nbUseNimibook
+nbInit(theme = useNimibook)
 
 var tasks: string
 withDir("..".AbsoluteDir):

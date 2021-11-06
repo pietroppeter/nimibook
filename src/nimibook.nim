@@ -2,7 +2,7 @@ import nimibook / [types, render, tocs, publishers, defaults, docs, books]
 export types, render, tocs, publishers, defaults, docs, books
 
 template nbUseNimibook* =
-  nbDoc.useNimibook
+  nb.useNimibook
 
 proc printHelp() =
   echo """

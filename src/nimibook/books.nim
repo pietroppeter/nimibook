@@ -25,7 +25,7 @@ proc cleanRootFolder(book: Book) =
   for f in walkDirRec(book.toc.path):
     let ext = f.splitFile().ext
     if f notin srcurls and ext != ".mustache" and ext != ".nims" and ext != ".cfg" and not f.contains(".git"):
-      # debugEcho("    >> removeFile ", f)
+      echo "[nimibook] remove file: ", f
       removeFile(f)
 
 proc shouldDelete(book: Book, dir, f: string): bool =
@@ -51,7 +51,7 @@ proc cleanDocFolder(book: Book) =
   # debugEcho("walkDirRec ", docDir)
   for f in walkDirRec(docDir):
     if shouldDelete(book, docDir, f):
-      # debugEcho("    >> removeFile ", f)
+      echo "[nimibook] remove file: ", f
       removeFile(f)
 
   for f in walkDirRec(docDir, yieldFilter = {pcDir}):
@@ -90,7 +90,18 @@ proc initBookFile(book: Book) =
       echo "[nimibook] creating file ", f
       file.close()
 
+proc addConfig() =
+  const cfg = """
+[nimib]
+srcDir = "book"
+homeDir = "docs"
+"""
+  if not fileExists("nimib.toml"):
+    echo "[nimibook] adding nimib.toml"
+    writeFile("nimib.toml", cfg)
+
 proc init*(book: Book) =
+  addConfig()
   populateAssets(book.toc.path, false)
   initBookFile(book)
 
