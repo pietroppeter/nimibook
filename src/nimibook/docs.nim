@@ -1,9 +1,9 @@
-import std / [strutils, os, enumerate]
+import std / [strutils, os, enumerate, pathnorm]
 import nimib, nimib / paths
 import nimibook / [types, books, entries, render]
 
 proc useNimibook*(doc: var NbDoc) =
-  doc.context["path_to_root"] = doc.homeDirRel.string & "/" # I probably should make sure to have / at the end
+  doc.context["path_to_root"] = doc.srcDirRel.string & "/" # I probably should make sure to have / at the end
   doc.context["title"] = doc.thisFileRel.string
 
   # templates are in nbSrcDir
@@ -28,7 +28,7 @@ proc useNimibook*(doc: var NbDoc) =
 
   # process toc
   for i, entry in enumerate(book.toc.entries.mitems):
-    if entry.url == doc.filename.replace('\\', '/'): # replace needed for windows
+    if normalizePath(entry.url) == normalizePath(doc.filename.replace('\\', '/')): # replace needed for windows
       entry.isActive = true
       if i > 0:
         doc.context["previous"] = book.toc.entries[i-1].url

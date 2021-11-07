@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.2.0"
+version       = "0.2.1"
 author        = "Pietro Peterlongo"
 description   = "A port of mdbook to nim"
 license       = "MIT"
@@ -10,7 +10,7 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.4.0"
-requires "nimib >= 0.2"
+requires "nimib >= 0.2.1"
 requires "jsony >= 1.0.3"
 
 import os
