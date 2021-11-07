@@ -3,7 +3,7 @@ import nimib, nimib / paths
 import nimibook / [types, books, entries, render]
 
 proc useNimibook*(doc: var NbDoc) =
-  doc.context["path_to_root"] = doc.homeDirRel.string & "/" # I probably should make sure to have / at the end
+  doc.context["path_to_root"] = doc.srcDirRel.string & "/" # I probably should make sure to have / at the end
   doc.context["title"] = doc.thisFileRel.string
 
   # templates are in nbSrcDir
