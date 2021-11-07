@@ -13,17 +13,17 @@
         <meta name="theme-color" content="#ffffff" />
 
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐳</text></svg>">
-        <link rel="stylesheet" href="../docs/assets/css/variables.css">
-        <link rel="stylesheet" href="../docs/assets/css/general.css">
-        <link rel="stylesheet" href="../docs/assets/css/chrome.css">
+        <link rel="stylesheet" href="./assets/css/variables.css">
+        <link rel="stylesheet" href="./assets/css/general.css">
+        <link rel="stylesheet" href="./assets/css/chrome.css">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../docs/assets/FontAwesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="./assets/FontAwesome/css/font-awesome.min.css">
 
         <!-- Highlight.js Stylesheets - I could use nimib native highlight but let's keep it for styling... -->
-        <link rel="stylesheet" href="../docs/assets/css/highlight.css">
-        <link rel="stylesheet" href="../docs/assets/css/tomorrow-night.css">
-        <link rel="stylesheet" href="../docs/assets/css/ayu-highlight.css">
+        <link rel="stylesheet" href="./assets/css/highlight.css">
+        <link rel="stylesheet" href="./assets/css/tomorrow-night.css">
+        <link rel="stylesheet" href="./assets/css/ayu-highlight.css">
 
         <!-- Custom theme stylesheets - why the "../"? -->
 
@@ -34,7 +34,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "../docs//assets";
+            var path_to_root = ".//assets";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -82,62 +82,62 @@
             <div class="sidebar-scrollbox">
                                 <ol class="chapter">
                   <li class="chapter-item expanded ">
-                    <a href="../docs/index.html" tabindex="0">
+                    <a href="./index.html" tabindex="0">
                       <strong aria-hidden="true">1.</strong> Introduction
                     </a>
                   </li>
                   <li>
                   <ol class="section">
                   <li class="chapter-item expanded ">
-                    <a href="../docs/content.html" tabindex="0">
+                    <a href="./content.html" tabindex="0">
                       <strong aria-hidden="true">1.1.</strong> Content
                     </a>
                   </li>
                   <li class="chapter-item expanded ">
-                    <a href="../docs/tocdsl.html" tabindex="0">
+                    <a href="./tocdsl.html" class="active" tabindex="0">
                       <strong aria-hidden="true">1.2.</strong> Toc DSL
                     </a>
                   </li>
                   <li class="chapter-item expanded ">
-                    <a href="../docs/configuration.html" tabindex="0">
+                    <a href="./configuration.html" tabindex="0">
                       <strong aria-hidden="true">1.3.</strong> Configuration
                     </a>
                   </li>
                   <li class="chapter-item expanded ">
-                    <a href="../docs/tasks.html" tabindex="0">
+                    <a href="./tasks.html" tabindex="0">
                       <strong aria-hidden="true">1.4.</strong> Tasks
                     </a>
                   </li>
                   </ol>
                   </li>
                   <li class="chapter-item expanded ">
-                    <a href="../docs/tocexample/index.html" tabindex="0">
+                    <a href="./tocexample/index.html" tabindex="0">
                       <strong aria-hidden="true">2.</strong> Example toc structure
                     </a>
                   </li>
                   <li>
                   <ol class="section">
                   <li class="chapter-item expanded ">
-                    <a href="../docs/tocexample/nested.html" tabindex="0">
+                    <a href="./tocexample/nested.html" tabindex="0">
                       <strong aria-hidden="true">2.1.</strong> Nested section
                     </a>
                   </li>
                   <li>
                   <ol class="section">
                   <li class="chapter-item expanded ">
-                    <a href="../docs/tocexample/nested_entry.html" tabindex="0">
+                    <a href="./tocexample/nested_entry.html" tabindex="0">
                       <strong aria-hidden="true">2.1.1.</strong> Entry in nested section
                     </a>
                   </li>
                   </ol>
                   </li>
                   <li class="chapter-item expanded ">
-                    <a href="../docs/tocexample/back_to_parent.html" tabindex="0">
+                    <a href="./tocexample/back_to_parent.html" tabindex="0">
                       <strong aria-hidden="true">2.2.</strong> Back to parent section
                     </a>
                   </li>
                   <li class="chapter-item expanded ">
-                    <a href="../docs/tocexample/draft.html" tabindex="0">
+                    <a href="./tocexample/draft.html" tabindex="0">
                       Draft chapter
                     </a>
                   </li>
@@ -211,7 +211,13 @@ let book = newBookFromToc(&quot;Example book&quot;, &quot;book&quot;):
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="./content.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
+                            <a rel="next" href="./configuration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -219,7 +225,13 @@ let book = newBookFromToc(&quot;Example book&quot;, &quot;book&quot;):
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="./content.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
+                    <a rel="next" href="./configuration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
@@ -230,9 +242,9 @@ let book = newBookFromToc(&quot;Example book&quot;, &quot;book&quot;):
 
 
 
-        <script src="../docs/assets/js/clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../docs/assets/js/highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../docs/assets/js/book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="./assets/js/clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="./assets/js/highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="./assets/js/book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
 
