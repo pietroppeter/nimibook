@@ -1,8 +1,8 @@
 import std / [os, strutils]
-import nimibook / [types, commands, theme]
+import nimibook / [types, commands, themes]
 import nimib
 
-proc nimPublish*(entry: Entry) =
+proc buildNim*(entry: Entry) =
   let
     cmd = "nim"
     args = ["r", "-d:release", "-f", "--verbosity:0", "--hints:off", entry.path]
@@ -10,25 +10,25 @@ proc nimPublish*(entry: Entry) =
   if execShellCmd(cmd & " " & args.join(" ")) != 0:
     quit(1)
 
-proc mdPublish*(entry: Entry) =
+proc buildMd*(entry: Entry) =
   nbInit(theme = useNimibook, thisFileRel = ".." / entry.path) # entry path contains srcDir (why? should fix that!)
   nbText nb.source
   nbSave
   setCurrentDir nb.initDir
 
-proc publish*(entry: Entry) =
+proc build*(entry: Entry) =
   let splitted = entry.path.splitFile()
   if splitted.ext == ".nim":
-    nimPublish(entry)
+    buildNim(entry)
   elif splitted.ext == ".md":
-    mdPublish(entry)
+    buildMd(entry)
   else:
     raise newException(IOError, "Error invalid file extension.")
 
-proc publish*(book: Book) =
+proc build*(book: Book) =
   dump book
   for entry in book.toc.entries:
-    echo "[nimibook] publish entry: ", entry.path
-    entry.publish()
+    echo "[nimibook] build entry: ", entry.path
+    build entry
   cleanjson book
   check book

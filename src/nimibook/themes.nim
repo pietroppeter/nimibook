@@ -1,6 +1,6 @@
 import std / [strutils, os, enumerate, pathnorm]
 import nimib
-import nimibook / [types, commands, entries, render]
+import nimibook / [types, commands, entries, renders]
 
 const document* = """
 <!DOCTYPE HTML>
