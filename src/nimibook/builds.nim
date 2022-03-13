@@ -30,5 +30,4 @@ proc build*(book: Book) =
   for entry in book.toc.entries:
     echo "[nimibook] build entry: ", entry.path
     build entry
-  cleanjson book
   check book
