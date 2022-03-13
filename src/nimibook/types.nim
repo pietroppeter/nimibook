@@ -12,7 +12,7 @@ type
   Toc* = object
     path*: string
     entries*: seq[Entry]
-  BookConfig* = object ## All the fields in this object can be set from Toml configuration file under [nimibook]
+  BookConfig* = object ## All the fields in this object can be set from Toml configuration in a [nimibook] section
     title*: string ## Title of the book
     language*: string ## The main language of the book, which is used as a language attribute `<html lang="en">` for example (defaults to en)
     description*: string ## A description for the book, which is added as meta information in the html <head> of each page
@@ -29,6 +29,7 @@ type
     cfg*: BookConfig
     theme_option*: Table[string, string] # cannot find it mentioned in mdbook docs. by default is a Table with available themes and their names.
     toc*: Toc
+    keep*: seq[string] # used in commands.shouldDelete but unclear if it is really used or not
 
 template expose(ObjType, cfg, field, FieldType: untyped) =
   template `field`*(o: ObjType): FieldType =
