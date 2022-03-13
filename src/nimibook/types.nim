@@ -1,6 +1,7 @@
 import nimib / types
 import std / [tables, os]
 export tables
+import macros
 
 type
   Entry* = object
@@ -35,29 +36,32 @@ template expose(ObjType, cfg, field, FieldType: untyped) =
   template `field`*(o: ObjType): FieldType =
     o.`cfg`.`field`
 
-expose Book, cfg, title, string
-expose Book, cfg, language, string
-expose Book, cfg, description, string
-expose Book, cfg, default_theme, string
-expose Book, cfg, preferred_dark_theme, string
-expose Book, cfg, git_repository_url, string
-expose Book, cfg, git_repository_icon, string
-expose Book, cfg, plausible_analytics_url, string
-expose Book, cfg, favicon_escaped, string
-#[ I would like to have a macro that makes the above lines equivalent to:
+  template `field =`*(o: ObjType, v: FieldType): FieldType =
+    o.`cfg`.`field` = v
 
+macro expose(ObjType, myCfg, body: untyped) =
+  echo body.treerepr
+  result = newStmtList()
+  for arg in body:
+    doAssert arg.kind == nnkCall
+    let f = arg[0]
+    let typ = arg[1][0] # [1] is nnkStmtList w/ 1 element
+    result.add quote do:
+      expose `ObjType`, `myCfg`, `f`, `typ`
+    echo arg.treerepr
+  echo result.repr
+
+# thanks to vindaar, see https://stackoverflow.com/q/71459423/4178189
 expose(Book, cfg):
-  title, string
-  language, string
-  description, string
-  default_theme, string
-  preferred_dark_theme, string
-  git_repository_url, string
-  git_repository_icon, string
-  plausible_analytics_url, string
-  favicon_escaped, string
-
-]#
+  title: string
+  language: string
+  description: string
+  default_theme: string
+  preferred_dark_theme: string
+  git_repository_url: string
+  git_repository_icon: string
+  plausible_analytics_url: string
+  favicon_escaped: string
 
 # the following two are adapted from nimib / types
 proc srcDir*(book: Book): AbsoluteDir =
