@@ -1,5 +1,5 @@
 import std / [os, strutils, sequtils, sugar]
-import nimibook / [types, entries, tocs]
+import nimibook / [types, entries, assets]
 import jsony
 
 proc dump*(book: Book) =

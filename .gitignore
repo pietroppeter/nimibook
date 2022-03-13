@@ -1,5 +1,5 @@
-bin/
-docs/
-book/book.json
+docs/*
+examples/docs/*
 nbook
 nbook.exe
+x_*

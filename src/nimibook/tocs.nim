@@ -11,43 +11,7 @@ proc add(toc: var Toc, entry: Entry) =
     echo fmt"[nimibook.warning] Toc entry {fullpath} doesn't exist."
   toc.entries.add entry
 
-template populateAssets*(rootfolder: string, force: bool = false) =
-  const baseRessources = currentSourcePath().parentDir() / "resources"
-  # debugEcho "[nimibook] baseResources", baseRessources
-  let
-    assetsSrc = baseRessources / "assets"
-    assetsTarget = getCurrentDir() / "docs" / "assets"
-    mustacheSrc = baseRessources / "templates/"
-    mustacheTarget = getCurrentDir() / rootfolder
-
-  # debugEcho("assetsSrc >> ", assetsSrc)
-  # debugEcho("assetsTarget >> ", assetsTarget)
-  # debugEcho("mustacheSrc >> ", mustacheSrc)
-  # debugEcho("mustacheTarget >> ", mustacheTarget)
-
-  if not dirExists(mustacheTarget):
-    echo "[nimibook] creating template directory: ", mustacheTarget
-    createDir(mustacheTarget)
-
-  for file in walkDir(mustacheSrc):
-    let file = file.path
-    let name = file.splitPath().tail
-    # Copy default mustache file
-    if not fileExists(mustacheTarget / name) or force:
-      echo fmt"[nimibook] creating/overwriting template file:", mustacheTarget
-      copyFile(file, mustacheTarget / name)
-
-  if not dirExists(assetsTarget):
-    echo "[nimibook] creating assets directory: ", assetsTarget
-    copyDir(assetsSrc, assetsTarget)
-  else:
-    if force:
-      removeDir(assetsTarget)
-      echo "[nimibook] removing and creating again assets directory: ", assetsTarget
-      copyDir(assetsSrc, assetsTarget)
-
 template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
-  populateAssets(rootfolder, false)
   var book = Book(book_title: booklabel)
   book.setDefaults
   book.path_to_root = rootfolder

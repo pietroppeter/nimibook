@@ -1,5 +1,5 @@
-import nimibook / [types, render, tocs, publishers, defaults, docs, books]
-export types, render, tocs, publishers, defaults, docs, books
+import nimibook / [types, render, tocs, publishers, defaults, theme, commands]
+export types, render, tocs, publishers, defaults, theme, commands
 
 template nbUseNimibook* =
   nb.useNimibook
