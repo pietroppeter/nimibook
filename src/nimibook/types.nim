@@ -36,7 +36,7 @@ template expose(ObjType, cfg, field, FieldType: untyped) =
   template `field`*(o: ObjType): FieldType =
     o.`cfg`.`field`
 
-  template `field =`*(o: ObjType, v: FieldType): FieldType =
+  template `field =`*(o: var ObjType, v: FieldType) =
     o.`cfg`.`field` = v
 
 macro expose(ObjType, myCfg, body: untyped) =
