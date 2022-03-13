@@ -327,7 +327,6 @@ const document* = """
 
 proc useNimibook*(doc: var NbDoc) =
   doc.context["path_to_root"] = doc.srcDirRel.string & "/" # I probably should make sure to have / at the end
-  doc.context["title"] = doc.thisFileRel.string
 
   # templates are in memory
   doc.partials["document"] = document
@@ -346,14 +345,16 @@ proc useNimibook*(doc: var NbDoc) =
   doc.context["favicon_escaped"] = book.favicon_escaped
   doc.context["preferred_dark_theme"] = book.preferred_dark_theme
   doc.context["theme_option"] = book.theme_option
-  doc.context["book_title"] = book.book_title
+  doc.context["book_title"] = book.title
   doc.context["git_repository_url"] = book.git_repository_url
   doc.context["git_repository_icon"] = book.git_repository_icon
   doc.context["plausible_analytics_url"] = book.plausible_analytics_url
 
+  var thisEntry: Entry
   # process toc
   for i, entry in enumerate(book.toc.entries.mitems):
     if normalizePath(entry.url) == normalizePath(doc.filename.replace('\\', '/')): # replace needed for windows
+      thisEntry = entry
       entry.isActive = true
       if i > 0:
         doc.context["previous"] = book.toc.entries[i-1].url
@@ -361,3 +362,6 @@ proc useNimibook*(doc: var NbDoc) =
         doc.context["next"] = book.toc.entries[i+1].url
       break
   doc.partials["toc"] = render book.toc
+
+  # html.head.title (what appears in the tab)
+  doc.context["title"] = thisEntry.title & " - " & book.title
