@@ -1,4 +1,5 @@
-import std / tables
+import nimib / types
+import std / [tables, os]
 export tables
 
 type
@@ -11,36 +12,71 @@ type
   Toc* = object
     path*: string
     entries*: seq[Entry]
-  Book* = object
-    # for consistency with template values, we use snake case for fields of this object
-    # if not indicated otherwise, these fields are present in document.mustache and they are directly adapted from index.hbs
-    # documentation for mdbook is in this two pages:
-    #   - https://rust-lang.github.io/mdBook/format/theme/index-hbs.html
-    #   - https://rust-lang.github.io/mdBook/format/config.html
-    # sometimes a field appears in both places with different descriptions (e.g. language)
-    # documentation comments below come directly from mdbook documentation (unless otherwise stated)
-    #
-    # required fields (in the sense the mustache template will work bad if they are not present):
-    book_title*: string ## Title of the book as specified in `newBookFromToc`
-    # chapter_title: not needed?
-    title*: string # title of the page (what appears in browser tab); default in mdbook is "<chapter_title> - <book_title>" where chapter_title comes from toc
+  BookConfig* = object ## All the fields in this object can be set from Toml configuration file under [nimibook]
+    title*: string ## Title of the book
     language*: string ## The main language of the book, which is used as a language attribute `<html lang="en">` for example (defaults to en)
     description*: string ## A description for the book, which is added as meta information in the html <head> of each page
-    path_to_root*: string ## This is a path containing exclusively `../`'s that points to the root of the book from the current file. Since the original directory structure is maintained, it is useful to prepend relative links with this `path_to_root`.
     default_theme*: string ## The theme color scheme to select by default in the 'Change Theme' dropdown. Defaults to light.
     preferred_dark_theme*: string ## The default dark theme. This theme will be used if the browser requests the dark version of the site via the ['prefers-color-scheme'](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) CSS media query. Defaults to navy.
-    theme_option*: Table[string, string] # cannot find it mentioned in mdbook docs. by default is a Table with available themes and their names.
-    # optional stuff:
     git_repository_url*: string ## A url to the git repository for the book. If provided an icon link will be output in the menu bar of the book.
     git_repository_icon*: string ## The FontAwesome icon class to use for the git repository link. Defaults to `fa-github`.
-    favicon_escaped*: string ## (new in nimibook) provide your fully custom `<link rel="icon" href="...">`. defaults to whale emoji as in nimib.
     plausible_analytics_url*: string ## (new in nimibook) if non empty it will include plausible analytics script in every page.
-    keep*: seq[string]
-    # toc object. in mdbook there is a similar `chapters` field but toc is handled differently anyway. not present in document.mustache
+    favicon_escaped*: string ## (new in nimibook) provide your fully custom `<link rel="icon" href="...">`. defaults to whale emoji as in nimib.
+  Book* = object
+    cfgDir*: AbsoluteDir
+    rawCfg*: string
+    nbCfg*: NbConfig
+    cfg*: BookConfig
+    theme_option*: Table[string, string] # cannot find it mentioned in mdbook docs. by default is a Table with available themes and their names.
     toc*: Toc
+
+template expose(ObjType, cfg, field, FieldType: untyped) =
+  template `field`*(o: ObjType): FieldType =
+    o.`cfg`.`field`
+
+expose Book, cfg, title, string
+expose Book, cfg, language, string
+expose Book, cfg, description, string
+expose Book, cfg, default_theme, string
+expose Book, cfg, preferred_dark_theme, string
+expose Book, cfg, git_repository_url, string
+expose Book, cfg, git_repository_icon, string
+expose Book, cfg, plausible_analytics_url, string
+expose Book, cfg, favicon_escaped, string
+#[ I would like to have a macro that makes the above lines equivalent to:
+
+expose(Book, cfg):
+  title, string
+  language, string
+  description, string
+  default_theme, string
+  preferred_dark_theme, string
+  git_repository_url, string
+  git_repository_icon, string
+  plausible_analytics_url, string
+  favicon_escaped, string
+
+]#
+
+# the following two are adapted from nimib / types
+proc srcDir*(book: Book): AbsoluteDir =
+  if book.nbCfg.srcDir.isAbsolute:
+    book.nbCfg.srcDir.AbsoluteDir
+  else:
+    book.cfgDir / book.nbCfg.srcDir.RelativeDir
+
+proc homeDir*(book: Book): AbsoluteDir =
+  if book.nbCfg.homeDir.isAbsolute:
+    book.nbCfg.homeDir.AbsoluteDir
+  else:
+    book.cfgDir / book.nbCfg.homeDir.RelativeDir
 
 
 #[
+documentation for mdbook is in this two pages:
+  - https://rust-lang.github.io/mdBook/format/theme/index-hbs.html
+  - https://rust-lang.github.io/mdBook/format/config.html
+
 here is the list index.hbs adapted from mdbook to mustache
 current list is what I have not yet put in Book object:
 - is_print
