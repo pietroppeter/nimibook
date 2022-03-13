@@ -1,5 +1,5 @@
 import std / [os, strformat, macros]
-import nimibook / [types, defaults, paths]
+import nimibook / [types, configs, paths]
 
 proc inc(levels: var seq[int]) =
   levels[levels.high] = levels[levels.high] + 1
