@@ -9,9 +9,9 @@ type
     path*: string
     levels*: seq[int]
     isNumbered*: bool
+    isDraft*: bool
     isActive*: bool
   Toc* = object
-    path*: string
     entries*: seq[Entry]
   BookConfig* = object ## All the fields in this object can be set from Toml configuration in a [nimibook] section
     title*: string ## Title of the book
@@ -24,6 +24,7 @@ type
     plausible_analytics_url*: string ## (new in nimibook) if non empty it will include plausible analytics script in every page.
     favicon_escaped*: string ## (new in nimibook) provide your fully custom `<link rel="icon" href="...">`. defaults to whale emoji as in nimib.
   Book* = object
+    initDir*: AbsoluteDir
     cfgDir*: AbsoluteDir
     rawCfg*: string
     nbCfg*: NbConfig
@@ -40,7 +41,7 @@ template expose(ObjType, cfg, field, FieldType: untyped) =
     o.`cfg`.`field` = v
 
 macro expose(ObjType, myCfg, body: untyped) =
-  echo body.treerepr
+  #echo body.treerepr
   result = newStmtList()
   for arg in body:
     doAssert arg.kind == nnkCall
@@ -48,8 +49,8 @@ macro expose(ObjType, myCfg, body: untyped) =
     let typ = arg[1][0] # [1] is nnkStmtList w/ 1 element
     result.add quote do:
       expose `ObjType`, `myCfg`, `f`, `typ`
-    echo arg.treerepr
-  echo result.repr
+    #echo arg.treerepr
+  #echo result.repr
 
 # thanks to vindaar, see https://stackoverflow.com/q/71459423/4178189
 expose(Book, cfg):

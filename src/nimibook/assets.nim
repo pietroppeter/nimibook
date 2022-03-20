@@ -1,7 +1,7 @@
-template populateAssets*(rootfolder: string, force: bool = false) =  
+template populateAssets*(homeDir: string, force: bool = false) =  
   const assetsSrc = currentSourcePath().parentDir() / "assets"
   let
-    assetsTarget = getCurrentDir() / "docs" / "assets"
+    assetsTarget = homeDir / "assets"
 
   if not dirExists(assetsTarget):
     echo "[nimibook] creating assets directory: ", assetsTarget

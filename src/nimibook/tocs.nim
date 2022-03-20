@@ -1,24 +1,20 @@
 import std / [os, strformat, macros]
-import nimibook / [types, configs, paths]
+import nimibook / [types, paths]
 
 proc inc(levels: var seq[int]) =
   levels[levels.high] = levels[levels.high] + 1
 
 proc add(toc: var Toc, entry: Entry) =
   let fullPath = entry.path
-  # debugEcho "==> toc.add Entry <==\n    fullPath>", fullPath
-  if not fileExists(fullPath):
+  # debugEcho "[nimibook.debug] toc.add Entry w fullPath: ", fullPath
+  if not entry.isDraft and not fileExists(fullPath):
     echo fmt"[nimibook.warning] Toc entry {fullpath} doesn't exist."
   toc.entries.add entry
 
-template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): Book =
-  var book = Book(book_title: booklabel)
-  book.setDefaults
-  book.path_to_root = rootfolder
-
-  var toc = Toc(path: rootfolder)
+template initToc*(body: untyped): Toc =
+  var toc: Toc
   var levels: seq[int] = @[1]
-  var folders: seq[string] = @[rootfolder]
+  var folders: seq[string] = @[]
 
   template entry(label, rfile: string, numbered = true) =
     let inputs = rfile.splitFile
@@ -27,7 +23,10 @@ template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): 
     if numbered:
       inc levels
 
-  template draft(label, rfile: string) = entry(label, rfile, numbered = false)
+  template draft(label, numbered = true) =
+    toc.add Entry(title: label, path: "", levels: levels, isNumbered: numbered, isDraft: true)
+    if numbered:
+      inc levels
 
   template section(label, rfile: string, sectionBody: untyped) =
     let inputs = rfile.splitFile
@@ -42,5 +41,4 @@ template newBookFromToc*(booklabel: string, rootfolder: string, body: untyped): 
     inc levels
 
   body
-  book.toc = toc
-  book
+  toc

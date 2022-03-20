@@ -1,8 +1,10 @@
-import std/[os, parseopt]
+import std / [os, parseopt]
 export os, parseopt
 
-import nimibook / [types, render, tocs, builds, defaults, theme, commands]
-export types, render, tocs, builds, defaults, theme, commands
+import nimibook / [types, renders, tocs, builds, defaults, themes, commands, configs]
+export types, renders, tocs, builds, defaults, themes, commands
+
+import nimib / paths
 
 # old api, instead of this use nbInit(theme=useNimibook). Could be deprecated and removed.
 template nbUseNimibook* =
@@ -18,7 +20,10 @@ build  : Build your book !
 update : Update assets (css, js, fonts).
 """
 
-template nimibookCli*(book: Book) =
+proc nimibookCli*(book: var Book) =
+  book.initDir = getCurrentDir().AbsoluteDir
+  echo "[nimibook] setting current directory to cfgDir: ", book.cfgDir.string
+  setCurrentDir(book.cfgDir.string)
   var p = initOptParser()
   var hasArgs = false
   while true:
@@ -47,3 +52,24 @@ template nimibookCli*(book: Book) =
         dump book
       else:
         printHelp()
+
+proc initBook*: Book =
+  result.setDefaults
+  result.loadConfig
+
+template initBookFromToc*(body: untyped): Book =
+  var book = initBook()
+  book.toc = initToc:
+    body
+  book
+
+# deprecated: api superseded by config based api (and wrong use of New)
+template newBookFromToc*(bookTitle: string, srcDir: string, body: untyped): Book =
+  echo "[nimibook.warning] newBookFromToc is deprecated in 0.3, use initBookFromToc"
+  var book = initBookFromToc:
+    body
+  book.title = bookTitle
+  if book.nbCfg.srcDir != srcDir:
+    echo "[nimibook.error] srcDir in config (", book.nbCfg.srcDir , ") different from srcDir from newBookFromToc: ", srcDir
+    quit(1)
+  book
