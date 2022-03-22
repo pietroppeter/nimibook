@@ -3,7 +3,7 @@ import nimibook / [tocs, entries, types]
 
 test "toc dsl":
   var book: Book
-  book.withToc:
+  book.toc = initToc:
     entry("Introduction", "index.nim", numbered = false)
     section("Part 1", "part1/index.nim"):
       entry("This is important", "important.nim")
@@ -16,6 +16,7 @@ test "toc dsl":
       draft("and I have not written this yet")
     entry("Appendix", "appendix.md", numbered = false)
 
+  echo book.renderToc
   check len(book.toc.entries) == 11
   check book.toc.entries[0].url == "index.html"
   check book.toc.entries[1].url == "part1/index.html"

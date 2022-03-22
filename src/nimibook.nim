@@ -59,8 +59,9 @@ proc initBook*: Book =
 
 template initBookWithToc*(body: untyped): Book =
   var book = initBook()
-  book.withToc:
+  book.toc = initToc:
     body
+  echo book.renderToc
   book
 
 # deprecated: api superseded by config based api (and wrong use of New)

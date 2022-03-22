@@ -14,7 +14,27 @@ proc url*(e: Entry): string =
   else:
     path
 
-proc render*(book: Book, e: Entry): string =
+proc hasSrc*(book: Book, e: Entry): bool =
+  fileExists(book.nbCfg.srcDir / e.path)
+
+proc hasOut*(book: Book, e: Entry): bool =
+  fileExists(book.nbCfg.homeDir / e.url)
+
+proc renderLine*(book: Book, e: Entry): string =
+  # hasSrc
+  if e.isDraft:
+    result.add "❔"
+  elif book.hasSrc e:
+    result.add "✅"
+  else:
+    result.add "❌"
+  # hasOut
+  if e.isDraft:
+    result.add " "
+  elif book.hasOut e:
+    result.add "✅"
+  else:
+    result.add "❌"
   result.add "  ".repeat(e.levels.len) & e.number
   if e.isNumbered:
     result.add " "
