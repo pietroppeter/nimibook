@@ -2,7 +2,8 @@ import unittest
 import nimibook / [tocs, entries, types]
 
 test "toc dsl":
-  let toc = initToc:
+  var book: Book
+  book.withToc:
     entry("Introduction", "index.nim", numbered = false)
     section("Part 1", "part1/index.nim"):
       entry("This is important", "important.nim")
@@ -15,7 +16,7 @@ test "toc dsl":
       draft("and I have not written this yet")
     entry("Appendix", "appendix.md", numbered = false)
 
-  check len(toc.entries) == 11
-  check toc.entries[0].url == "index.html"
-  check toc.entries[1].url == "part1/index.html"
-  check toc.entries[2].url == "part1/important.html"
+  check len(book.toc.entries) == 11
+  check book.toc.entries[0].url == "index.html"
+  check book.toc.entries[1].url == "part1/index.html"
+  check book.toc.entries[2].url == "part1/important.html"

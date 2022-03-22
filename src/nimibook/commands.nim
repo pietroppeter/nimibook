@@ -72,9 +72,15 @@ proc load*(path: string): Book =
     result = Book()
 
 proc check*(book: Book) =
+  var errors = 0
   for entry in book.toc.entries:
-    entry.check(book.homeDir.string)
-  echo "Check Book: OK"
+    if not entry.check(book.homeDir.string):
+      echo "[nimibook.error] build output not found: ", entry.url
+      inc errors
+  if errors > 0:
+    echo "[nimibook.error] could not find ", errors, " build outputs"
+    quit(1)
+  echo "[nimibook] check book: OK"
 
 proc initBookSrc*(book: Book) =
   let srcUrls = book.getSrcUrls

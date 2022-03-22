@@ -57,16 +57,16 @@ proc initBook*: Book =
   result.setDefaults
   result.loadConfig
 
-template initBookFromToc*(body: untyped): Book =
+template initBookWithToc*(body: untyped): Book =
   var book = initBook()
-  book.toc = initToc:
+  book.withToc:
     body
   book
 
 # deprecated: api superseded by config based api (and wrong use of New)
 template newBookFromToc*(bookTitle: string, srcDir: string, body: untyped): Book =
   echo "[nimibook.warning] newBookFromToc is deprecated in 0.3, use initBookFromToc"
-  var book = initBookFromToc:
+  var book = initBookWithToc:
     body
   book.title = bookTitle
   if book.nbCfg.srcDir != srcDir:

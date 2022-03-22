@@ -1,31 +1,28 @@
 import std / [os, strformat, macros]
-import nimibook / [types, paths]
+import nimibook / [types, paths, entries]
 export os.splitFile, os.normalizedPath, paths.formatFileName, paths.joinPath
 
 proc inc(levels: var seq[int]) =
   levels[levels.high] = levels[levels.high] + 1
 
-proc add(toc: var Toc, entry: Entry) =
-  let fullPath = entry.path
-  # debugEcho "[nimibook.debug] toc.add Entry w fullPath: ", fullPath
-  if not entry.isDraft and not fileExists(fullPath):
-    echo fmt"[nimibook.warning] Toc entry {fullpath} doesn't exist."
-  toc.entries.add entry
+proc add*(book: var Book, entry: Entry) =
+  echo book.render entry
+  book.toc.entries.add entry
 
-template initToc*(body: untyped): Toc =
-  var toc: Toc
+template withToc*(book: var Book, body: untyped) =
   var levels: seq[int] = @[1]
   var folders: seq[string] = @[]
+  echo "[nimibook] Table of contents: "
 
   template entry(label, rfile: string, numbered = true) =
     let inputs = rfile.splitFile
     let file = inputs.dir / formatFileName(inputs)
-    toc.add Entry(title: label, path: joinPath(folders, file).normalizedPath(), levels: levels, isNumbered: numbered)
+    book.add Entry(title: label, path: joinPath(folders, file).normalizedPath(), levels: levels, isNumbered: numbered)
     if numbered:
       inc levels
 
   template draft(label: string, numbered = true) =
-    toc.add Entry(title: label, path: "", levels: levels, isNumbered: numbered, isDraft: true)
+    book.add Entry(title: label, path: "", levels: levels, isNumbered: numbered, isDraft: true)
     if numbered:
       inc levels
 
@@ -34,7 +31,7 @@ template initToc*(body: untyped): Toc =
     let curfolder = inputs.dir
     let file = formatFileName(inputs)
     folders.add curfolder
-    toc.add Entry(title: label, path: joinPath(folders, file).normalizedPath(), levels: levels, isNumbered: true)
+    book.add Entry(title: label, path: joinPath(folders, file).normalizedPath(), levels: levels, isNumbered: true)
     levels.add 1
     sectionBody
     discard pop levels
@@ -42,4 +39,3 @@ template initToc*(body: untyped): Toc =
     inc levels
 
   body
-  toc

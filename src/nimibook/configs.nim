@@ -3,6 +3,18 @@ import nimibook / types
 import nimib / [config, paths]
 import toml_serialization
 
+proc renderConfig*(book: Book): string =
+  fmt"""
+[nimib]
+srcDir = "{book.nbCfg.srcDir.string}"
+homeDir = "{book.nbCfg.homeDir.string}"
+
+[nimibook]
+language = "{book.cfg.language}"
+title = "{book.cfg.title}"
+description = "{book.cfg.description}"
+"""
+
 proc loadConfig*(book: var Book) =
   let cfg = loadNimibCfg("nimib.toml")
   if not cfg.found:
@@ -18,15 +30,4 @@ proc loadConfig*(book: var Book) =
     book.cfg = Toml.decode(book.rawCfg, BookConfig, "nimibook")
   except TomlError:
     echo "[nimibook.warning] failed to load nimibook config"
-
-proc renderConfig*(book: Book): string =
-  fmt"""
-[nimib]
-srcDir = "{book.nbCfg.srcDir.string}"
-homeDir = "{book.nbCfg.homeDir.string}"
-
-[nimibook]
-language = "{book.cfg.language}"
-title = "{book.cfg.title}"
-description = "{book.cfg.description}"
-"""
+  echo book.renderConfig
