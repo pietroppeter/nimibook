@@ -16,6 +16,8 @@ jobs:
         uses: iffy/install-nim@v3
       - run: cat nimibook.nimble
       - run: nimble install -y
+      - name: Test
+        run: nimble test
       - name: Gen Book
         run: nimble genbook
       - name: Gen Book outside repo
