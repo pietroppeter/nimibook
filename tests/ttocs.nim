@@ -1,5 +1,5 @@
 import unittest
-import nimibook / [tocs, types]
+import nimibook / [tocs, entries, types]
 
 test "toc dsl":
   let toc = initToc:
@@ -16,3 +16,6 @@ test "toc dsl":
     entry("Appendix", "appendix.md", numbered = false)
 
   check len(toc.entries) == 11
+  check toc.entries[0].url == "index.html"
+  check toc.entries[1].url == "part1/index.html"
+  check toc.entries[2].url == "part1/important.html"

@@ -2,7 +2,7 @@ import std / [os, strformat]
 import nimibook / types
 
 proc url*(e: Entry): string =
-  var path = changeFileExt(e.path, "html").tailDir()
+  var path = changeFileExt(e.path, "html")
   when defined(windows):
     path.replace('\\', '/')
   else:
