@@ -1,5 +1,6 @@
 import std / [os, strformat, macros]
 import nimibook / [types, paths]
+export os.splitFile, os.normalizedPath, paths.formatFileName, paths.joinPath
 
 proc inc(levels: var seq[int]) =
   levels[levels.high] = levels[levels.high] + 1
@@ -23,7 +24,7 @@ template initToc*(body: untyped): Toc =
     if numbered:
       inc levels
 
-  template draft(label, numbered = true) =
+  template draft(label: string, numbered = true) =
     toc.add Entry(title: label, path: "", levels: levels, isNumbered: numbered, isDraft: true)
     if numbered:
       inc levels

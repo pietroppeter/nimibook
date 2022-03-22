@@ -8,7 +8,10 @@ proc url*(e: Entry): string =
   else:
     path
 
-proc check*(e: Entry) =
-  let entryurl = "docs" / url(e)
+proc check*(e: Entry, homeDir: string) =
+  let entryurl = homeDir / url(e)
+  if e.isDraft:
+    return
+  # debugEcho "[nimibook.debug] ", entryurl
   if not fileExists(entryurl):
     raise newException(IOError, fmt"Error finding {entryurl} : no such file or directory")

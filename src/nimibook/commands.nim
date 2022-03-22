@@ -73,7 +73,7 @@ proc load*(path: string): Book =
 
 proc check*(book: Book) =
   for entry in book.toc.entries:
-    entry.check()
+    entry.check(book.homeDir.string)
   echo "Check Book: OK"
 
 proc initBookSrc*(book: Book) =
