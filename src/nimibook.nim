@@ -65,12 +65,12 @@ template initBookWithToc*(body: untyped): Book =
   book
 
 # deprecated: api superseded by config based api (and wrong use of New)
-template newBookFromToc*(bookTitle: string, srcDir: string, body: untyped): Book =
+template newBookFromToc*(bookTitle: string, rootDir: string, body: untyped): Book =
   echo "[nimibook.warning] newBookFromToc is deprecated in 0.3, use initBookFromToc"
   var book = initBookWithToc:
     body
   book.title = bookTitle
-  if book.srcDir != srcDir:
-    echo "[nimibook.error] srcDir in config (", book.srcDir , ") different from srcDir from newBookFromToc: ", srcDir
+  if book.nbCfg.srcDir != rootDir:
+    echo "[nimibook.error] srcDir in config (", book.srcDir , ") different from srcDir from newBookFromToc: ", rootDir
     quit(1)
   book
