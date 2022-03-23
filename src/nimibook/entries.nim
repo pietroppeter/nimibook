@@ -14,11 +14,17 @@ proc url*(e: Entry): string =
   else:
     path
 
+proc srcPath*(book: Book, e: Entry): string =
+  book.srcDir / e.path
+
+proc outPath*(book: Book, e: Entry): string =
+  book.homeDir / e.url
+
 proc hasSrc*(book: Book, e: Entry): bool =
-  fileExists(book.nbCfg.srcDir / e.path)
+  fileExists(book.srcPath e)
 
 proc hasOut*(book: Book, e: Entry): bool =
-  fileExists(book.nbCfg.homeDir / e.url)
+  fileExists(book.outPath e)
 
 proc renderLine*(book: Book, e: Entry): string =
   # hasSrc
@@ -39,12 +45,3 @@ proc renderLine*(book: Book, e: Entry): string =
   if e.isNumbered:
     result.add " "
   result.add fmt"[{e.title}]({e.path})"
-
-proc check*(e: Entry, homeDir: string): bool =
-  let entryurl = homeDir / url(e)
-  if e.isDraft:
-    return true
-  # debugEcho "[nimibook.debug] ", entryurl
-  if not fileExists(entryurl):
-    return false
-  return true
