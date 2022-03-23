@@ -70,7 +70,7 @@ template newBookFromToc*(bookTitle: string, srcDir: string, body: untyped): Book
   var book = initBookWithToc:
     body
   book.title = bookTitle
-  if book.nbCfg.srcDir != srcDir:
-    echo "[nimibook.error] srcDir in config (", book.nbCfg.srcDir , ") different from srcDir from newBookFromToc: ", srcDir
+  if book.srcDir != srcDir:
+    echo "[nimibook.error] srcDir in config (", book.srcDir , ") different from srcDir from newBookFromToc: ", srcDir
     quit(1)
   book

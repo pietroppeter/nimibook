@@ -4,24 +4,31 @@ import jsony
 
 proc dump*(book: Book) =
   var book = book
-  let uri = normalizedPath(book.homeDir.string / "book.json")
+  let uri = normalizedPath(book.homeDir / "book.json")
   echo "[nimibook] dumping ", uri
   writeFile(uri, book.toJson)
 
-proc cleanjson*(book: Book) =
-  let uri = normalizedPath(book.homeDir.string / "book.json")
-  removeFile(uri)
+proc load*(path: string): Book =
+  let uri = normalizedPath(path)
+  if fileExists(uri):
+    result = readFile(uri).fromJson(Book)
+  else:
+    echo "[nimibook.warning] No book json was found: ", uri
+    result = Book()
 
 proc getSrcUrls*(book: Book): seq[string] =
   result = collect(newSeq):
     for e in book.toc.entries:
-      normalizedPath(book.srcDir.string / e.path)
+      normalizedPath(book.srcDir / e.path)
 
-proc cleanRootFolder(book: Book) =
-  # All source files
+proc cleanJson*(book: Book) =
+  let uri = normalizedPath(book.homeDir / "book.json")
+  echo "[nimibook] remove file: ", uri
+  removeFile(uri)
+
+proc cleanSrcFolder(book: Book) =
   let srcUrls: seq[string] = book.getSrcUrls
-  # debugEcho("walkDirRec ", book.toc.path)
-  for f in walkDirRec(book.srcDir.string):
+  for f in walkDirRec(book.srcDir):
     let ext = f.splitFile().ext
     if f notin srcUrls and ext != ".mustache" and ext != ".nims" and ext != ".cfg" and not f.contains(".git"):
       echo "[nimibook] remove file: ", f
@@ -44,43 +51,46 @@ proc shouldDelete(book: Book, dir, f: string): bool =
 
   return true
 
-proc cleanDocFolder(book: Book) =
-  let docDir = book.homeDir.string
-  # debugEcho("walkDirRec ", docDir)
-  for f in walkDirRec(docDir):
-    if shouldDelete(book, docDir, f):
+proc cleanOutFolder(book: Book) =
+  let outDir = book.homeDir
+  for f in walkDirRec(outDir):
+    if shouldDelete(book, outDir, f):
       echo "[nimibook] remove file: ", f
       removeFile(f)
 
-  for f in walkDirRec(docDir, yieldFilter = {pcDir}):
+  for d in walkDirRec(outDir, yieldFilter = {pcDir}):
     # Remove leftover folders
-    if shouldDelete(book, docDir, f):
-      # debugEcho("    >> removeDir", f)
-      removeDir(f)
+    if shouldDelete(book, outDir, d):
+      echo "[nimibook] remove dir: ", d
+      removeDir(d)
 
 proc clean*(book: Book) =
-  cleanjson(book)
-  cleanRootFolder(book)
-  cleanDocFolder(book)
-
-proc load*(path: string): Book =
-  let uri = normalizedPath(path)
-  if fileExists(uri):
-    result = readFile(uri).fromJson(Book)
-  else:
-    echo "Warning! No book.json was found!"
-    result = Book()
+  cleanJson(book)
+  cleanSrcFolder(book)
+  cleanOutFolder(book)
 
 proc check*(book: Book) =
-  var errors = 0
+  var
+    srcErrors = 0
+    outErrors = 0
   for entry in book.toc.entries:
-    if not entry.check(book.homeDir.string):
-      echo "[nimibook.error] build output not found: ", entry.url
-      inc errors
-  if errors > 0:
-    echo "[nimibook.error] could not find ", errors, " build outputs"
+    if entry.isDraft:
+      continue
+    if not (book.hasSrc entry):
+      inc srcErrors
+      continue
+    if not book.hasOut entry:
+      inc outErrors
+  if srcErrors + outErrors > 0:
+    echo "[nimibook.error] could not find ", srcErrors, " sources, and ", outErrors, " build outputs"
     quit(1)
   echo "[nimibook] check book: OK"
+
+proc addConfig(book: Book) =
+  let cfg = book.renderConfig()
+  if not fileExists("nimib.toml"):
+    echo "[nimibook] adding nimib.toml"
+    writeFile("nimib.toml", cfg)
 
 proc initBookSrc*(book: Book) =
   let srcUrls = book.getSrcUrls
@@ -96,18 +106,11 @@ proc initBookSrc*(book: Book) =
     else:
       echo "[nimibook] entry already exists: ", f
 
-proc addConfig(book: Book) =
-  let cfg = book.renderConfig()
-  if not fileExists("nimib.toml"):
-    echo "[nimibook] adding nimib.toml"
-    writeFile("nimib.toml", cfg)
-    
-
 proc init*(book: Book) =
   addConfig(book)
-  populateAssets(book.homeDir.string, false)
+  populateAssets(book.homeDir, force = false)
   initBookSrc(book)
 
 proc update*(book: Book) =
-  populateAssets(book.homeDir.string, true)
+  populateAssets(book.homeDir, force = true)
   initBookSrc(book)

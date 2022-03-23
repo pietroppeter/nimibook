@@ -64,19 +64,9 @@ expose(Book, cfg):
   plausible_analytics_url: string
   favicon_escaped: string
 
-# the following two are adapted from nimib / types
-proc srcDir*(book: Book): AbsoluteDir =
-  if book.nbCfg.srcDir.isAbsolute:
-    book.nbCfg.srcDir.AbsoluteDir
-  else:
-    book.cfgDir / book.nbCfg.srcDir.RelativeDir
-
-proc homeDir*(book: Book): AbsoluteDir =
-  if book.nbCfg.homeDir.isAbsolute:
-    book.nbCfg.homeDir.AbsoluteDir
-  else:
-    book.cfgDir / book.nbCfg.homeDir.RelativeDir
-
+# srcDir and homeDir should be given as relative to cfgDir
+proc srcDir*(book: Book): string = book.nbCfg.srcDir
+proc homeDir*(book: Book): string = book.nbCfg.homeDir
 
 #[
 documentation for mdbook is in this two pages:
