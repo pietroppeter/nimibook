@@ -1,4 +1,4 @@
-import std / [os, parseopt]
+import std / [os, parseopt, sequtils]
 export os, parseopt
 
 import nimibook / [types, renders, tocs, builds, defaults, themes, commands, configs]
@@ -45,7 +45,8 @@ proc nimibookCli*(book: var Book) =
         check book
       elif p.key == "build":
         # TODO specify folder in options
-        build book
+        let nimOptions = commandLineParams().filterIt(it != "build")
+        build book, nimOptions
       elif p.key == "update":
         update book
       elif p.key == "dump":
