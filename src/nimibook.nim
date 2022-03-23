@@ -54,8 +54,8 @@ proc nimibookCli*(book: var Book) =
         printHelp()
 
 proc initBook*: Book =
-  result.setDefaults
   result.loadConfig
+  result.setDefaults
 
 template initBookWithToc*(body: untyped): Book =
   var book = initBook()

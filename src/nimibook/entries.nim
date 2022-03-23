@@ -15,10 +15,10 @@ proc url*(e: Entry): string =
     path
 
 proc srcPath*(book: Book, e: Entry): string =
-  book.srcDir / e.path
+  normalizedPath(book.srcDir / e.path)
 
 proc outPath*(book: Book, e: Entry): string =
-  book.homeDir / e.url
+  normalizedPath(book.homeDir / e.url)
 
 proc hasSrc*(book: Book, e: Entry): bool =
   fileExists(book.srcPath e)

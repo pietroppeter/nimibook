@@ -1,4 +1,4 @@
-import std / [os, strutils, sugar]
+import std / [os, strutils, sugar, strformat]
 import nimibook / [types, entries, assets, configs]
 import jsony
 
@@ -19,7 +19,7 @@ proc load*(path: string): Book =
 proc getSrcUrls*(book: Book): seq[string] =
   result = collect(newSeq):
     for e in book.toc.entries:
-      normalizedPath(book.srcDir / e.path)
+      book.srcPath e
 
 proc cleanJson*(book: Book) =
   let uri = normalizedPath(book.homeDir / "book.json")
@@ -92,17 +92,29 @@ proc addConfig(book: Book) =
     echo "[nimibook] adding nimib.toml"
     writeFile("nimib.toml", cfg)
 
+proc emptySrcFile*(title, ext: string): string =
+  if ext == ".md":
+    "## " & title & "\n"
+  elif ext == ".nim":
+    &"""import nimib, nimibook
+
+nbInit(theme = useNimibook)
+nbText: "## {title}"
+nbSave
+"""
+  else:
+    ""
+
 proc initBookSrc*(book: Book) =
-  let srcUrls = book.getSrcUrls
-  for f in srcUrls:
+  for e in book.toc.entries:
+    let f = book.srcPath e
     if not fileExists(f):
-      let (dir, _, _) = f.splitFile()
+      let (dir, _, ext) = f.splitFile()
       if not dir.dirExists:
         echo "[nimibook] creating directory ", dir
         createDir(dir)
-      let file = open(f, fmWrite)
       echo "[nimibook] creating file ", f
-      file.close()
+      f.writeFile emptySrcFile(e.title, ext)
     else:
       echo "[nimibook] entry already exists: ", f
 
