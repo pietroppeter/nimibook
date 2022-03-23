@@ -38,7 +38,7 @@ template initToc*(body: untyped): Toc =
   toc
 
 proc renderToc*(book: Book): string =
-  result.add "S O == Table Of Contents ==  (S: source, O: Output)\n"
+  result.add "S O == Table Of Contents ==  (S: Source, O: Output)\n"
   for e in book.toc.entries:
     result.add book.renderLine(e) & "\n"
   result.add "    == " & $(book.toc.entries.len) &  " entries =="
