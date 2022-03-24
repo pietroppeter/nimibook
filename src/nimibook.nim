@@ -6,9 +6,8 @@ export types, renders, tocs, builds, defaults, themes, commands
 
 import nimib / paths
 
-# old api, instead of this use nbInit(theme=useNimibook). Could be deprecated and removed.
 template nbUseNimibook* =
-  nb.useNimibook
+  {. error: "nbUseNimibook has been removed in nimibook 0.3, use nbInit(theme = useNimibook)" .}
 
 proc printHelp() =
   echo """
