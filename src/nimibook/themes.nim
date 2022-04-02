@@ -356,10 +356,13 @@ proc useNimibook*(doc: var NbDoc) =
     if normalizePath(entry.url) == normalizePath(doc.filename.replace('\\', '/')): # replace needed for windows
       thisEntry = entry
       entry.isActive = true
-      if i > 0:
-        doc.context["previous"] = book.toc.entries[i-1].url
-      if i < book.toc.entries.high:
-        doc.context["next"] = book.toc.entries[i+1].url
+      let
+        prevUrl = book.prevEntryUrl i
+        nextUrl = book.nextEntryUrl i
+      if prevUrl.len > 0:
+        doc.context["previous"] = prevUrl
+      if nextUrl.len > 0:
+        doc.context["next"] = nextUrl
       break
   doc.partials["toc"] = render book.toc
 

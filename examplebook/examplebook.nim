@@ -5,9 +5,9 @@ var book = initBookWithToc:
   entry("Introduction", "intro.md")
   section("Chapter 1", "chapter1/index.nim"):
     entry("Content", "content.nim")
+    draft("Nothing yet")
     section("Sub chapter", "no_ext"):
       entry("and some more content", "more.md")
-  draft("Nothing yet")
 
 nimibookCli(book)
 

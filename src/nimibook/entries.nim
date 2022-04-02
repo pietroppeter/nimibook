@@ -45,3 +45,17 @@ proc renderLine*(book: Book, e: Entry): string =
   if e.isNumbered:
     result.add " "
   result.add fmt"[{e.title}]({e.path})"
+
+proc nextEntryUrl*(book: Book, i: int): string =
+  var j = i + 1
+  while j >= 0 and j < book.toc.entries.high and book.toc.entries[j].isDraft:
+    inc j
+  if j >= 0 and j < book.toc.entries.high:
+    result = book.toc.entries[j].url
+
+proc prevEntryUrl*(book: Book, i: int): string =
+  var j = i - 1
+  while j >= 0 and j < book.toc.entries.high and book.toc.entries[j].isDraft:
+    dec j
+  if j >= 0 and j < book.toc.entries.high:
+    result = book.toc.entries[j].url
