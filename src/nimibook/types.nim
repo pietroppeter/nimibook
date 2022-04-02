@@ -1,5 +1,5 @@
 import nimib / types
-import std / [tables, os]
+import std / tables
 export tables
 import macros
 
