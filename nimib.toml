@@ -1,3 +1,8 @@
 [nimib]
 srcDir = "book"
 homeDir = "docs"
+
+[nimibook]
+language = "en-us"
+title = "Nimibook"
+description = "Nimibook documentation"
