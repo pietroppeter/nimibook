@@ -107,10 +107,12 @@ nbSave
 
 proc initBookSrc*(book: Book) =
   for e in book.toc.entries:
+    if e.isDraft:
+      continue
     let f = book.srcPath e
     if not fileExists(f):
       let (dir, _, ext) = f.splitFile()
-      if not dir.dirExists:
+      if dir.len > 0 and not dir.dirExists:
         echo "[nimibook] creating directory ", dir
         createDir(dir)
       echo "[nimibook] creating file ", f

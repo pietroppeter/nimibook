@@ -38,6 +38,8 @@ proc build*(book: Book, nimOptions: seq[string] = @[]) =
   var buildErrors: seq[string]
   dump book
   for entry in book.toc.entries:
+    if entry.isDraft:
+      continue
     echo "[nimibook] build entry: ", entry.path
     if not build(entry, book.srcDir, nimOptions):
       buildErrors.add entry.path
