@@ -10,7 +10,7 @@ is needed both by the CLI and by each page.
 
 Currently the CLI has to be generated in a custom file
 where the TOC is also specified (default name: `nbook.nim`).
-In the future it is possible that nimibook will come with its own
+In the future nimibook will come with its own
 prebuilt `nbook` binary and Toc will be defined elsewhere
 (e.g. with a SUMMARY.md as in mdbook).
 

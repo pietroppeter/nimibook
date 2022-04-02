@@ -18,12 +18,10 @@ jobs:
       - run: nimble install -y
       - name: Test
         run: nimble test
-      - name: Gen Book
+      - name: Test generation of nimibook documentation
         run: nimble genbook
-      - name: Gen Book outside repo
-        run: nim r examplebook.nim build
-        working-directory: examples
-      - name: Check book outside repo
-        run: nim r examplebook.nim clean
-        working-directory: examples
+      - name: Test example book
+        run: nimble test_example
+      - name: Clean example book
+        run: nimble clean_example
 
