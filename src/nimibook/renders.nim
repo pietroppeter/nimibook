@@ -16,29 +16,21 @@ proc openSection(): string =
 """
 
 proc addEntryImpl(e: Entry): string =
-  # debugEcho &"    makeChapter => {e.title} : {e.url} => {e.levels}"
   let active = if e.isActive: " class=\"active\"" else: ""
-  if e.isNumbered:
-    var chapNumber: string
-    for i in e.levels:
-      chapNumber.add $i
-      chapNumber.add "."
-
-    result.add &"""
-  <li class="chapter-item expanded ">
-    <a href="{path_to_root}{e.url}"{active} tabindex="0">
-      <strong aria-hidden="true">{chapNumber}</strong> {e.title}
-    </a>
-  </li>
-"""
+  result.add "<li class=\"chapter-item expanded \">\n"
+  if e.isDraft:
+    result.add "  <div>\n"
   else:
-    result.add &"""
-  <li class="chapter-item expanded ">
-    <a href="{path_to_root}{e.url}"{active} tabindex="0">
-      {e.title}
-    </a>
-  </li>
-"""
+    result.add &"  <a href=\"{path_to_root}{e.url}\"{active} tabindex=\"0\">\n"
+  if e.isNumbered:
+    result.add &"    <strong aria-hidden=\"true\">{e.number}</strong> {e.title}\n"
+  else:
+    result.add &"      {e.title}\n"
+  if e.isDraft:
+    result.add "  </div>\n"
+  else:
+    result.add "  </a>"
+  result.add "</li>\n"
 
 proc openGenToc(): string =
   result.add """

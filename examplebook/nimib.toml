@@ -1,0 +1,7 @@
+[nimib]
+srcDir = "mybook"
+homeDir = "mydocs"
+
+[nimibook]
+title = "Example book"
+description = "An example nimibook built from scratch"

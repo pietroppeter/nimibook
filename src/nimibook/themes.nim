@@ -1,3 +1,8 @@
+import std / [strutils, os, enumerate, pathnorm]
+import nimib
+import nimibook / [types, commands, entries, renders]
+
+const document* = """
 <!DOCTYPE HTML>
 <html lang="{{ language }}" class="sidebar-visible no-js {{ default_theme }}">
     <head>
@@ -186,7 +191,9 @@
 
                 <div id="content" class="content">
                     <main>
-                        {{{ blocks }}}
+                        {{#blocks}}
+                        {{&.}}
+                        {{/blocks}}
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
@@ -316,3 +323,45 @@
 
     </body>
 </html>
+"""
+
+proc useNimibook*(doc: var NbDoc) =
+  doc.context["path_to_root"] = doc.srcDirRel.string & "/" # I probably should make sure to have / at the end
+
+  # templates are in memory
+  doc.partials["document"] = document
+  # if they need to be overriden a specific template folder should be created in nbSrcDir
+  doc.templateDirs = @[doc.srcDir.string / "templates"]
+
+  # book.json is publicly accessible (sort of a public static api)
+  let bookPath = doc.homeDir.string / "book.json"
+  # load book object
+  var book = load(bookPath)
+
+  # book configuration
+  doc.context["language"] = book.language
+  doc.context["default_theme"] = book.default_theme
+  doc.context["description"] = book.description
+  doc.context["favicon_escaped"] = book.favicon_escaped
+  doc.context["preferred_dark_theme"] = book.preferred_dark_theme
+  doc.context["theme_option"] = book.theme_option
+  doc.context["book_title"] = book.title
+  doc.context["git_repository_url"] = book.git_repository_url
+  doc.context["git_repository_icon"] = book.git_repository_icon
+  doc.context["plausible_analytics_url"] = book.plausible_analytics_url
+
+  var thisEntry: Entry
+  # process toc
+  for i, entry in enumerate(book.toc.entries.mitems):
+    if normalizePath(entry.url) == normalizePath(doc.filename.replace('\\', '/')): # replace needed for windows
+      thisEntry = entry
+      entry.isActive = true
+      if i > 0:
+        doc.context["previous"] = book.toc.entries[i-1].url
+      if i < book.toc.entries.high:
+        doc.context["next"] = book.toc.entries[i+1].url
+      break
+  doc.partials["toc"] = render book.toc
+
+  # html.head.title (what appears in the tab)
+  doc.context["title"] = thisEntry.title & " - " & book.title

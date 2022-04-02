@@ -1,6 +1,6 @@
 import nimibook
 
-var book = newBookFromToc("nimibook", "book"):
+var book = initBookWithToc:
   section("Introduction", "index"): # .nim extension is optional
     entry("Content", "content")
     entry("Toc DSL", "tocdsl")
@@ -10,8 +10,6 @@ var book = newBookFromToc("nimibook", "book"):
     section("Nested section", "nested.md"):
       entry("Entry in nested section", "nested_entry.md")
     entry("Back to parent section", "back_to_parent.md")
-    draft("Draft chapter", "draft.md")
+    draft("Draft chapter")
 
-book.git_repository_url = "https://github.com/pietroppeter/nimibook"
-book.plausible_analytics_url = "pietroppeter.github.io/nimibook"
 nimibookCli(book)

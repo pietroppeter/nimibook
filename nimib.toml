@@ -1,3 +1,10 @@
 [nimib]
 srcDir = "book"
 homeDir = "docs"
+
+[nimibook]
+language = "en-us"
+title = "Nimibook"
+description = "Nimibook documentation"
+git_repository_url = "https://github.com/pietroppeter/nimibook"
+plausible_analytics_url = "pietroppeter.github.io/nimibook"
