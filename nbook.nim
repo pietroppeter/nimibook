@@ -6,6 +6,7 @@ var book = initBookWithToc:
     entry("Toc DSL", "tocdsl")
     entry("Configuration", "configuration")
     entry("Tasks", "tasks")
+    entry("Latex", "latex")
   section("Example toc structure", "tocexample/index.md"):
     section("Nested section", "nested.md"):
       entry("Entry in nested section", "nested_entry.md")
