@@ -59,6 +59,8 @@ const document* = """
         <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         {{/mathjax_support}}
 
+        {{&latex}}
+        
         <!-- plausible analytics (new in nimibook) -->
         {{#plausible_analytics_url}}
         <script defer data-domain="{{plausible_analytics_url}}" src="https://plausible.io/js/plausible.js"></script>

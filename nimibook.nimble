@@ -41,7 +41,8 @@ task test_example, "test commands with example book":
     exec cmd & "check"
 
 task clean_example, "remove directories created for example book":
-  let cmd = "nim r -d:release --verbosity:0 --hints:off examplebook "
-  exec cmd & "clean"
+  withDir("examplebook"):
+    let cmd = "nim r -d:release --verbosity:0 --hints:off examplebook "
+    exec cmd & "clean"
   rmDir "examplebook/mybook"
   rmDir "examplebook/mydocs"
