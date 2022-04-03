@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using nimibook -->
         <meta charset="UTF-8">
-        <title>Nested section - Nimibook</title>
+        <title>Latex - Nimibook</title>
 
         <!-- Custom HTML head -->
 
@@ -13,22 +13,24 @@
         <meta name="theme-color" content="#ffffff" />
 
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🐳</text></svg>">
-        <link rel="stylesheet" href="../assets/css/variables.css">
-        <link rel="stylesheet" href="../assets/css/general.css">
-        <link rel="stylesheet" href="../assets/css/chrome.css">
+        <link rel="stylesheet" href="./assets/css/variables.css">
+        <link rel="stylesheet" href="./assets/css/general.css">
+        <link rel="stylesheet" href="./assets/css/chrome.css">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../assets/FontAwesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="./assets/FontAwesome/css/font-awesome.min.css">
 
         <!-- Highlight.js Stylesheets - I could use nimib native highlight but let's keep it for styling... -->
-        <link rel="stylesheet" href="../assets/css/highlight.css">
-        <link rel="stylesheet" href="../assets/css/tomorrow-night.css">
-        <link rel="stylesheet" href="../assets/css/ayu-highlight.css">
+        <link rel="stylesheet" href="./assets/css/highlight.css">
+        <link rel="stylesheet" href="./assets/css/tomorrow-night.css">
+        <link rel="stylesheet" href="./assets/css/ayu-highlight.css">
 
         <!-- Custom theme stylesheets - why the "../"? -->
 
 
-        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous" onload="renderMathInElement(document.body,{delimiters:[{left: '$$', right: '$$', display: true},{left: '$', right: '$', display: false}]});"></script>
         
         <!-- plausible analytics (new in nimibook) -->
         <script defer data-domain="pietroppeter.github.io/nimibook" src="https://plausible.io/js/plausible.js"></script>
@@ -36,7 +38,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "..//assets";
+            var path_to_root = ".//assets";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -84,53 +86,53 @@
             <div class="sidebar-scrollbox">
                                 <ol class="chapter">
                 <li class="chapter-item expanded ">
-                  <a href="../index.html" tabindex="0">
+                  <a href="./index.html" tabindex="0">
                     <strong aria-hidden="true">1.</strong> Introduction
                   </a></li>
                   <li>
                   <ol class="section">
                 <li class="chapter-item expanded ">
-                  <a href="../content.html" tabindex="0">
+                  <a href="./content.html" tabindex="0">
                     <strong aria-hidden="true">1.1.</strong> Content
                   </a></li>
                 <li class="chapter-item expanded ">
-                  <a href="../tocdsl.html" tabindex="0">
+                  <a href="./tocdsl.html" tabindex="0">
                     <strong aria-hidden="true">1.2.</strong> Toc DSL
                   </a></li>
                 <li class="chapter-item expanded ">
-                  <a href="../configuration.html" tabindex="0">
+                  <a href="./configuration.html" tabindex="0">
                     <strong aria-hidden="true">1.3.</strong> Configuration
                   </a></li>
                 <li class="chapter-item expanded ">
-                  <a href="../tasks.html" tabindex="0">
+                  <a href="./tasks.html" tabindex="0">
                     <strong aria-hidden="true">1.4.</strong> Tasks
                   </a></li>
                 <li class="chapter-item expanded ">
-                  <a href="../latex.html" tabindex="0">
+                  <a href="./latex.html" class="active" tabindex="0">
                     <strong aria-hidden="true">1.5.</strong> Latex
                   </a></li>
                   </ol>
                   </li>
                 <li class="chapter-item expanded ">
-                  <a href="../tocexample/index.html" tabindex="0">
+                  <a href="./tocexample/index.html" tabindex="0">
                     <strong aria-hidden="true">2.</strong> Example toc structure
                   </a></li>
                   <li>
                   <ol class="section">
                 <li class="chapter-item expanded ">
-                  <a href="../tocexample/nested.html" class="active" tabindex="0">
+                  <a href="./tocexample/nested.html" tabindex="0">
                     <strong aria-hidden="true">2.1.</strong> Nested section
                   </a></li>
                   <li>
                   <ol class="section">
                 <li class="chapter-item expanded ">
-                  <a href="../tocexample/nested_entry.html" tabindex="0">
+                  <a href="./tocexample/nested_entry.html" tabindex="0">
                     <strong aria-hidden="true">2.1.1.</strong> Entry in nested section
                   </a></li>
                   </ol>
                   </li>
                 <li class="chapter-item expanded ">
-                  <a href="../tocexample/back_to_parent.html" tabindex="0">
+                  <a href="./tocexample/back_to_parent.html" tabindex="0">
                     <strong aria-hidden="true">2.2.</strong> Back to parent section
                   </a></li>
                 <li class="chapter-item expanded ">
@@ -187,16 +189,57 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1>Nested section</h1>
+                        <h2>Latex</h2>
+<p>Latex is available through <a href="https://www.latex-project.org">Katex</a> as in Nimib.
+It is enabled on a specific document with the command</p>
+                        <pre><code class="nim hljs">nb.useLatex</code></pre>
+                        <p>which adds the following content in the head of the document:</p>
+<pre><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css&quot; integrity=&quot;sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X&quot; crossorigin=&quot;anonymous&quot;&gt;
+&lt;script defer src=&quot;https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js&quot; integrity=&quot;sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+&lt;script defer src=&quot;https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js&quot; integrity=&quot;sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa&quot; crossorigin=&quot;anonymous&quot; onload=&quot;renderMathInElement(document.body,{delimiters:[{left: '$$', right: '$$', display: true},{left: '$', right: '$', display: false}]});&quot;&gt;&lt;/script&gt;
+</code></pre>
+                        <h2>Inline equations</h2>
+<p><strong>Inline equations</strong> are obtained with delimiters <code>$..$</code>. The follwing inline paragraph:</p>
+<blockquote>
+<p>Euler's identity is the equality
+$e^{i\pi} + 1 = 0$, where $e$ is the base of natural logarithms,
+$i$ is the imaginary unit, and $\pi$ is the ratio of circumference of a circle
+to its diameter.</p>
+</blockquote>
+<p>...is created with the following source:</p>
+<pre><code class="language-md">&gt; Euler's identity is the equality
+&gt; $e^{i\pi} + 1 = 0$, where $e$ is the base of natural logarithms,
+&gt; $i$ is the imaginary unit, and $\pi$ is the ratio of circumference of a circle
+&gt; to its diameter.
+
+</code></pre>
+<h2>Block equations</h2>
+<p><strong>Block equations</strong> are obtained with delimiters <code>$$..$$</code>. The follwing block equation:</p>
+<p>$$
+f(x) = \frac{1}{\sigma\sqrt{2\pi}}
+\exp\left( -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^{!2},\right)
+$$</p>
+<p>...is created with the following source:</p>
+<pre><code class="language-md">$$ 
+  f(x) = \frac{1}{\sigma\sqrt{2\pi}} 
+  \exp\left( -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^{\!2}\,\right)
+$$
+
+</code></pre>
+<h2>MathJax support</h2>
+<p>As in the original mdbook, you can opt instead to activate <a href="https://rust-lang.github.io/mdBook/format/mathjax.html">MathJax support</a>
+with:</p>
+<pre><code class="language-nim">nb.context[&quot;mathjax_support&quot;] = true
+</code></pre>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../tocexample/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="./tasks.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../tocexample/nested_entry.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="./tocexample/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -206,11 +249,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../tocexample/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="./tasks.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../tocexample/nested_entry.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="./tocexample/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -223,9 +266,9 @@
 
 
 
-        <script src="../assets/js/clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../assets/js/highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../assets/js/book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="./assets/js/clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="./assets/js/highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="./assets/js/book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
 
