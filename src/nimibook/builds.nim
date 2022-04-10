@@ -1,4 +1,4 @@
-import std / [os, strutils, asyncdispatch, osproc]
+import std / [os, strutils, asyncdispatch, osproc, streams]
 import nimibook / [types, commands, themes]
 import nimib
 
@@ -8,13 +8,21 @@ proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bo
     args = @["r"] & nimOptions & @[srcDir / entry.path]
   # "-d:release", "-f", "--verbosity:0", "--hints:off"
   debugEcho "[Executing] ", cmd, " ", args.join(" ")
+
   let process = startProcess(cmd, args = args, options = {poUsePath, poStdErrToStdOut})
+  defer: process.close()
   while process.running():
     await sleepAsync(10)
 
   result = process.peekexitCode == 0
-  process.close()
-
+  if not result:
+    # Process failed so we write a '.log'
+    let logPath = entry.path.changeFileExt("log")
+    discard tryRemoveFile(logPath)
+    let fs = openFileStream(logPath, fmWrite)
+    defer: fs.close()
+    for line in process.lines:
+      fs.writeLine(line)
 
 proc buildMd*(entry: Entry): Future[bool] {.async.}=
   try:
