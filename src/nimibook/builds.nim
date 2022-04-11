@@ -24,7 +24,7 @@ proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bo
     for line in process.lines:
       fs.writeLine(line)
 
-proc buildMd*(entry: Entry): Future[bool] {.async.}=
+proc buildMd*(entry: Entry): bool =
   try:
     nbInit(theme = useNimibook, thisFileRel = entry.path)
     nbText nb.source
@@ -41,7 +41,7 @@ proc build*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bool]
   of ".nim":
     return await buildNim(entry, srcDir, nimOptions)
   of ".md":
-    return await buildMd(entry)
+    return buildMd(entry)
   else:
     echo "[nimibook.error] invalid file extension (must be one of .nim, .md): ", splitted.ext
     return false
@@ -59,10 +59,15 @@ proc build*(book: Book, nimOptions: seq[string] = @[]) =
     buildPaths.add entry.path
 
   var buildErrors: seq[string]
-  let finished = waitfor all buildFutures
-  for i, success in finished:
-    if not success:
-      buildErrors.add buildPaths[i]
+  while buildFutures.len > 0:
+    # 'all' from asyndispatch doesnt return them chronologically.
+    # meaning logged errors would not present the right path
+    if waitfor buildFutures[^1].withTimeout(300):
+      if not buildFutures[^1].read:
+        buildErrors.add buildPaths[^1]
+
+      discard buildPaths.pop
+      discard buildFutures.pop
 
   if len(buildErrors) > 0:
     echo "[nimibook.error] ", len(buildErrors), " build errors:"
