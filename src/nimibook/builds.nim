@@ -1,4 +1,4 @@
-import std / [os, strutils, asyncdispatch, osproc, streams]
+import std / [os, strutils, asyncdispatch, osproc, streams, sugar]
 import nimibook / [types, commands, themes]
 import nimib
 
@@ -48,26 +48,22 @@ proc build*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bool]
 
 proc build*(book: Book, nimOptions: seq[string] = @[]) =
   var
-    buildPaths: seq[string]
+    buildErrors: seq[string]
     buildFutures: seq[Future[bool]]
   dump book
-  for entry in book.toc.entries:
+  for i in 0..book.toc.entries.high:
+    let entry = book.toc.entries[i] # use index since `items` returns `lent` in `1.7.x+`
     if entry.isDraft:
       continue
     echo "[nimibook] build entry: ", entry.path
     buildFutures.add build(entry, book.srcDir, nimOptions)
-    buildPaths.add entry.path
+    closureScope:
+      let path = entry.path
+      buildFutures[^1].addCallback do (f: Future[bool]):
+        if not f.read():
+          buildErrors.add path
 
-  var buildErrors: seq[string]
-  while buildFutures.len > 0:
-    # 'all' from asyndispatch doesnt return them chronologically.
-    # meaning logged errors would not present the right path
-    if waitfor buildFutures[^1].withTimeout(300):
-      if not buildFutures[^1].read:
-        buildErrors.add buildPaths[^1]
-
-      discard buildPaths.pop
-      discard buildFutures.pop
+  discard waitFor all buildFutures
 
   if len(buildErrors) > 0:
     echo "[nimibook.error] ", len(buildErrors), " build errors:"
