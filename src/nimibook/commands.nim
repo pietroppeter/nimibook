@@ -4,6 +4,7 @@ import jsony
 
 proc dump*(book: Book) =
   var book = book
+  discard existsOrCreateDir(book.homeDir())
   let uri = normalizedPath(book.homeDir / "book.json")
   echo "[nimibook] dumping ", uri
   writeFile(uri, book.toJson)
