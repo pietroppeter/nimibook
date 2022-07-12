@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.0 (July 2022)
+
+
+
 ## v0.2.1 (November 2021)
 
 * bugfix release to fix path handling (see #42), linked to equivalent bugfix release in nimib 0.2.1
@@ -16,6 +20,7 @@ No official tagged release of 0.1, making 0.2 the first official release of nimi
   - multiple themes (Light, Rust, Coal, Navy, Ayu)
   - book page can be created from markdown
   - link to github repo
+  - next/previous page buttons
 * nimibook is also specific for nim and it diverges from mdbook in these details:
   - a book page can be created using nimib with `nbInit(theme = useNimibook)`
   - the command to manage the book must be customized, compiled and run in the book project (no universal `nimibook` binary for now)
