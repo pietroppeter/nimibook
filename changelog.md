@@ -18,7 +18,8 @@ No official tagged release of 0.1, making 0.2 the first official release of nimi
   - the toc is specificied inside the binary used to build the book
 * nimibook thus provides library features to build your book building features and in particular it provides:
   - a `useNimibook` theme to use in nimib documents
-  - a `newBookFromToc` DSL to create a table of contents which supports, section (a chapter that opens indented chapters), entry (a standard numbered entry), draft (a placeholder for non existent entry)
+  - a `newBookFromToc` DSL to create a table of contents that supports `section` (a chapter that opens indented chapters),
+    `entry` (a standard numbered entry), `draft` (a placeholder for non existent entry)
   - a `nimibookCli` template to create a CLI that supports the following commands:
     + `init`: to initialize a book with structure and assets (mustache templates, css styles, javascript, fonts)
     + `update`: to update assets in case they change
@@ -28,3 +29,12 @@ No official tagged release of 0.1, making 0.2 the first official release of nimi
 * you can still use standard nim with `nim r book/entry.nim` to build a single page, provided that you have dumped a `book.json`
 * being based on nimib 0.2, nimibook requires the existence of a `nimib.toml` configuration file where a `srcDir` (folder with sources for entries)
   and a `homeDir` (folder where the book will be built) are defined
+
+## v0.1 (May-June 2021)
+
+The main driving force for the development of nimibook since the beginning has been to support [scinim/getting-started](https://github.com/SciNim/getting-started)
+a collection of tutorials to use Nim for Scientific Computing.
+The initial idea of using nimib for SciNim came from @HugoGranstrom in
+scinim/getting-started's [first issue](https://github.com/SciNim/getting-started/issues/1#issuecomment-837266835) (May 2021),
+the idea was then further discussed in a [nimib's issue](https://github.com/pietroppeter/nimib/issues/40).
+After an initial proof of concept by @pietroppeter, most of the development during 0.1 was done by @Clonkk. 
