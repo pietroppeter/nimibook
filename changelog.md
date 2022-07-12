@@ -41,4 +41,7 @@ a collection of tutorials to use Nim for Scientific Computing.
 The initial idea of using nimib for SciNim came from @HugoGranstrom in
 scinim/getting-started's [first issue](https://github.com/SciNim/getting-started/issues/1#issuecomment-837266835) (May 2021),
 the idea was then further discussed in a [nimib's issue](https://github.com/pietroppeter/nimib/issues/40).
-After an initial proof of concept by @pietroppeter, most of the development during 0.1 was done by @Clonkk. 
+After an initial proof of concept by @pietroppeter, most of the development during 0.1 was done by @Clonkk.
+
+The version of mdbook on which nimibook is based is likely [mdbook v0.4.8](https://github.com/rust-lang/mdBook/tree/v0.4.8) released in May 2021
+(this is deduced from when the initial development started).
