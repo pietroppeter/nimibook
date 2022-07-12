@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.1 (November 2021)
+
+* bugfix release to fix path handling (see #42), linked to equivalent bugfix release in nimib 0.2.1
+
 ## v0.2.0 (November 2021)
 
 No official tagged release of 0.1, making 0.2 the first official release of nimibook.
