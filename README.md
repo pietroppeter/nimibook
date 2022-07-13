@@ -5,10 +5,10 @@ Nimibook allows to create a nice looking book from nim code and markdown,
 making sure that nim code is running correctly and being able to incorporate code outputs in the final book.
 An example book is [nimibook documentation][nimibook] itself.
 
-[mdBook] is a command line tool and Rust crate to create books
-using Markdown (as by the CommonMark specification) files.
-It's very similar to [Gitbook], which is a command line tool (and Node.js library)
-for building beautiful books using GitHub/Git and Markdown (or AsciiDoc).
+> [mdBook] is a command line tool and Rust crate to create books
+> using Markdown (as by the CommonMark specification) files.
+> It's very similar to [Gitbook], which is a command line tool (and Node.js library)
+> for building beautiful books using GitHub/Git and Markdown (or AsciiDoc).
 
 [nimib] is a Nim library to convert your Nim code and its outputs to html documents.
 The html output can be easily customized thanks to [nim-mustache],
