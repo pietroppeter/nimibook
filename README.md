@@ -92,6 +92,7 @@ Analytics for this website are publicly available [here](https://plausible.io/pi
 [nimibook]: https://pietroppeter.github.io/nimibook/
 [GFM]: https://github.github.com/gfm/
 [nim-markdown]: https://github.com/soasme/nim-markdown
+[cheatsheet]: https://pietroppeter.github.io/nimib/cheatsheet.html
 
 <!--SKIP
 All content before this sign is replicated in the Introduction chapter of nimibook documentation
