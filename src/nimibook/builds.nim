@@ -17,7 +17,7 @@ proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bo
   result = process.peekexitCode == 0
   if not result:
     # Process failed so we write a '.log'
-    let logPath = entry.path.changeFileExt("log")
+    let logPath = srcDir / entry.path.changeFileExt("log")
     discard tryRemoveFile(logPath)
     let fs = openFileStream(logPath, fmWrite)
     defer: fs.close()
@@ -68,6 +68,9 @@ proc build*(book: Book, nimOptions: seq[string] = @[]) =
   if len(buildErrors) > 0:
     echo "[nimibook.error] ", len(buildErrors), " build errors:"
     for err in buildErrors:
+      echo "\n#########################\n"
       echo "  ❌ ", err
+      let errorLog = readFile(book.srcDir / err.changeFileExt("log"))
+      echo errorLog
     quit(1)
   check book
