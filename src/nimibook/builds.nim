@@ -14,11 +14,12 @@ proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bo
   while process.running():
     await sleepAsync(10)
 
+  let logPath = srcDir / entry.path.changeFileExt("log")
+  discard tryRemoveFile(logPath)
+
   result = process.peekexitCode == 0
   if not result:
     # Process failed so we write a '.log'
-    let logPath = srcDir / entry.path.changeFileExt("log")
-    discard tryRemoveFile(logPath)
     let fs = openFileStream(logPath, fmWrite)
     defer: fs.close()
     for line in process.lines:
@@ -56,7 +57,16 @@ proc build*(book: Book, nimOptions: seq[string] = @[]) =
     if entry.isDraft:
       continue
     echo "[nimibook] build entry: ", entry.path
+    # let fut = build()
+    # buildFutures.add fut
+    # if notAsync:
+    #   discard wairFor fut
+    # closureScope:...
+
+    # if useAsync:
     buildFutures.add build(entry, book.srcDir, nimOptions)
+    # else:
+    #   await build(entry, book.srcDir, nimOptions)
     closureScope:
       let path = entry.path
       buildFutures[^1].addCallback do (f: Future[bool]):
