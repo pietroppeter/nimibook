@@ -95,7 +95,9 @@ The CI is setup to run tests and publish a document PR preview
 so that we can all check the changes from PR.
 You should also test and build the book locally, there are nimble tasks
 to help with that.
-Once you make a change, remember to update the [changelog](changelog.md)!
+Once you make a change, remember to document your changes somewhere appropriate
+and to update the [changelog](changelog.md)
+(and if needed also the [src/readme.md](src/readme.md))! 
 
 ## Analytics
 
