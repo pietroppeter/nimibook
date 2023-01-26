@@ -18,9 +18,14 @@ _nimib documents_ are normal nim files which use nimib library to produce an out
 The Markdown dialect supported by both nimib and nimibook is the subset of [Github Flavored Markdown][GFM]
 provided by [nim-markdown]. For a quick reference of supported syntax see the [cheatsheet].
 
-### Status
+## Status and sites using nimibook
 
-nimibook currently provides minimal functionality to create a book and support a local CLI mode.
+nimibook currently provides the minimal functionality needed to create a book and support a local CLI mode.
+This functionality proved enough to be used for the following projects:
+
+- [scinim/getting-started](https://scinim.github.io/getting-started/)
+- [moigagoo/norm](https://norm.nim.town)
+- [PhilippMDoerner/Snorlogue](https://philippmdoerner.github.io/Snorlogue/bookCompiled/)
 
 ## Installation
 
@@ -78,7 +83,12 @@ If `book.json` is present, then you can build your page with: `nim r book/mypage
   * `./nbook update` will update assets and mustache template.
   * These two commands will modify installed files, use them with caution if you customized files locally.
 
-### Analytics
+## Contribute
+
+
+
+
+## Analytics
 
 This website is tracking analytics with [plausible.io](https://plausible.io/index.html), a lightweight and open-source website analytics tool with no cookies and fully compliant with GDPR, CCPA and PECR.
 Analytics for this website are publicly available [here](https://plausible.io/pietroppeter.github.io%2Fnimibook). You can opt out from analytics tracking with [standard ad-blocking](https://plausible.io/docs/excluding) or typing [`localStorage.plausible_ignore=true`](https://plausible.io/docs/excluding-localstorage) in browser console.
