@@ -27,11 +27,13 @@ This functionality proved enough to be used for the following projects:
 - [moigagoo/norm](https://norm.nim.town)
 - [PhilippMDoerner/Snorlogue](https://philippmdoerner.github.io/Snorlogue/bookCompiled/)
 
+To follow up on recent changes check the [changelog.md](changelog.md)
+
 ## Installation
 
 To install Nimibook simply use : `nimble install nimibook`
 
-## Usage
+## How to setup your book with nimibook
 
 1. Write your content using [nimib] or simple markdown files in the `book` folder.
    The basic template for an empty page is:
@@ -85,8 +87,15 @@ If `book.json` is present, then you can build your page with: `nim r book/mypage
 
 ## Contribute
 
-
-
+You are more than welcome to contribute!
+We usually have some open issues of stuff we need to fix or we would like to do.
+You have an overview of the code base in [src/readme.md](src/readme.md)
+The CI is setup to run tests and publish a document PR preview
+(click on details on the Netlify preview task once it's green),
+so that we can all check the changes from PR.
+You should also test and build the book locally, there are nimble tasks
+to help with that.
+Once you make a change, remember to update the [changelog](changelog.md)!
 
 ## Analytics
 
