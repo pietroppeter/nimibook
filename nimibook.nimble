@@ -10,7 +10,7 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.4.0"
-requires "nimib >= 0.3.0"
+requires "nimib >= 0.3.4"
 requires "jsony >= 1.0.3"
 requires "toml_serialization >= 0.2.0"
 
