@@ -57,6 +57,21 @@ proc build*(book: Book, nimOptions: seq[string] = @[]) =
     if entry.isDraft:
       continue
     echo "[nimibook] build entry: ", entry.path
+
+    const parallelBuild {.booldefine.}: bool = true
+
+    let fut = build(entry, book.srcDir, nimOptions)
+    buildFutures.add fut
+
+    when not parallelBuild:
+      # Run the current file before starting the next one
+      discard waitFor fut
+
+    closureScope:
+      let path = entry.path
+      buildFutures[^1].addCallback do (f: Future[bool]):
+        if not f.read():
+          buildErrors.add path
     # let fut = build()
     # buildFutures.add fut
     # if notAsync:
@@ -64,14 +79,14 @@ proc build*(book: Book, nimOptions: seq[string] = @[]) =
     # closureScope:...
 
     # if useAsync:
-    buildFutures.add build(entry, book.srcDir, nimOptions)
+    #[ buildFutures.add build(entry, book.srcDir, nimOptions)
     # else:
     #   await build(entry, book.srcDir, nimOptions)
     closureScope:
       let path = entry.path
       buildFutures[^1].addCallback do (f: Future[bool]):
         if not f.read():
-          buildErrors.add path
+          buildErrors.add path ]#
 
   discard waitFor all buildFutures
 
