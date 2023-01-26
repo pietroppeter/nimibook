@@ -12,7 +12,10 @@ let taskList = collect(newSeq):
     "* `nimble " & line.replace("        ", "`: ")
 
 nbText: fmt"""
-# Tasks
+# Nimble tasks
+
+The following are the nimble tasks that can be used
+when developing the project:
 
 {taskList.join("\n")}
 """
