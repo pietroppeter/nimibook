@@ -35,6 +35,28 @@ To install Nimibook simply use : `nimble install nimibook`
 
 ## How to setup your book with nimibook
 
+nimibook does not ([yet](https://github.com/pietroppeter/nimibook/issues/63)) provides an executable to manage your book, but it provides the basic building blocks to write your own.
+
+1. Start from an empty folder and create a `nbook.nim`
+ file
+(you can pick a different name from `nbook`) with the
+following content:
+
+```nim
+import nimibook
+var book = initBook()
+nimibookCli(book)
+```
+
+2. then compile and run `nbook` (e.g. `nim r nbook`).
+you will see an help printed with the available commands
+
+3. run `nbook init` (or `nim r nbook init`).
+This will create a `nimib.toml` file that contains the
+minimal configuration for your book. In case you already have a `nimib.toml` file in the folder, do not worry,
+it will not be overwritten but nimibook configuration will
+not be added.
+
 1. Write your content using [nimib] or simple markdown files in the `book` folder.
    The basic template for an empty page is:
 ```nim
@@ -92,9 +114,10 @@ We usually have some open issues of stuff we need to fix or we would like to do.
 You have an overview of the code base in [src/readme.md](src/readme.md)
 The CI is setup to run tests and publish a document PR preview
 (click on details on the Netlify preview task once it's green),
-so that we can all check the changes from PR.
+so that we can all check the changes directly from the PR.
 You should also test and build the book locally, there are nimble tasks
 to help with that.
+If the feature can be tested with a unit test, make sure to add one.
 Once you make a change, remember to document your changes somewhere appropriate
 and to update the [changelog](changelog.md)
 (and if needed also the [src/readme.md](src/readme.md))! 
