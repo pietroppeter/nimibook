@@ -2,6 +2,8 @@ import std / [os, strutils, asyncdispatch, osproc, streams, sugar]
 import nimibook / [types, commands, themes]
 import nimib
 
+var numberBuildsRunning = 0
+
 proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bool] {.async.} =
   let
     cmd = "nim"
@@ -9,6 +11,13 @@ proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bo
   # "-d:release", "-f", "--verbosity:0", "--hints:off"
   debugEcho "[Executing] ", cmd, " ", args.join(" ")
 
+  const nimibMaxProcesses {.intdefine.}: int = 10
+  # If more processes than the limit are already running, wait for a free spot.
+  while numberBuildsRunning > nimibMaxProcesses:
+    await sleepAsync(10)
+
+  # Start a build in a new process
+  inc(numberBuildsRunning)
   let process = startProcess(cmd, args = args, options = {poUsePath, poStdErrToStdOut})
   defer: process.close()
   while process.running():
@@ -58,35 +67,20 @@ proc build*(book: Book, nimOptions: seq[string] = @[]) =
       continue
     echo "[nimibook] build entry: ", entry.path
 
-    const parallelBuild {.booldefine.}: bool = true
+    const nimibParallelBuild {.booldefine.}: bool = true
 
     let fut = build(entry, book.srcDir, nimOptions)
     buildFutures.add fut
-
-    when not parallelBuild:
+    when not nimibParallelBuild:
       # Run the current file before starting the next one
       discard waitFor fut
 
     closureScope:
       let path = entry.path
       buildFutures[^1].addCallback do (f: Future[bool]):
+        dec(numberBuildsRunning)
         if not f.read():
           buildErrors.add path
-    # let fut = build()
-    # buildFutures.add fut
-    # if notAsync:
-    #   discard wairFor fut
-    # closureScope:...
-
-    # if useAsync:
-    #[ buildFutures.add build(entry, book.srcDir, nimOptions)
-    # else:
-    #   await build(entry, book.srcDir, nimOptions)
-    closureScope:
-      let path = entry.path
-      buildFutures[^1].addCallback do (f: Future[bool]):
-        if not f.read():
-          buildErrors.add path ]#
 
   discard waitFor all buildFutures
 
