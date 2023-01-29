@@ -1,7 +1,13 @@
 # Changelog
 
-## v0.3.0 (July 2022)
+## v0.3.0 (Febraury 2023)
 
+* Parallel build fixes (#61)
+  * Fixed parallel build so it uses the correct folder for saving log files.
+  * The error messages are printed to terminal as well
+  * Pass compiler flag `-d:nimibParallelBuild=false` to compile in serial.
+  * Pass `-d:nimibMaxProcesses=n` to run at most `n` builds in parallel at a time. 
+* The next-arrow is shown correctly on the second to last page.  (#61)
 * update to use nimib 0.3 and maintenance (#50):
   - fix usage of `blocks` context in `document` template update to reflect change in nimib 0.3
   - `nimib.toml` now supports configuration for the book,
