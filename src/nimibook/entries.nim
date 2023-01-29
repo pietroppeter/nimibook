@@ -50,7 +50,7 @@ proc nextEntryUrl*(book: Book, i: int): string =
   var j = i + 1
   while j >= 0 and j < book.toc.entries.high and book.toc.entries[j].isDraft:
     inc j
-  if j >= 0 and j < book.toc.entries.high:
+  if j >= 0 and j <= book.toc.entries.high:
     result = book.toc.entries[j].url
 
 proc prevEntryUrl*(book: Book, i: int): string =
