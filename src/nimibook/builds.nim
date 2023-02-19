@@ -2,6 +2,8 @@ import std / [os, strutils, asyncdispatch, osproc, streams, sugar]
 import nimibook / [types, commands, themes]
 import nimib
 
+var numberBuildsRunning = 0
+
 proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bool] {.async.} =
   let
     cmd = "nim"
@@ -9,16 +11,24 @@ proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bo
   # "-d:release", "-f", "--verbosity:0", "--hints:off"
   debugEcho "[Executing] ", cmd, " ", args.join(" ")
 
+  const nimibMaxProcesses {.intdefine.}: int = 10
+  # If more processes than the limit are already running, wait for a free spot.
+  while numberBuildsRunning > nimibMaxProcesses:
+    await sleepAsync(10)
+
+  # Start a build in a new process
+  inc(numberBuildsRunning)
   let process = startProcess(cmd, args = args, options = {poUsePath, poStdErrToStdOut})
   defer: process.close()
   while process.running():
     await sleepAsync(10)
 
+  let logPath = srcDir / entry.path.changeFileExt("log")
+  discard tryRemoveFile(logPath)
+
   result = process.peekexitCode == 0
   if not result:
     # Process failed so we write a '.log'
-    let logPath = entry.path.changeFileExt("log")
-    discard tryRemoveFile(logPath)
     let fs = openFileStream(logPath, fmWrite)
     defer: fs.close()
     for line in process.lines:
@@ -56,10 +66,19 @@ proc build*(book: Book, nimOptions: seq[string] = @[]) =
     if entry.isDraft:
       continue
     echo "[nimibook] build entry: ", entry.path
-    buildFutures.add build(entry, book.srcDir, nimOptions)
+
+    const nimibParallelBuild {.booldefine.}: bool = true
+
+    let fut = build(entry, book.srcDir, nimOptions)
+    buildFutures.add fut
+    when not nimibParallelBuild:
+      # Run the current file before starting the next one
+      discard waitFor fut
+
     closureScope:
       let path = entry.path
       buildFutures[^1].addCallback do (f: Future[bool]):
+        dec(numberBuildsRunning)
         if not f.read():
           buildErrors.add path
 
@@ -68,6 +87,9 @@ proc build*(book: Book, nimOptions: seq[string] = @[]) =
   if len(buildErrors) > 0:
     echo "[nimibook.error] ", len(buildErrors), " build errors:"
     for err in buildErrors:
+      echo "\n#########################\n"
       echo "  ❌ ", err
+      let errorLog = readFile(book.srcDir / err.changeFileExt("log"))
+      echo errorLog
     quit(1)
   check book
