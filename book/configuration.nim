@@ -1,6 +1,16 @@
 import nimib, nimibook
-import std / [os, strutils, strscans, strformat]
+import std / [os, strutils, strformat]
 import nimibook / [defaults, configs]
+
+func skipUntil*(text: string, keyword: string): string =
+  var untilReached = false
+  var lines: seq[string]
+  for line in text.splitLines:
+    if line.startsWith(keyword):
+      untilReached = true
+    if untilReached:
+      lines.add line
+  result = lines.join("\n")
 
 nbInit(theme = useNimibook)
 
@@ -47,15 +57,6 @@ Here are the available fields:
 {fieldList}
 
 As an example here is nimibook configuration:"""
-func skipUntil(text: string, keyword: string): string =
-  var untilReached = false
-  var lines: seq[string]
-  for line in text.splitLines:
-    if line.startsWith(keyword):
-      untilReached = true
-    if untilReached:
-      lines.add line
-  result = lines.join("\n")
 nbCode: # highlight as nim since it is better than no highlighting...
   discard
 nb.blk.code = "../nimib.toml".readFile

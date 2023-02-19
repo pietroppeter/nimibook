@@ -9,17 +9,21 @@ import nimib / paths
 template nbUseNimibook* =
   {. error: "nbUseNimibook has been removed in nimibook 0.3, use nbInit(theme = useNimibook)" .}
 
-proc printHelp() =
-  echo """
-Choose one of the following options : init, clean, check, build, update
-init   : Initialize book structure.
-build  : Build your book.
-         You can add options (e.g. --verbosity:0, -d:release)
+# stop at the sign in order to make sure it shows without scroll in nimibook:              V
+const cliHelp* = """
+Choose one of the following options : init, build, dump, check, clean, update
+init   : Initialize book structure:
+         - creates a default nimib.toml config (if not already present)
+         - creates required nimibook assets in output folder (if not already present)
+         - creates default sources file for entries listed in toc
+         After first usage it can be used to create source files from ToC
+build  : Build your complete book.
+         You can add options (e.g. --verbosity:0, -d:release, ...)
          and they will be passed when compiling and running nimib documents
 dump   : dump the content of book.json (required to build single documents)
-clean  : Delete generated files and files that are not supposed to be here (use this with caution).
-check  : Check generated book is correct.
-update : Update assets (css, js, fonts).
+check  : Check that sources and outputs are present as expected in ToC.
+clean  : Removes (almost) everything from output folder except assets.
+update : Update assets (css, js, fonts) in case they changed in last nimibook release.
 """
 
 proc nimibookCli*(book: var Book) =
@@ -33,7 +37,7 @@ proc nimibookCli*(book: var Book) =
     case p.kind
     of cmdEnd:
       if not hasArgs:
-        printHelp()
+        echo cliHelp
       break
     of cmdShortOption, cmdLongOption:
       discard
@@ -54,7 +58,7 @@ proc nimibookCli*(book: var Book) =
       elif p.key == "dump":
         dump book
       else:
-        printHelp()
+        echo cliHelp
 
 proc initBook*: Book =
   result.loadConfig
@@ -64,7 +68,7 @@ template initBookWithToc*(body: untyped): Book =
   var book = initBook()
   book.toc = initToc:
     body
-  echo book.renderToc
+  # echo book.renderToc
   book
 
 # deprecated: api superseded by config based api (and wrong use of New)

@@ -22,19 +22,6 @@ proc getSrcUrls*(book: Book): seq[string] =
     for e in book.toc.entries:
       book.srcPath e
 
-proc cleanJson*(book: Book) =
-  let uri = normalizedPath(book.homeDir / "book.json")
-  echo "[nimibook] remove file: ", uri
-  removeFile(uri)
-
-proc cleanSrcFolder(book: Book) =
-  let srcUrls: seq[string] = book.getSrcUrls
-  for f in walkDirRec(book.srcDir):
-    let ext = f.splitFile().ext
-    if f notin srcUrls and ext != ".mustache" and ext != ".nims" and ext != ".cfg" and not f.contains(".git"):
-      echo "[nimibook] remove file: ", f
-      removeFile(f)
-
 proc shouldDelete(book: Book, dir, f: string): bool =
   # Remove anything that's not in "docs/assets" or it is in keep (as a file or inside a keep folder)
   if isRelativeTo(f, dir / "assets"):
@@ -66,8 +53,6 @@ proc cleanOutFolder(book: Book) =
       removeDir(d)
 
 proc clean*(book: Book) =
-  cleanJson(book)
-  cleanSrcFolder(book)
   cleanOutFolder(book)
 
 proc check*(book: Book) =
@@ -128,4 +113,3 @@ proc init*(book: Book) =
 
 proc update*(book: Book) =
   populateAssets(book.homeDir, force = true)
-  initBookSrc(book)

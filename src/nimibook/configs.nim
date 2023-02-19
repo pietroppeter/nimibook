@@ -26,4 +26,4 @@ proc loadConfig*(book: var Book) =
     book.rawCfg = cfg.raw
     book.nbCfg = cfg.nb
   book.cfg = loadTomlSection(book.rawCfg, "nimibook", BookConfig)
-  echo book.renderConfig
+  # echo book.renderConfig

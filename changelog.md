@@ -3,6 +3,10 @@
 ## v0.3.0 (February 2023)
 
 * Improved docs and nim 2.0 compatibility (added to CI) (#56). other minor changes:
+  - changes to commands:
+    - clean command now only cleans the docs (outDir) folder, it does not clean srcFolder
+    - update command now only forces update of assets (to create sources use init)
+    - nimibook does not log anymore config and ToC every command it runs
   - updated CI to test on 1.6.x, devel, stable
   - improve nbook help (document dump and build options)
   - remove the rust file in assets/fonts

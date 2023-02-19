@@ -3,7 +3,8 @@ import nimib, nimibook
 nbInit(theme = useNimibook)
 nbText: """## Table of Contents
 
-The Table of Contents (ToC) is defined inside the `nbook.nim`.
+The Table of Contents (ToC) is defined inside the `nbook.nim`
+(you can pick another name for the file but in the documentation we will refer to it as `nbook.nim`).
 As an example here is `nbook.nim` for this book (nimibook documentation):
 """
 nbCode:
