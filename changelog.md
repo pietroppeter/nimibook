@@ -8,13 +8,34 @@
   * Pass compiler flag `-d:nimibParallelBuild=false` to compile in serial.
   * Pass `-d:nimibMaxProcesses=n` to run at most `n` builds in parallel at a time (default is 10)
 * The next-arrow is shown correctly on the second to last page.  (#61)
-* update to use nimib 0.3 and lots of maintenance (#50) including some breaking:
+* update to use nimib 0.3 and lots of maintenance (#50) including some breaking changes and some additional features:
   - fix usage of `blocks` context in `document` template update to reflect change in nimib 0.3
-  - `nimib.toml` now supports configuration for the book,
-    no need anymore to specify the configuration inside a nbook.
+  - `nimib.toml` now supports configuration for the book (in a [nimibook] section),
+    no need anymore to specify the configuration inside a nbook.nim file:
+    - in particular now you can specify the name of folder for source and build of book, fixes #48
   - `book.json` is now published in docs folder and can work as a  static api
-  - templates folder changed to `srcDir / templates`
-  - ...
+  - removed default options from build command (they were `"-d:release", "-f", "--verbosity:0", "--hints:off"`);
+    build command now supports options that are passed to nim compiler
+    - also now build fails at the end
+  - init command now creates default sources for toc elements (in particular it creates a default nimib document that uses nimibook)
+  - mustache templates are now in-memory partials, fixes #32
+  - removed book source folder in toc (taken from config) and removed `path` field from `Toc` object
+  - minor breaking changes:
+    - templates folder changed to `srcDir / templates`
+    - remove `nbUseNimibook` (use `nbInit(theme = useNimibook)`)
+    - `newBookFromToc` deprecated and replaced with `initBookWithToc`
+    - various changes to `Book` type:
+      - refactored `Book.book_title` into `Book.title`. Overrides previously existing `Book.title` which was supposed to be used for the Chapter title (not used)
+      - removed `book.path_to_root` (it is a document/chapter thing)
+  - default title for a page is now entry title/label, fix #46 
+  - rename and fix of draft entry, fix #44
+    - also fix for init and build when entry is a draft (skip)
+  - improved check command, fails after checking both sources and output and reports failures
+  - general code refactoring. code structure is now documented in a readme.md inside src folder:
+    - asset management moved to `assets` module and default assets moved in source
+    - books and docs module removed and new modules builds, commands and configs added
+  - renames examples to example_book and improved example
+  - added unit tests, which are added to CI and we also test example book
 * fix next/previous buttons when there is a draft chapter (see [commit 428e482](https://github.com/pietroppeter/nimibook/commit/428e482ac7b86e4f12c5ca8c79e419cb47250ea7))
 * add latex support using katex (activated with `nb.useLatex` as in standard nimib), see #52
 * made building happen async and in multiple process (see #53):
