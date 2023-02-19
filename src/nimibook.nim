@@ -13,9 +13,12 @@ proc printHelp() =
   echo """
 Choose one of the following options : init, clean, check, build, update
 init   : Initialize book structure.
+build  : Build your book.
+         You can add options (e.g. --verbosity:0, -d:release)
+         and they will be passed when compiling and running nimib documents
+dump   : dump the content of book.json (required to build single documents)
 clean  : Delete generated files and files that are not supposed to be here (use this with caution).
 check  : Check generated book is correct.
-build  : Build your book !
 update : Update assets (css, js, fonts).
 """
 

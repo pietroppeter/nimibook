@@ -8,10 +8,11 @@
   * Pass compiler flag `-d:nimibParallelBuild=false` to compile in serial.
   * Pass `-d:nimibMaxProcesses=n` to run at most `n` builds in parallel at a time (default is 10)
 * The next-arrow is shown correctly on the second to last page.  (#61)
-* update to use nimib 0.3 and maintenance (#50):
+* update to use nimib 0.3 and lots of maintenance (#50) including some breaking:
   - fix usage of `blocks` context in `document` template update to reflect change in nimib 0.3
   - `nimib.toml` now supports configuration for the book,
-    no need anymore to specify the configuration inside a nbook.nim file
+    no need anymore to specify the configuration inside a nbook.
+  - `book.json` is now published in docs folder and can work as a  static api
   - templates folder changed to `srcDir / templates`
   - ...
 * fix next/previous buttons when there is a draft chapter (see [commit 428e482](https://github.com/pietroppeter/nimibook/commit/428e482ac7b86e4f12c5ca8c79e419cb47250ea7))
