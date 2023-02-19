@@ -1,7 +1,6 @@
 import std / [os, strformat]
 import nimibook / types
 import nimib / [config, paths]
-import toml_serialization
 
 proc renderConfig*(book: Book): string =
   fmt"""
@@ -26,8 +25,5 @@ proc loadConfig*(book: var Book) =
     book.cfgDir = cfg.dir
     book.rawCfg = cfg.raw
     book.nbCfg = cfg.nb
-  try:
-    book.cfg = Toml.decode(book.rawCfg, BookConfig, "nimibook")
-  except TomlError:
-    echo "[nimibook.warning] failed to load nimibook config"
-  echo book.renderConfig
+  book.cfg = loadTomlSection(book.rawCfg, "nimibook", BookConfig)
+  # echo book.renderConfig

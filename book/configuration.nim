@@ -1,7 +1,22 @@
 import nimib, nimibook
-import std / [os, strutils, strscans, strformat]
+import std / [os, strutils, strformat]
+import nimibook / [defaults, configs]
+
+func skipUntil*(text: string, keyword: string): string =
+  var untilReached = false
+  var lines: seq[string]
+  for line in text.splitLines:
+    if line.startsWith(keyword):
+      untilReached = true
+    if untilReached:
+      lines.add line
+  result = lines.join("\n")
 
 nbInit(theme = useNimibook)
+
+template debug(message: string) =
+  when defined(nimibookDebugConfigurationDoc):
+    debugEcho message
 
 # the following is very dependent on how source is written
 proc readBookConfigFields: seq[string] =
@@ -10,38 +25,59 @@ proc readBookConfigFields: seq[string] =
   var process = false
   var field, typ, description: string
   for line in src.lines:
-    # debugEcho line
-    if line.strip.startsWith("Book"):
-      # debugEcho ">start processing"
+    debug line
+    if line.strip.startsWith("BookConfig"):
+      debug ">start processing"
       process = true
       continue
     if line.strip.startsWith("#"):
-      # debugEcho ">skip"
+      debug ">skip"
       continue
-    if line.strip.startsWith("toc"):
-      # debugEcho ">stop processing"
+    if line.strip.startsWith("Book"):
+      debug ">stop processing"
       break
     if process and line.contains("##"):
-      # debugEcho ">match"
+      debug ">match"
       description = line.split("##")[1].strip
       field = line.split("##")[0].split("*:")[0].strip
       typ = line.split("##")[0].split("*:")[1].strip
       result.add fmt"* **{field}** (`{typ}`): {description}"
-    # else: debugEcho ">noMatch"
+    else:
+      debug ">noMatch"
 
 let fieldList = readBookConfigFields().join("\n")
 
 nbText: fmt"""
 # Configuration
 
-Book configuration is done with the `Book` object that has been created with `newBookFromToc`.
+Book configuration is done inside the `[nimibook]` section of `nimib.toml` configuration file.
 
-The `Book` object has the following fields which are relevant for the documentation:
+Here are the available fields:
 
 {fieldList}
 
-Notes:
+As an example here is nimibook configuration:"""
+nbCode: # highlight as nim since it is better than no highlighting...
+  discard
+nb.blk.code = "../nimib.toml".readFile
+nbText: "This is the default configuration created by the `init command`:"
+nbCode: # highlight as nim since it is better than no highlighting...
+  discard
+nb.blk.code = block:
+  var book = Book()
+  book.setDefaults
+  book.renderConfig.skipUntil("[nimibook]")
 
+
+nbText: """
+## Folder structure
+By default the nimibook folder structure is to put all sources in a `book` folder
+and to put the book built output in a `docs` folder (so that it is straightforward to publish the book wit github pages).
+
+These folders can be customized since they are taken from [nimib] section of `nimib.toml`
+as `srcDir` and `outDir`.
+
+## Additional remarks
 * for consistency with template values, we use snake case for fields of this object.
 * the book object replicates functionalities available in mdbook
 * relevant documentation for mdbook is in this two pages:
