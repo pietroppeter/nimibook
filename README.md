@@ -70,9 +70,7 @@ To install Nimibook: `nimble install nimibook`
 
 Nimibook does not ([yet](https://github.com/pietroppeter/nimibook/issues/63)) provides an executable to manage your book, but it provides the basic building blocks to write your own.
 
-**1. example nbook.nim**: start from a (not necessarily) empty folder and create a `nbook.nim` file
-(you can pick a different name from `nbook`) with the
-following content:
+**1. example nbook.nim**: in a folder of your choice create a `nbook.nim` file with the following content:
 
 ```nim
 import nimibook
