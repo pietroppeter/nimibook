@@ -42,7 +42,7 @@ needed to create a book with markdown and nimib sources.
 It still has some features missing from mdbook
 (see [this issue](https://github.com/pietroppeter/nimibook/issues/9#issuecomment-851989939)).
 
-To follow up on recent changes check the [changelog.md](changelog.md).
+To follow up on recent changes check the [changelog.md](https://github.com/pietroppeter/nimibook/blob/main/changelog.md).
 
 ## Example sites using nimibook
 
