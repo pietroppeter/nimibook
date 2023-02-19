@@ -47,7 +47,7 @@ $$
 
 nbText: &"""## Inline equations
 
-**Inline equations** are obtained with delimiters `$..$`. The following inline paragraph:
+**Inline equations** are obtained with delimiters `$ ... $`. The following inline paragraph:
 
 {inline_paragraph}
 
