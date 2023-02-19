@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.3.0 (Febraury 2023)
+## v0.3.0 (February 2023)
 
 * Parallel build fixes (#61)
   * Fixed parallel build so it uses the correct folder for saving log files.
