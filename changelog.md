@@ -6,14 +6,14 @@
   * Fixed parallel build so it uses the correct folder for saving log files.
   * The error messages are printed to terminal as well
   * Pass compiler flag `-d:nimibParallelBuild=false` to compile in serial.
-  * Pass `-d:nimibMaxProcesses=n` to run at most `n` builds in parallel at a time. 
+  * Pass `-d:nimibMaxProcesses=n` to run at most `n` builds in parallel at a time (default is 10)
 * The next-arrow is shown correctly on the second to last page.  (#61)
 * update to use nimib 0.3 and maintenance (#50):
   - fix usage of `blocks` context in `document` template update to reflect change in nimib 0.3
   - `nimib.toml` now supports configuration for the book,
     no need anymore to specify the configuration inside a nbook.nim file
-  - ...
   - templates folder changed to `srcDir / templates`
+  - ...
 * fix next/previous buttons when there is a draft chapter (see [commit 428e482](https://github.com/pietroppeter/nimibook/commit/428e482ac7b86e4f12c5ca8c79e419cb47250ea7))
 * add latex support using katex (activated with `nb.useLatex` as in standard nimib), see #52
 * made building happen async and in multiple process (see #53):
