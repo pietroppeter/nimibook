@@ -32,7 +32,7 @@ provided by [nim-markdown]. For a quick reference of supported syntax see this [
 [nimibook]: https://pietroppeter.github.io/nimibook/
 [GFM]: https://github.github.com/gfm/
 [nim-markdown]: https://github.com/soasme/nim-markdown
-[cheasheet]: https://pietroppeter.github.io/nimib/cheatsheet.html
+[cheatsheet]: https://pietroppeter.github.io/nimib/cheatsheet.html
 
 ## Status
 
