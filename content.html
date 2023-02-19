@@ -28,7 +28,9 @@
         <!-- Custom theme stylesheets - why the "../"? -->
 
 
-        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous" onload="renderMathInElement(document.body,{delimiters:[{left: '$$', right: '$$', display: true},{left: '$', right: '$', display: false}]});"></script>
         
         <!-- plausible analytics (new in nimibook) -->
         <script defer data-domain="pietroppeter.github.io/nimibook" src="https://plausible.io/js/plausible.js"></script>
@@ -85,57 +87,49 @@
                                 <ol class="chapter">
                 <li class="chapter-item expanded ">
                   <a href="./index.html" tabindex="0">
-                    <strong aria-hidden="true">1.</strong> Introduction
+                      Introduction
                   </a></li>
-                  <li>
-                  <ol class="section">
                 <li class="chapter-item expanded ">
                   <a href="./content.html" class="active" tabindex="0">
-                    <strong aria-hidden="true">1.1.</strong> Content
+                    <strong aria-hidden="true">1.</strong> Content
                   </a></li>
                 <li class="chapter-item expanded ">
-                  <a href="./tocdsl.html" tabindex="0">
-                    <strong aria-hidden="true">1.2.</strong> Toc DSL
+                  <a href="./toc.html" tabindex="0">
+                    <strong aria-hidden="true">2.</strong> Table of Contents
                   </a></li>
                 <li class="chapter-item expanded ">
                   <a href="./configuration.html" tabindex="0">
-                    <strong aria-hidden="true">1.3.</strong> Configuration
+                    <strong aria-hidden="true">3.</strong> Configuration
                   </a></li>
                 <li class="chapter-item expanded ">
-                  <a href="./tasks.html" tabindex="0">
-                    <strong aria-hidden="true">1.4.</strong> Tasks
+                  <a href="./cli.html" tabindex="0">
+                    <strong aria-hidden="true">4.</strong> Commands
                   </a></li>
-                <li class="chapter-item expanded ">
-                  <a href="./latex.html" tabindex="0">
-                    <strong aria-hidden="true">1.5.</strong> Latex
-                  </a></li>
-                  </ol>
-                  </li>
                 <li class="chapter-item expanded ">
                   <a href="./tocexample/index.html" tabindex="0">
-                    <strong aria-hidden="true">2.</strong> Example toc structure
+                    <strong aria-hidden="true">5.</strong> Example toc structure
                   </a></li>
                   <li>
                   <ol class="section">
                 <li class="chapter-item expanded ">
                   <a href="./tocexample/nested.html" tabindex="0">
-                    <strong aria-hidden="true">2.1.</strong> Nested section
+                    <strong aria-hidden="true">5.1.</strong> Nested section
                   </a></li>
                   <li>
                   <ol class="section">
                 <li class="chapter-item expanded ">
                   <a href="./tocexample/nested_entry.html" tabindex="0">
-                    <strong aria-hidden="true">2.1.1.</strong> Entry in nested section
+                    <strong aria-hidden="true">5.1.1.</strong> Entry in nested section
                   </a></li>
                   </ol>
                   </li>
                 <li class="chapter-item expanded ">
                   <a href="./tocexample/back_to_parent.html" tabindex="0">
-                    <strong aria-hidden="true">2.2.</strong> Back to parent section
+                    <strong aria-hidden="true">5.2.</strong> Back to parent section
                   </a></li>
                 <li class="chapter-item expanded ">
                   <div>
-                    <strong aria-hidden="true">2.3.</strong> Draft chapter
+                    <strong aria-hidden="true">5.3.</strong> Draft chapter
                   </div>
                 </li>
                 </ol>
@@ -188,17 +182,55 @@
                 <div id="content" class="content">
                     <main>
                         <h1>Content</h1>
-<p>The content of a chapter of a book can be a standard Markdown file or a nim file.</p>
-<p>For the nim file the structure is the following:</p>
-<pre><code class="language-nim">import nimib, nimibook
-... # other imports
+<p>The content of a chapter of a book can be a standard Markdown file (<code>.md</code>) or a <code>.nim</code> file.</p>
+<p>The nim file must be a nimib document and the default content (created by <code>init</code> command) is:</p>
+                        <pre><code class="nim hljs"><span class="hljs-keyword">import</span> nimib, nimibook
 
-nbInit # initializes a nimib document
-nbUseNimibook # overrides nimib defaults with nimibooks and loads book configuration
+nbInit(theme = useNimibook)
+nbText: <span class="hljs-string">&quot;## Default Content&quot;</span>
+nbSave
+</code></pre>
+                        <h2>Latex</h2>
+<p>Latex is available through <a href="https://www.latex-project.org">Katex</a> as in Nimib.
+It is enabled on a specific document with the command</p>
+                        <pre><code class="nim hljs">nb.useLatex</code></pre>
+                        <p>which adds the following content in the head of the document:</p>
+<pre><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css&quot; integrity=&quot;sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X&quot; crossorigin=&quot;anonymous&quot;&gt;
+&lt;script defer src=&quot;https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js&quot; integrity=&quot;sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+&lt;script defer src=&quot;https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js&quot; integrity=&quot;sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa&quot; crossorigin=&quot;anonymous&quot; onload=&quot;renderMathInElement(document.body,{delimiters:[{left: '$$', right: '$$', display: true},{left: '$', right: '$', display: false}]});&quot;&gt;&lt;/script&gt;
+</code></pre>
+                        <h2>Inline equations</h2>
+<p><strong>Inline equations</strong> are obtained with delimiters <code>$ ... $</code>. The following inline paragraph:</p>
+<blockquote>
+<p>Euler's identity is the equality
+$e^{i\pi} + 1 = 0$, where $e$ is the base of natural logarithms,
+$i$ is the imaginary unit, and $\pi$ is the ratio of circumference of a circle
+to its diameter.</p>
+</blockquote>
+<p>...is created with the following source:</p>
+<pre><code class="language-md">&gt; Euler's identity is the equality
+&gt; $e^{i\pi} + 1 = 0$, where $e$ is the base of natural logarithms,
+&gt; $i$ is the imaginary unit, and $\pi$ is the ratio of circumference of a circle
+&gt; to its diameter.
 
-... # content of chapter using nbText, nbCode and other nimib functionalities
+</code></pre>
+<h2>Block equations</h2>
+<p><strong>Block equations</strong> are obtained with delimiters <code>$$ ... $$</code>. The follwing block equation:</p>
+<p>$$
+f(x) = \frac{1}{\sigma\sqrt{2\pi}}
+\exp\left( -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^{!2},\right)
+$$</p>
+<p>...is created with the following source:</p>
+<pre><code class="language-md">$$ 
+  f(x) = \frac{1}{\sigma\sqrt{2\pi}} 
+  \exp\left( -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^{\!2}\,\right)
+$$
 
-nbSave # save the document to html output
+</code></pre>
+<h3>MathJax support</h3>
+<p>As in the original mdbook, you can opt instead to activate <a href="https://rust-lang.github.io/mdBook/format/mathjax.html">MathJax support</a>
+with:</p>
+<pre><code class="language-nim">nb.context[&quot;mathjax_support&quot;] = true
 </code></pre>
                     </main>
 
@@ -208,7 +240,7 @@ nbSave # save the document to html output
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="./tocdsl.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="./toc.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -222,7 +254,7 @@ nbSave # save the document to html output
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="./tocdsl.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="./toc.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

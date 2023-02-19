@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using nimibook -->
         <meta charset="UTF-8">
-        <title>Tasks - Nimibook</title>
+        <title>Table of Contents - Nimibook</title>
 
         <!-- Custom HTML head -->
 
@@ -85,57 +85,49 @@
                                 <ol class="chapter">
                 <li class="chapter-item expanded ">
                   <a href="./index.html" tabindex="0">
-                    <strong aria-hidden="true">1.</strong> Introduction
+                      Introduction
                   </a></li>
-                  <li>
-                  <ol class="section">
                 <li class="chapter-item expanded ">
                   <a href="./content.html" tabindex="0">
-                    <strong aria-hidden="true">1.1.</strong> Content
+                    <strong aria-hidden="true">1.</strong> Content
                   </a></li>
                 <li class="chapter-item expanded ">
-                  <a href="./tocdsl.html" tabindex="0">
-                    <strong aria-hidden="true">1.2.</strong> Toc DSL
+                  <a href="./toc.html" class="active" tabindex="0">
+                    <strong aria-hidden="true">2.</strong> Table of Contents
                   </a></li>
                 <li class="chapter-item expanded ">
                   <a href="./configuration.html" tabindex="0">
-                    <strong aria-hidden="true">1.3.</strong> Configuration
+                    <strong aria-hidden="true">3.</strong> Configuration
                   </a></li>
                 <li class="chapter-item expanded ">
-                  <a href="./tasks.html" class="active" tabindex="0">
-                    <strong aria-hidden="true">1.4.</strong> Tasks
+                  <a href="./cli.html" tabindex="0">
+                    <strong aria-hidden="true">4.</strong> Commands
                   </a></li>
-                <li class="chapter-item expanded ">
-                  <a href="./latex.html" tabindex="0">
-                    <strong aria-hidden="true">1.5.</strong> Latex
-                  </a></li>
-                  </ol>
-                  </li>
                 <li class="chapter-item expanded ">
                   <a href="./tocexample/index.html" tabindex="0">
-                    <strong aria-hidden="true">2.</strong> Example toc structure
+                    <strong aria-hidden="true">5.</strong> Example toc structure
                   </a></li>
                   <li>
                   <ol class="section">
                 <li class="chapter-item expanded ">
                   <a href="./tocexample/nested.html" tabindex="0">
-                    <strong aria-hidden="true">2.1.</strong> Nested section
+                    <strong aria-hidden="true">5.1.</strong> Nested section
                   </a></li>
                   <li>
                   <ol class="section">
                 <li class="chapter-item expanded ">
                   <a href="./tocexample/nested_entry.html" tabindex="0">
-                    <strong aria-hidden="true">2.1.1.</strong> Entry in nested section
+                    <strong aria-hidden="true">5.1.1.</strong> Entry in nested section
                   </a></li>
                   </ol>
                   </li>
                 <li class="chapter-item expanded ">
                   <a href="./tocexample/back_to_parent.html" tabindex="0">
-                    <strong aria-hidden="true">2.2.</strong> Back to parent section
+                    <strong aria-hidden="true">5.2.</strong> Back to parent section
                   </a></li>
                 <li class="chapter-item expanded ">
                   <div>
-                    <strong aria-hidden="true">2.3.</strong> Draft chapter
+                    <strong aria-hidden="true">5.3.</strong> Draft chapter
                   </div>
                 </li>
                 </ol>
@@ -187,24 +179,47 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1>Tasks</h1>
+                        <h2>Table of Contents</h2>
+<p>The Table of Contents (ToC) is defined inside the <code>nbook.nim</code>
+(you can pick another name for the file but in the documentation we will refer to it as <code>nbook.nim</code>).
+As an example here is <code>nbook.nim</code> for this book (nimibook documentation):</p>
+                        <pre><code class="nim hljs"><span class="hljs-keyword">import</span> nimibook
+
+<span class="hljs-keyword">var</span> book = initBookWithToc:
+  entry(<span class="hljs-string">&quot;Introduction&quot;</span>, <span class="hljs-string">&quot;index&quot;</span>, numbered = <span class="hljs-literal">false</span>) <span class="hljs-comment"># .nim extension is optional</span>
+  entry(<span class="hljs-string">&quot;Content&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>)
+  entry(<span class="hljs-string">&quot;Table of Contents&quot;</span>, <span class="hljs-string">&quot;toc&quot;</span>)
+  entry(<span class="hljs-string">&quot;Configuration&quot;</span>, <span class="hljs-string">&quot;configuration&quot;</span>)
+  entry(<span class="hljs-string">&quot;Commands&quot;</span>, <span class="hljs-string">&quot;cli&quot;</span>)
+  section(<span class="hljs-string">&quot;Example toc structure&quot;</span>, <span class="hljs-string">&quot;tocexample/index.md&quot;</span>):
+    section(<span class="hljs-string">&quot;Nested section&quot;</span>, <span class="hljs-string">&quot;nested.md&quot;</span>):
+      entry(<span class="hljs-string">&quot;Entry in nested section&quot;</span>, <span class="hljs-string">&quot;nested_entry.md&quot;</span>)
+    entry(<span class="hljs-string">&quot;Back to parent section&quot;</span>, <span class="hljs-string">&quot;back_to_parent.md&quot;</span>)
+    draft(<span class="hljs-string">&quot;Draft chapter&quot;</span>)
+
+nimibookCli(book)
+</code></pre>
+                        <p>From the above example you can see that:</p>
 <ul>
-<li><code>nimble genbook</code>: build book</li>
-<li><code>nimble dumpbook</code>: dump book.json</li>
-<li><code>nimble cleanbook</code>: remove all files created during build</li>
-<li><code>nimble srcpretty</code>: run nimpretty on nim files in src folder</li>
-<li><code>nimble test_example</code>: test commands with example book</li>
-<li><code>nimble clean_example</code>: remove directories created for example book</li>
+<li>ToC is defined inside <code>initBookWithToc</code> block</li>
+<li>chapters that do not start a section are created with <code>entry</code></li>
+<li><code>entry</code> accepts two string parameters: chapter title and source path</li>
+<li>source path is relative to book source folder</li>
+<li>source extension defaults to <code>.nim</code>, to use a markdown source you need to explict mark it as <code>.md</code></li>
+<li>chapters that start a section are created with <code>section</code> and start a new block</li>
+<li>draft chapters (placeholders in the ToC without source) are created with <code>draft</code></li>
 </ul>
+<p>In the future nimibook will support the same <code>SUMMARY.md</code> mechanism as in mdbook.
+Note that currently nimibook does not support part title and separators (available in mdbook).</p>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="./configuration.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="./content.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="./latex.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="./configuration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -214,11 +229,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="./configuration.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="./content.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="./latex.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="./configuration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

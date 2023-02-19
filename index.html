@@ -85,57 +85,49 @@
                                 <ol class="chapter">
                 <li class="chapter-item expanded ">
                   <a href="./index.html" class="active" tabindex="0">
-                    <strong aria-hidden="true">1.</strong> Introduction
+                      Introduction
                   </a></li>
-                  <li>
-                  <ol class="section">
                 <li class="chapter-item expanded ">
                   <a href="./content.html" tabindex="0">
-                    <strong aria-hidden="true">1.1.</strong> Content
+                    <strong aria-hidden="true">1.</strong> Content
                   </a></li>
                 <li class="chapter-item expanded ">
-                  <a href="./tocdsl.html" tabindex="0">
-                    <strong aria-hidden="true">1.2.</strong> Toc DSL
+                  <a href="./toc.html" tabindex="0">
+                    <strong aria-hidden="true">2.</strong> Table of Contents
                   </a></li>
                 <li class="chapter-item expanded ">
                   <a href="./configuration.html" tabindex="0">
-                    <strong aria-hidden="true">1.3.</strong> Configuration
+                    <strong aria-hidden="true">3.</strong> Configuration
                   </a></li>
                 <li class="chapter-item expanded ">
-                  <a href="./tasks.html" tabindex="0">
-                    <strong aria-hidden="true">1.4.</strong> Tasks
+                  <a href="./cli.html" tabindex="0">
+                    <strong aria-hidden="true">4.</strong> Commands
                   </a></li>
-                <li class="chapter-item expanded ">
-                  <a href="./latex.html" tabindex="0">
-                    <strong aria-hidden="true">1.5.</strong> Latex
-                  </a></li>
-                  </ol>
-                  </li>
                 <li class="chapter-item expanded ">
                   <a href="./tocexample/index.html" tabindex="0">
-                    <strong aria-hidden="true">2.</strong> Example toc structure
+                    <strong aria-hidden="true">5.</strong> Example toc structure
                   </a></li>
                   <li>
                   <ol class="section">
                 <li class="chapter-item expanded ">
                   <a href="./tocexample/nested.html" tabindex="0">
-                    <strong aria-hidden="true">2.1.</strong> Nested section
+                    <strong aria-hidden="true">5.1.</strong> Nested section
                   </a></li>
                   <li>
                   <ol class="section">
                 <li class="chapter-item expanded ">
                   <a href="./tocexample/nested_entry.html" tabindex="0">
-                    <strong aria-hidden="true">2.1.1.</strong> Entry in nested section
+                    <strong aria-hidden="true">5.1.1.</strong> Entry in nested section
                   </a></li>
                   </ol>
                   </li>
                 <li class="chapter-item expanded ">
                   <a href="./tocexample/back_to_parent.html" tabindex="0">
-                    <strong aria-hidden="true">2.2.</strong> Back to parent section
+                    <strong aria-hidden="true">5.2.</strong> Back to parent section
                   </a></li>
                 <li class="chapter-item expanded ">
                   <div>
-                    <strong aria-hidden="true">2.3.</strong> Draft chapter
+                    <strong aria-hidden="true">5.3.</strong> Draft chapter
                   </div>
                 </li>
                 </ol>
@@ -191,86 +183,77 @@
 <p><strong>nimibook</strong> is a port of <a href="https://rust-lang.github.io/mdBook/index.html">mdbook</a> to <a href="https://nim-lang.org/">Nim</a>, powered by <a href="https://pietroppeter.github.io/nimib/">nimib</a>.
 Nimibook allows to create a nice looking book from nim code and markdown,
 making sure that nim code is running correctly and being able to incorporate code outputs in the final book.
-An example book is <a href="https://pietroppeter.github.io/nimibook/">nimibook documentation</a> itself.</p>
+An example book is <a href="https://pietroppeter.github.io/nimibook/">nimibook</a> documentation.</p>
+<blockquote>
 <p><a href="https://rust-lang.github.io/mdBook/index.html">mdBook</a> is a command line tool and Rust crate to create books
 using Markdown (as by the CommonMark specification) files.
 It's very similar to <a href="https://github.com/GitbookIO/gitbook">Gitbook</a>, which is a command line tool (and Node.js library)
 for building beautiful books using GitHub/Git and Markdown (or AsciiDoc).</p>
+</blockquote>
 <p><a href="https://pietroppeter.github.io/nimib/">nimib</a> is a Nim library to convert your Nim code and its outputs to html documents.
 The html output can be easily customized thanks to <a href="https://github.com/soasme/nim-mustache">nim-mustache</a>,
 and this is what allows it to use it to build nimibook.
 <em>nimib documents</em> are normal nim files which use nimib library to produce an output document.</p>
+<p>One particular advantage of nimib is that it can incorporate interactive content
+taking advantage of nim's js backend.
+For the basic examples see
+<a href="https://pietroppeter.github.io/nimib/interactivity.html">nimib interactivity doc</a>.</p>
 <p>The Markdown dialect supported by both nimib and nimibook is the subset of <a href="https://github.github.com/gfm/">Github Flavored Markdown</a>
-provided by <a href="https://github.com/soasme/nim-markdown">nim-markdown</a>. For a quick reference of supported syntax see the <a href="https://pietroppeter.github.io/nimib/cheatsheet.html">cheatsheet</a>.</p>
-<h3>Status</h3>
-<p>nimibook currently provides minimal functionality to create a book and support a local CLI mode.</p>
+provided by <a href="https://github.com/soasme/nim-markdown">nim-markdown</a>. For a quick reference of supported syntax see this <a href="https://pietroppeter.github.io/nimib/cheatsheet.html">cheatsheet</a> (created with nimib).</p>
+<!--refs-->
+<h2>Status</h2>
+<p>Nimibook is actively maintained (<a href="https://github.com/pietroppeter/nimibook/issues?q=is%3Aopen+is%3Aissue+label%3A2023H1%2C2023H2">target issues for 2023</a>)
+and it provides the basic functionality
+needed to create a book with markdown and nimib sources.
+It still has some features missing from mdbook
+(see <a href="https://github.com/pietroppeter/nimibook/issues/9#issuecomment-851989939">this issue</a>).</p>
+<p>To follow up on recent changes check the <a href="https://github.com/pietroppeter/nimibook/blob/main/changelog.md">changelog.md</a>.</p>
+<h2>Example sites using nimibook</h2>
+<ul>
+<li><a href="https://scinim.github.io/getting-started/">scinim/getting-started</a></li>
+<li><a href="https://norm.nim.town">moigagoo/norm</a></li>
+<li><a href="https://philippmdoerner.github.io/Snorlogue/bookCompiled/">PhilippMDoerner/Snorlogue</a></li>
+</ul>
+<p>You are welcome to open a PR and add your site using nimibook here.</p>
+<h2>Features</h2>
+<ul>
+<li>table of contents in a collapsible sidebar</li>
+<li>five themes (Light, Rust, Coal, Navy, Ayu)</li>
+<li>buttons to next/previous pages</li>
+<li>build multiple files in parallel</li>
+<li>(optional) latex content with katex</li>
+<li>(optional) link to github repo</li>
+<li>(optional) link to track analytics with plausible analytics</li>
+</ul>
 <h2>Installation</h2>
-<p>To install Nimibook simply use : <code>nimble install nimibook</code></p>
-<h2>Usage</h2>
-<ol>
-<li>Write your content using <a href="https://pietroppeter.github.io/nimib/">nimib</a> or simple markdown files in the <code>book</code> folder.
-The basic template for an empty page is:</li>
-</ol>
-<pre><code class="language-nim">import nimib, nimibook
-
-nbInit(theme = useNimibook)
-# content here
-nbSave
-</code></pre>
-<ol start="2">
-<li>Use the Table of Content (ToC) DSL to link chapters to content in <code>nbook.nim</code>.
-Example :</li>
-</ol>
+<p>To install Nimibook: <code>nimble install nimibook</code></p>
+<h2>How to setup your book with nimibook</h2>
+<p>Nimibook does not (<a href="https://github.com/pietroppeter/nimibook/issues/63">yet</a>) provides an executable to manage your book, but it provides the basic building blocks to write your own.</p>
+<p><strong>1. example nbook.nim</strong>: in a folder of your choice create a <code>nbook.nim</code> file with the following content:</p>
 <pre><code class="language-nim">import nimibook
 
-# Create a new book called &quot;Dummy&quot;, whose content is in the folder &quot;book&quot;
-var book = newBookFromToc(&quot;Dummy Book&quot;, &quot;book&quot;):
-  # Create a new section called &quot;Dummy&quot;, its content is the file &quot;index.nim&quot;
-  section(&quot;Dummy&quot;, &quot;index&quot;): # Note how the .nim extensions is optional
-    # Create a new entry called &quot;Simple example&quot;, its content is the file &quot;page_1.nim&quot;
-    entry(&quot;Simple example&quot;, &quot;page_1.nim&quot;)
+var book = initBookWithToc:
+  entry(&quot;Preface&quot;, &quot;preface.md&quot;, numbered = false)
+  entry(&quot;Introduction&quot;, &quot;intro.md&quot;)
+  section(&quot;Chapter 1&quot;, &quot;chapter1/index.nim&quot;):
+    entry(&quot;Content&quot;, &quot;content.nim&quot;)
+    draft(&quot;Nothing yet&quot;)
+    section(&quot;Sub chapter&quot;, &quot;no_ext&quot;):
+      entry(&quot;and some more content&quot;, &quot;more.md&quot;)
 
-# access to nimibook cli which will allow to build the book
 nimibookCli(book)
 </code></pre>
-<p>See <a href="https://pietroppeter.github.io/nimibook/">nimibook</a> or <a href="https://github.com/pietroppeter/nimibook">Nimibook repo</a> for more documentations and examples.</p>
-<ol start="3">
-<li>Generate your very own CLI tools or use Nimble tasks with <code>nim c -d:release nbook.nim</code>.</li>
-</ol>
+<p><strong>2. write a TOC</strong>: modify <code>nbook.nim</code> to specify
+the planned Table of Content (TOC) for your book.</p>
+<p><strong>3. nbook init</strong>: running <code>nim r nbook init</code> (or compile <code>nbook</code> and run <code>nbook init</code>) will set up the book with:</p>
 <ul>
-<li><code>./nbook init</code> to init your book structure. <strong>This command must be ran at least once</strong>.</li>
-<li><code>./nbook build</code> to build your book.</li>
+<li>a <code>nimib.toml</code> that contains the default configuration for the book</li>
+<li>a <code>book</code> folder that contains sources for all chapters mentioned in the TOC. Note that <code>.nim</code> files already contain default <code>nimib</code> content to be used in nimibook.</li>
+<li>a <code>docs</code> folder that contains static assets for the book
+and that will contain the built book</li>
 </ul>
-<ol start="4">
-<li>Whenever your Table of Content changes (add/remove files, changes sections organization), recompile your <code>nbook</code> and run the <code>build</code> command : <code>nim c -d:release nbook.nim &amp;&amp; ./nbook build</code></li>
-</ol>
-<ul>
-<li>It is also doable in one command : <code>nim r -d:release nbook.nim build</code></li>
-<li>You don't need to call the <code>init</code> command again.</li>
-<li>Rinse and repeat until your ToC is done ! Then you can just edit files and call <code>build</code> without recompiling.</li>
-</ul>
-<h2>Tips and Tricks</h2>
-<ul>
-<li>to build a single page (e.g. <code>book/mypage.nim</code>) run first <code>./nbook dump</code>
-(which dumps a <code>book.json</code> file that contains a table of contents and other context data).</li>
-</ul>
-<p>If <code>book.json</code> is present, then you can build your page with: <code>nim r book/mypage.nim</code></p>
-<ul>
-<li>Each book requires its own ToC and thus will be its own CLI Apps</li>
-<li><code>nbook.nim</code> is the default name used - it is possible to use another name.</li>
-<li>Multiple books <code>nbook.nim</code> cannot share the same folder. Instead, either split them into two separate books, or merge them into one.</li>
-<li>Some commands :
-<ul>
-<li><code>./nbook clean</code> will remove generated files and restart from a clean state.</li>
-<li><code>./nbook update</code> will update assets and mustache template.</li>
-<li>These two commands will modify installed files, use them with caution if you customized files locally.</li>
-</ul>
-</li>
-</ul>
-<h3>Analytics</h3>
-<p>This website is tracking analytics with <a href="https://plausible.io/index.html">plausible.io</a>, a lightweight and open-source website analytics tool with no cookies and fully compliant with GDPR, CCPA and PECR.
-Analytics for this website are publicly available <a href="https://plausible.io/pietroppeter.github.io%2Fnimibook">here</a>. You can opt out from analytics tracking with <a href="https://plausible.io/docs/excluding">standard ad-blocking</a> or typing <a href="https://plausible.io/docs/excluding-localstorage"><code>localStorage.plausible_ignore=true</code></a> in browser console.</p>
-<!--refs-->
+<p><strong>4. nbook build</strong>: run <code>nim r nbook build</code> to build the book. Open any <code>.html</code> file in <code>docs</code> folder to navigate your book.</p>
+<p><strong>5. create your content and enjoy!</strong>: now you are ready to start creating content in your sources and publish your book.</p>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
