@@ -59,7 +59,7 @@ nbText: &"""## Inline equations
 
 ## Block equations
 
-**Block equations** are obtained with delimiters `$$..$$`. The follwing block equation:
+**Block equations** are obtained with delimiters `$$ ... $$`. The follwing block equation:
 
 {block_equation}
 
