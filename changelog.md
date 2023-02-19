@@ -3,6 +3,7 @@
 ## v0.3.0 (February 2023)
 
 * Improved docs and nim 2.0 compatibility (added to CI) (#56). other minor changes:
+  - updated CI to test on 1.6.x, devel, stable
   - improve nbook help (document dump and build options)
   - remove the rust file in assets/fonts
   - add as vendored the assets (css, font and js stuff)
