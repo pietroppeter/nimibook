@@ -72,10 +72,10 @@ nb.blk.code = block:
 nbText: """
 ## Folder structure
 By default the nimibook folder structure is to put all sources in a `book` folder
-and to put the book built output in a `docs` folder (so that it is straightforward to publish the book wit github pages).
+and to put the book built output in a `docs` folder (so that it is straightforward to publish the book with github pages).
 
 These folders can be customized since they are taken from [nimib] section of `nimib.toml`
-as `srcDir` and `outDir`.
+as `srcDir` and `homeDir`.
 
 ## Additional remarks
 * for consistency with template values, we use snake case for fields of this object.
