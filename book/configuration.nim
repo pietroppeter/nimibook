@@ -77,6 +77,13 @@ and to put the book built output in a `docs` folder (so that it is straightforwa
 These folders can be customized since they are taken from [nimib] section of `nimib.toml`
 as `srcDir` and `homeDir`.
 
+### where does nimibook puts the output html?
+
+The logic of nimibook is that for every source, the **relative path** with respect to `srcDir` is applied as relative path to `homeDir` and this will give the html output path.
+For example, if we have default values `srcDir="book";homeDir="docs"`:
+  - a source in `book\example.md` will generate `docs\example.html`
+  - a source in `book\folder\subfolder\example.nim` will generate `docs\folder\subfolder\example.html`
+
 ## Additional remarks
 * for consistency with template values, we use snake case for fields of this object.
 * the book object replicates functionalities available in mdbook
