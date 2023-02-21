@@ -84,6 +84,18 @@ For example, if we have default values `srcDir="book";homeDir="docs"`:
   - a source in `book\example.md` will generate `docs\example.html`
   - a source in `book\folder\subfolder\example.nim` will generate `docs\folder\subfolder\example.html`
 
+Note in particular that if you have this structure in root folder:
+```
+README.md
+img.png
+book/
+  example.nim
+docs/
+  ...
+```
+and you add `..\README.md` as source, the generated `README.html` will NOT be in `docs` folder and it will be next to `README.md` (since `docs` is a folder inside root folder, at the same level as `book`).
+You can override this behaviour in `nbook.nim` but if the README.md references an image (say `img.png`) you will also need to make a copy of `img.png` in the docs folder. 
+
 ## Additional remarks
 * for consistency with template values, we use snake case for fields of this object.
 * the book object replicates functionalities available in mdbook
