@@ -300,7 +300,6 @@ const document* = hlHtml"""
         {{/search_js}}
 
         <script src="{{ path_to_root }}assets/js/clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="{{ path_to_root }}assets/js/highlight.js" type="text/javascript" charset="utf-8"></script>
         <script src="{{ path_to_root }}assets/js/book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
