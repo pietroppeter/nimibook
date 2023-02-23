@@ -10,7 +10,7 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.4.0"
-requires "nimib >= 0.3.6"
+requires "nimib >= 0.3.7"
 requires "jsony >= 1.1.5"
 
 import os
