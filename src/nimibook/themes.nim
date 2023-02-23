@@ -1,8 +1,8 @@
 import std / [strutils, os, enumerate, pathnorm]
-import nimib
+import nimib, nimib / [themes]
 import nimibook / [types, commands, entries, renders]
 
-const document* = """
+const document* = hlHtml"""
 <!DOCTYPE HTML>
 <html lang="{{ language }}" class="sidebar-visible no-js {{ default_theme }}">
     <head>
@@ -60,6 +60,10 @@ const document* = """
         {{/mathjax_support}}
 
         {{&latex}}
+
+        {{^disableHighlightJs}}
+            {{{highlightJs}}}
+        {{/disableHighlightJs}}
         
         <!-- plausible analytics (new in nimibook) -->
         {{#plausible_analytics_url}}
@@ -351,6 +355,7 @@ proc useNimibook*(doc: var NbDoc) =
   doc.context["git_repository_url"] = book.git_repository_url
   doc.context["git_repository_icon"] = book.git_repository_icon
   doc.context["plausible_analytics_url"] = book.plausible_analytics_url
+  doc.context["highlightJs"] = highlightJsTags
 
   var thisEntry: Entry
   # process toc
