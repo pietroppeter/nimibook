@@ -6,7 +6,7 @@
 
 # ignore build outputs
 docs/*
-examplebook/mydocs/*
+examplebook/my*
 *.log
 
 # useful to create invisible stuff and play around (for x_devnotes.md for x_issue73.nim, ...)
