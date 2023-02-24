@@ -1,6 +1,6 @@
 import std / [strutils, os, enumerate, pathnorm]
-import nimib, nimib / [themes]
-import nimibook / [types, commands, entries, renders]
+import nimib, nimib / themes
+import nimibook / [types, commands, entries, toc_render]
 
 const document* = hlHtml"""
 <!DOCTYPE HTML>

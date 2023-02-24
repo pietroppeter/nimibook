@@ -1,5 +1,6 @@
 import unittest
-import nimibook / [tocs, entries, types]
+import std / strutils
+import nimibook / [toc_dsl, toc_render, entries, types]
 
 test "toc dsl":
   var book: Book
@@ -16,8 +17,20 @@ test "toc dsl":
       draft("and I have not written this yet")
     entry("Appendix", "appendix.md", numbered = false)
 
-  echo book.renderToc
+  echo book.showToc
   check len(book.toc.entries) == 11
   check book.toc.entries[0].url == "index.html"
   check book.toc.entries[1].url == "part1/index.html"
   check book.toc.entries[2].url == "part1/important.html"
+
+test "toc render": # issue 73
+  let myToc = initToc:
+    entry("Should Be 1.", "book/bla.nim")
+    section("Should be 2", "book/internals.nim"):    
+      section("Should be 2.1", "internals/adders.nim"):
+        entry("Should be 2.1.1", "adders/one_adder.nim")
+
+    entry("Should be 3.", "CONTRIBUTING.md")
+  let renderedToc = myToc.render
+  check renderedToc.count("<ol") == renderedToc.count("</ol>")
+  check renderedToc.count("<li") == renderedToc.count("</li>")

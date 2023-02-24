@@ -1,6 +1,13 @@
+# ignore all executables (both windows and linux):
+*
+!/**/
+!*.*
+*.exe
+
+# ignore build outputs
 docs/*
 examplebook/my*
-nbook
-nbook.exe
-x_*
 *.log
+
+# useful to create invisible stuff and play around (for x_devnotes.md for x_issue73.nim, ...)
+x_*
