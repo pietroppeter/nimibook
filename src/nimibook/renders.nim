@@ -55,7 +55,8 @@ proc render*(toc: Toc): string =
     elif len(e.levels) > previousLevel:
       result.add openSection()
     else:
-      result.add closeSection()
+      for _ in 1 .. (previousLevel - len(e.levels)):
+        result.add closeSection()
 
     result.add addEntryImpl(e)
     previousLevel = len(e.levels)
