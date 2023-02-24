@@ -210,7 +210,12 @@ nimibookCli(book)
 <li><code>entry</code> accepts two string parameters: chapter title and source path</li>
 <li>source path is relative to book source folder</li>
 <li>source extension defaults to <code>.nim</code>, to use a markdown source you need to explict mark it as <code>.md</code></li>
-<li>chapters that start a section are created with <code>section</code> and start a new block</li>
+<li>chapters that start a section are created with <code>section</code> and start a new block
+<ul>
+<li><strong>note</strong> that the path of section folder is added implicitly to all childrens (entries or sections)
+of a section (e.g. <code>nested.md</code> is inside <code>tocexample</code> folder)</li>
+</ul>
+</li>
 <li>draft chapters (placeholders in the ToC without source) are created with <code>draft</code></li>
 </ul>
 <p>In the future nimibook will support the same <code>SUMMARY.md</code> mechanism as in mdbook.

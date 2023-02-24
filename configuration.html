@@ -216,9 +216,26 @@ description = <span class="hljs-string">&quot;a book built with nimibook&quot;</
 </code></pre>
                         <h2>Folder structure</h2>
 <p>By default the nimibook folder structure is to put all sources in a <code>book</code> folder
-and to put the book built output in a <code>docs</code> folder (so that it is straightforward to publish the book wit github pages).</p>
+and to put the book built output in a <code>docs</code> folder (so that it is straightforward to publish the book with github pages).</p>
 <p>These folders can be customized since they are taken from [nimib] section of <code>nimib.toml</code>
-as <code>srcDir</code> and <code>outDir</code>.</p>
+as <code>srcDir</code> and <code>homeDir</code>.</p>
+<h3>where does nimibook puts the output html?</h3>
+<p>The logic of nimibook is that for every source, the <strong>relative path</strong> with respect to <code>srcDir</code> is applied as relative path to <code>homeDir</code> and this will give the html output path.
+For example, if we have default values <code>srcDir=&quot;book&quot;;homeDir=&quot;docs&quot;</code>:</p>
+<ul>
+<li>a source in <code>book\example.md</code> will generate <code>docs\example.html</code></li>
+<li>a source in <code>book\folder\subfolder\example.nim</code> will generate <code>docs\folder\subfolder\example.html</code></li>
+</ul>
+<p>Note in particular that if you have this structure in root folder:</p>
+<pre><code>README.md
+img.png
+book/
+  example.nim
+docs/
+  ...
+</code></pre>
+<p>and you add <code>..\README.md</code> as source, the generated <code>README.html</code> will NOT be in <code>docs</code> folder and it will be next to <code>README.md</code> (since <code>docs</code> is a folder inside root folder, at the same level as <code>book</code>).
+You can override this behaviour in <code>nbook.nim</code> but if the README.md references an image (say <code>img.png</code>) you will also need to make a copy of <code>img.png</code> in the docs folder.</p>
 <h2>Additional remarks</h2>
 <ul>
 <li>for consistency with template values, we use snake case for fields of this object.</li>
