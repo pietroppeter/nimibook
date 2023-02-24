@@ -29,6 +29,10 @@
 
 
         
+
+            <script src="https://cdn.jsdelivr.net/gh/pietroppeter/nimib@main/assets/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
         
         <!-- plausible analytics (new in nimibook) -->
         <script defer data-domain="pietroppeter.github.io/nimibook" src="https://plausible.io/js/plausible.js"></script>
@@ -194,7 +198,7 @@
 <li><strong>favicon_escaped</strong> (<code>string</code>): (new in nimibook) provide your fully custom <code>&lt;link rel=&quot;icon&quot; href=&quot;...&quot;&gt;</code>. defaults to whale emoji as in nimib.</li>
 </ul>
 <p>As an example here is nimibook configuration:</p>
-                        <pre><code class="nim hljs">[nimib]
+                        <pre><code class="nohighlight hljs nim">[nimib]
 srcDir = <span class="hljs-string">&quot;book&quot;</span>
 homeDir = <span class="hljs-string">&quot;docs&quot;</span>
 
@@ -205,7 +209,7 @@ description = <span class="hljs-string">&quot;Nimibook documentation&quot;</span
 git_repository_url = <span class="hljs-string">&quot;https://github.com/pietroppeter/nimibook&quot;</span>
 plausible_analytics_url = <span class="hljs-string">&quot;pietroppeter.github.io/nimibook&quot;</span></code></pre>
                         <p>This is the default configuration created by the <code>init command</code>:</p>
-                        <pre><code class="nim hljs">[nimibook]
+                        <pre><code class="nohighlight hljs nim">[nimibook]
 language = <span class="hljs-string">&quot;en-us&quot;</span>
 title = <span class="hljs-string">&quot;My book&quot;</span>
 description = <span class="hljs-string">&quot;a book built with nimibook&quot;</span>
@@ -264,7 +268,6 @@ as <code>srcDir</code> and <code>outDir</code>.</p>
 
 
         <script src="./assets/js/clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="./assets/js/highlight.js" type="text/javascript" charset="utf-8"></script>
         <script src="./assets/js/book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->

@@ -29,6 +29,10 @@
 
 
         
+
+            <script src="https://cdn.jsdelivr.net/gh/pietroppeter/nimib@main/assets/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
         
         <!-- plausible analytics (new in nimibook) -->
         <script defer data-domain="pietroppeter.github.io/nimibook" src="https://plausible.io/js/plausible.js"></script>
@@ -183,7 +187,7 @@
 <p>The Table of Contents (ToC) is defined inside the <code>nbook.nim</code>
 (you can pick another name for the file but in the documentation we will refer to it as <code>nbook.nim</code>).
 As an example here is <code>nbook.nim</code> for this book (nimibook documentation):</p>
-                        <pre><code class="nim hljs"><span class="hljs-keyword">import</span> nimibook
+                        <pre><code class="nohighlight hljs nim"><span class="hljs-keyword">import</span> nimibook
 
 <span class="hljs-keyword">var</span> book = initBookWithToc:
   entry(<span class="hljs-string">&quot;Introduction&quot;</span>, <span class="hljs-string">&quot;index&quot;</span>, numbered = <span class="hljs-literal">false</span>) <span class="hljs-comment"># .nim extension is optional</span>
@@ -247,7 +251,6 @@ Note that currently nimibook does not support part title and separators (availab
 
 
         <script src="./assets/js/clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="./assets/js/highlight.js" type="text/javascript" charset="utf-8"></script>
         <script src="./assets/js/book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
