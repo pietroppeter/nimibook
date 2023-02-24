@@ -1,8 +1,8 @@
 import std / [os, parseopt, sequtils]
 export os, parseopt
 
-import nimibook / [types, renders, toc_dsl, builds, defaults, themes, commands, configs]
-export types, renders, toc_dsl, builds, defaults, themes, commands
+import nimibook / [types, toc_render, toc_dsl, builds, defaults, themes, commands, configs]
+export types, toc_render, toc_dsl, builds, defaults, themes, commands
 
 import nimib / paths
 
