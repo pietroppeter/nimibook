@@ -37,7 +37,7 @@ template section*(label, rfile: string, sectionBody: untyped) =
   discard pop folders
   inc levels
 
-proc renderToc*(book: Book): string =
+proc showToc*(book: Book): string =
   result.add "S O == Table Of Contents ==  (S: Source, O: Output)\n"
   for e in book.toc.entries:
     result.add book.renderLine(e) & "\n"

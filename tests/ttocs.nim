@@ -1,6 +1,6 @@
 import unittest
 import std / strutils
-import nimibook / [tocs, entries, types, renders]
+import nimibook / [toc_dsl, toc_render, entries, types]
 
 test "toc dsl":
   var book: Book
@@ -17,7 +17,7 @@ test "toc dsl":
       draft("and I have not written this yet")
     entry("Appendix", "appendix.md", numbered = false)
 
-  echo book.renderToc
+  echo book.showToc
   check len(book.toc.entries) == 11
   check book.toc.entries[0].url == "index.html"
   check book.toc.entries[1].url == "part1/index.html"

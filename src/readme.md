@@ -23,9 +23,9 @@ Summary content of the various files:
   - imports and exports for public api
   - CLI parser
 - `src\nimibook\types.nim`: the types (`Book`, `Toc`, `Entry`)
-- `src\nimibook\tocs.nim`: template DSL to specify a TOC (and generate a `Book` object)
+- `src\nimibook\toc_dsl.nim`: template DSL to specify a TOC (and generate a `Book` object)
 - `src\nimibook\entries.nim`: utility functions for `Entry` object (an entry is a element of the Toc, aka chapter)
-- `src\nimibook\renders.nim`: function to render `Toc` object as a mustache partial (to be used in every page)
+- `src\nimibook\toc_render.nim`: function to render `Toc` object as a mustache partial (to be used in every page)
 - `src\nimibook\theme.nim`:
   - implements `useNimibook` theme function to be used in every page
   - contains `document` partial (the mustache template for every page)
