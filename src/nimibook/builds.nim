@@ -1,13 +1,18 @@
-import std / [os, strutils, asyncdispatch, osproc, streams, sugar]
+import std / [os, strutils, asyncdispatch, osproc, streams, sugar, strformat]
+import std/compilesettings
 import nimibook / [types, commands, themes]
 import nimib
+
+const nimcacheFolder = querySetting(SingleValueSetting.nimcacheDir)
 
 var numberBuildsRunning = 0
 
 proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bool] {.async.} =
+  let cacheFolder = nimcacheFolder / splitPath(entry.path).head
+  createDir(cacheFolder)
   let
     cmd = "nim"
-    args = @["r"] & nimOptions & @[srcDir / entry.path]
+    args = @["r", &"--nimcache:{cacheFolder}"] & nimOptions & @[srcDir / entry.path]
   # "-d:release", "-f", "--verbosity:0", "--hints:off"
   debugEcho "[Executing] ", cmd, " ", args.join(" ")
 
