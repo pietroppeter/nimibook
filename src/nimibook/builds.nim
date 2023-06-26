@@ -8,7 +8,7 @@ const nimcacheFolder = querySetting(SingleValueSetting.nimcacheDir)
 var numberBuildsRunning = 0
 
 proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bool] {.async.} =
-  let cacheFolder = nimcacheFolder / splitFile(entry.path).dir & "_" & splitFile(entry.path).name
+  let cacheFolder = nimcacheFolder / splitFile(entry.path).dir / splitFile(entry.path).name
   createDir(cacheFolder)
   let
     cmd = "nim"
