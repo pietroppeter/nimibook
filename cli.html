@@ -228,6 +228,13 @@ with the output of build command is created next to source file.</p>
 <p>By default it builds up to a maximum of 10 source files in parallel.
 To change the default maximum to <code>n</code> you can set
 <code>-d:nimibMaxProcesses=n</code> when compiling <code>nbook</code>.</p>
+<p>To avoid file collisions of C/object files in nimcache for files with the same name,
+typically you have multiple <code>index.nim</code> files in separate folders for example,
+each file will get its own nimcache folder. For example the files <code>index.nim</code> and <code>tutorials/index.nim</code>
+will be assigned the nimcache folders <code>$nimcache/index/</code> and <code>$nimcache/tutorials/index/</code> where <code>$nimcache</code> is the
+nimcache folder of the file were you run <code>nimibookCli</code>.
+Without this they would both try to use the same <code>index_r</code>/<code>index_d</code> folder in nimcache and mutate the same files.
+All of this is handled by nimiBook, so you don't have to worry about this.</p>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
