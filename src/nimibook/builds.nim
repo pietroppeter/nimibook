@@ -1,4 +1,4 @@
-import std / [os, strutils, asyncdispatch, osproc, streams, sugar, strformat]
+import std / [os, strutils, asyncdispatch, osproc, streams, sugar]
 import std/compilesettings
 import nimibook / [types, commands, themes]
 import nimib
@@ -13,7 +13,7 @@ proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bo
   createDir(cacheFolder)
   let
     cmd = "nim"
-    args = @["r", &"--nimcache:{cacheFolder}"] & nimOptions & @[srcDir / entry.path]
+    args = @["r", "--nimcache:" & cacheFolder] & nimOptions & @[srcDir / entry.path]
   # "-d:release", "-f", "--verbosity:0", "--hints:off"
   debugEcho "[Executing] ", cmd, " ", args.join(" ")
 
