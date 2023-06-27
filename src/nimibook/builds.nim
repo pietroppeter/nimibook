@@ -1,13 +1,23 @@
 import std / [os, strutils, asyncdispatch, osproc, streams, sugar]
+import std/compilesettings
 import nimibook / [types, commands, themes]
 import nimib
+
+const nimcacheFolder = querySetting(SingleValueSetting.nimcacheDir)
 
 var numberBuildsRunning = 0
 
 proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bool] {.async.} =
+  let splitEntry = splitFile(entry.path)
+  # To avoid collisions of the intermediate C/object files for files with the same name,
+  # e.g. index.nim and some_folder/index.nim, we make a separate nimcache folder for each file.
+  # This way all files are isolated from each other. In the example the two folders would be
+  # nimcache/index/ and nimcache/some_folder/index/
+  let cacheFolder = nimcacheFolder / splitEntry.dir / splitEntry.name
+  createDir(cacheFolder)
   let
     cmd = "nim"
-    args = @["r"] & nimOptions & @[srcDir / entry.path]
+    args = @["r", "--nimcache:" & cacheFolder] & nimOptions & @[srcDir / entry.path]
   # "-d:release", "-f", "--verbosity:0", "--hints:off"
   debugEcho "[Executing] ", cmd, " ", args.join(" ")
 

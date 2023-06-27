@@ -51,5 +51,12 @@ By default it builds up to a maximum of 10 source files in parallel.
 To change the default maximum to `n` you can set
 `-d:nimibMaxProcesses=n` when compiling `nbook`.
 
+To avoid file collisions of C/object files in nimcache for files with the same name,
+typically you have multiple `index.nim` files in separate folders for example, 
+each file will get its own nimcache folder. For example the files `index.nim` and `tutorials/index.nim`
+will be assigned the nimcache folders `$nimcache/index/` and `$nimcache/tutorials/index/` where `$nimcache` is the
+nimcache folder of the file were you run `nimibookCli`.
+Without this they would both try to use the same `index_r`/`index_d` folder in nimcache and mutate the same files.
+All of this is handled by nimiBook, so you don't have to worry about this.
 """
 nbSave
