@@ -9,6 +9,10 @@ var numberBuildsRunning = 0
 
 proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bool] {.async.} =
   let splitEntry = splitFile(entry.path)
+  # To avoid collisions of the intermediate C/object files for files with the same name,
+  # e.g. index.nim and some_folder/index.nim, we make a separate nimcache folder for each file.
+  # This way all files are isolated from each other. In the example the two folders would be
+  # nimcache/index/ and nimcache/some_folder/index/
   let cacheFolder = nimcacheFolder / splitEntry.dir / splitEntry.name
   createDir(cacheFolder)
   let
