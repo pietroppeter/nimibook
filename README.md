@@ -49,6 +49,7 @@ To follow up on recent changes check the [changelog.md](https://github.com/pietr
 - [scinim/getting-started](https://scinim.github.io/getting-started/)
 - [moigagoo/norm](https://norm.nim.town)
 - [PhilippMDoerner/Snorlogue](https://philippmdoerner.github.io/Snorlogue/bookCompiled/)
+- [dsrw/enu](https://ē.nu/docs/intro.html)
 
 You are welcome to open a PR and add your site using nimibook here.
 
