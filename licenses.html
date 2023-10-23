@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using nimibook -->
         <meta charset="UTF-8">
-        <title>Commands - Nimibook</title>
+        <title>Licenses - Nimibook</title>
 
         <!-- Custom HTML head -->
 
@@ -104,11 +104,11 @@
                     <strong aria-hidden="true">3.</strong> Configuration
                   </a></li>
                 <li class="chapter-item expanded ">
-                  <a href="./cli.html" class="active" tabindex="0">
+                  <a href="./cli.html" tabindex="0">
                     <strong aria-hidden="true">4.</strong> Commands
                   </a></li>
                 <li class="chapter-item expanded ">
-                  <a href="./licenses.html" tabindex="0">
+                  <a href="./licenses.html" class="active" tabindex="0">
                     <strong aria-hidden="true">5.</strong> Licenses
                   </a></li>
                 <li class="chapter-item expanded ">
@@ -187,67 +187,41 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1>Commands</h1>
-<p>With the <code>nimibookCli(book)</code> command at the end of <code>nbook.nim</code> file,
-the executable is provided with a number of commands.
-The help on the executable can be obtained running <code>nbook</code> without arguments:</p>
-<pre><code>Choose one of the following options : init, build, dump, check, clean, update
-init   : Initialize book structure:
-         - creates a default nimib.toml config (if not already present)
-         - creates required nimibook assets in output folder (if not already present)
-         - creates default sources file for entries listed in toc
-         After first usage it can be used to create source files from ToC
-build  : Build your complete book.
-         You can add options (e.g. --verbosity:0, -d:release, ...)
-         and they will be passed when compiling and running nimib documents
-dump   : dump the content of book.json (required to build single documents)
-check  : Check that sources and outputs are present as expected in ToC.
-clean  : Removes (almost) everything from output folder except assets.
-update : Update assets (css, js, fonts) in case they changed in last nimibook release.
-
-</code></pre>
-<h2>Customize nim compile time parameters</h2>
-<p>During build nimibook compiles and runs a <code>example.nim</code> file
-with <code>nim r &lt;nimOptions&gt; &lt;srcDir&gt;/example.nim</code>.
-Any additional argument after <code>build</code> is used as-is in <code>&lt;nimOptions&gt;</code>.</p>
-<p>For example to compile the whole book in release mode with no hints
-or other messages from the compiler you can run:</p>
-<pre><code>nbook build -d:release --hints:off --verbosity:0
-</code></pre>
-<h2>Single nimib document build</h2>
-<p>When you are working on a single nimib document you are not interested in
-building the complete book. In order to build a single file
-you need first to dump the <code>book.json</code> with <code>nbook dump</code>.
-After this is done you can build the single <code>example.nim</code> file
-as you would with standard nimib. For example to show it in the browser after
-build is completed you can run:</p>
-<pre><code>nim r book/example.nim --nbShow
-</code></pre>
-<h2>Parallel build and error logs</h2>
-<p>By default nimibook builds source files in parallel.
-If an error is produced when building a source file a <code>.log</code> file
-with the output of build command is created next to source file.</p>
-<p>If you need to disable the parallel builds you can set
-<code>-d:nimibParallelBuild=false</code> when compiling <code>nbook</code>.</p>
-<p>By default it builds up to a maximum of 10 source files in parallel.
-To change the default maximum to <code>n</code> you can set
-<code>-d:nimibMaxProcesses=n</code> when compiling <code>nbook</code>.</p>
-<p>To avoid file collisions of C/object files in nimcache for files with the same name,
-typically you have multiple <code>index.nim</code> files in separate folders for example,
-each file will get its own nimcache folder. For example the files <code>index.nim</code> and <code>tutorials/index.nim</code>
-will be assigned the nimcache folders <code>$nimcache/index/</code> and <code>$nimcache/tutorials/index/</code> where <code>$nimcache</code> is the
-nimcache folder of the file were you run <code>nimibookCli</code>.
-Without this they would both try to use the same <code>index_r</code>/<code>index_d</code> folder in nimcache and mutate the same files.
-All of this is handled by nimiBook, so you don't have to worry about this.</p>
+                        <h2>Licenses</h2>
+<p>Nimibook consists of multiple different parts, some of which have their own licenses.
+This is a compiled list of all licenses including those of assets used:</p>
+<ul>
+<li>Fonts:
+<ul>
+<li>Open Sans (Apache License 2.0)</li>
+<li>Source Code Pro (SIL Open Font License, Version 1.1)</li>
+<li>FontAwesome:
+<ul>
+<li>Fonts (SIL OFL 1.1)</li>
+<li>CSS (MIT)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Code
+<ul>
+<li>clipboard.js (MIT)</li>
+<li>Highlight.js (BSD-3-Clause)</li>
+<li>book.js (MPL-2.0)</li>
+<li>KaTeX (MIT)</li>
+</ul>
+</li>
+<li>Themes (MPL-2.0)</li>
+</ul>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="./configuration.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="./cli.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="./licenses.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="./tocexample/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -257,11 +231,11 @@ All of this is handled by nimiBook, so you don't have to worry about this.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="./configuration.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="./cli.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="./licenses.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="./tocexample/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
