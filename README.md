@@ -36,21 +36,25 @@ provided by [nim-markdown]. For a quick reference of supported syntax see this [
 
 ## Status
 
-Nimibook is actively maintained ([target issues for 2023](https://github.com/pietroppeter/nimibook/issues?q=is%3Aopen+is%3Aissue+label%3A2023H1%2C2023H2))
-and it provides the basic functionality
+Nimibook as it is provides the basic functionality
 needed to create a book with markdown and nimib sources.
 It still has some features missing from mdbook
 (see [this issue](https://github.com/pietroppeter/nimibook/issues/9#issuecomment-851989939)).
+Contributions are welcome and we will provide guidance and code reviews.
+You can join a [Nimib Speaking Hours](https://github.com/pietroppeter/nimib/discussions/categories/nimib-speaking-hours)
+session if you want some live discussions on whether or not a feature fits or you want pointers on how to help out.
 
 To follow up on recent changes check the [changelog.md](https://github.com/pietroppeter/nimibook/blob/main/changelog.md).
 
 ## Example sites using nimibook
 
-- [scinim/getting-started](https://scinim.github.io/getting-started/)
-- [moigagoo/norm](https://norm.nim.town)
-- [PhilippMDoerner/Snorlogue](https://philippmdoerner.github.io/Snorlogue/bookCompiled/)
-- [PhilippMDoerner/mapster](https://philippmdoerner.github.io/mapster/index.html)
-- [dsrw/enu](https://ē.nu/docs/intro.html)
+- [scinim/getting-started](https://scinim.github.io/getting-started/): Getting started with Nim for Scientific Computing
+- [moigagoo/norm](https://norm.nim.town): A Nim ORM for SQLite and Postgres
+- [moigagoo/karkas](https://karkas.nim.town/): Layout helpers and syntactic sugar for Karax
+- [PhilippMDoerner/Snorlogue](https://philippmdoerner.github.io/Snorlogue/bookCompiled/): A plugin for the prologue web-framework that provides a set of simple CRUD routes to administrate your database
+- [PhilippMDoerner/mapster](https://philippmdoerner.github.io/mapster/index.html): A simple way to generate mapping functions at compile-time without having to write them yourself
+- [dsrw/enu]([https://ē.nu/docs/intro.html](https://getenu.com/docs/intro.html)): A Logo-like 3D environment, implemented in Nim
+- [can-lehmann/owlkettle](https://can-lehmann.github.io/owlkettle/README.html): A declarative user interface framework based on GTK 4
 
 You are welcome to open a PR and add your site using nimibook here.
 
