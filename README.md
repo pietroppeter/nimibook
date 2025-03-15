@@ -53,7 +53,7 @@ To follow up on recent changes check the [changelog.md](https://github.com/pietr
 - [moigagoo/karkas](https://karkas.nim.town/): Layout helpers and syntactic sugar for Karax
 - [PhilippMDoerner/Snorlogue](https://philippmdoerner.github.io/Snorlogue/bookCompiled/): A plugin for the prologue web-framework that provides a set of simple CRUD routes to administrate your database
 - [PhilippMDoerner/mapster](https://philippmdoerner.github.io/mapster/index.html): A simple way to generate mapping functions at compile-time without having to write them yourself
-- [dsrw/enu]([https://ē.nu/docs/intro.html](https://getenu.com/docs/intro.html)): A Logo-like 3D environment, implemented in Nim
+- [dsrw/enu](https://getenu.com/docs/intro.html): A Logo-like 3D environment, implemented in Nim
 - [can-lehmann/owlkettle](https://can-lehmann.github.io/owlkettle/README.html): A declarative user interface framework based on GTK 4
 
 You are welcome to open a PR and add your site using nimibook here.
