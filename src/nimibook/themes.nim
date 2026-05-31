@@ -331,8 +331,26 @@ const document* = hlHtml"""
 """
 
 func nimibookHeadToHtml*(blk: JsonNode, nb: Nb): string =
+  let title = nb.doc.context{"title"}.getStr
+  let isPrint = nb.doc.context{"is_print"}.getBool
+  let baseUrl = nb.doc.context{"base_url"}.getStr
   result = withNewlines:
-    "<head>"
+    hlHtmlF"""
+    <head>
+      <!-- Book generated using nimibook -->
+      <meta charset="UTF-8">
+      <title>{ title }</title>"""
+    if isPrint:
+      """<meta name="robots" content="noindex" />"""
+    if baseUrl.len > 0:
+      &"""<base href="{ baseUrl }">"""
+    nb.renderPartial("head", blk)
+    hlHtml"""
+      <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+      <meta name="description" content="{{ description }}">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="theme-color" content="#ffffff" />
+    """
     "</head>"
 
 func nimibookBodyToHtml*(doc: NbDoc, nb: Nb): string =
@@ -351,7 +369,7 @@ func nimibookNbDocToHtml*(blk: NbBlock, nb: Nb): string =
   result = withNewLines:
     "<!DOCTYPE HTML>"
     &"""<html lang="{ lang }" class="sidebar-visible no-js { defaultTheme }">"""
-    nb.renderPartial("head", docJson)
+    nb.renderPartial("nimibook_head", docJson)
     nimibookBodyToHtml(doc, nb)
     "</html>"
 
@@ -359,7 +377,7 @@ proc useNimibook*(nb: var Nb) =
   nb.doc.context["path_to_root"] = %(nb.doc.srcDirRel.string & "/") # I probably should make sure to have / at the end
 
   nb.backend.funcs["NbDoc"] = nimibookNbDocToHtml
-  nb.backend.partials["head"] = nimibookHeadToHtml
+  nb.backend.partials["nimibook_head"] = nimibookHeadToHtml
 
   # book.json is publicly accessible (sort of a public static api)
   let bookPath = nb.doc.homeDir.string / "book.json"
