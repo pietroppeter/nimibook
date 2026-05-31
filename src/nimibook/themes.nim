@@ -1,4 +1,4 @@
-import std / [strutils, os, enumerate, pathnorm, json]
+import std / [strutils, os, enumerate, pathnorm, json, strformat]
 import nimib, nimib / themes
 import nimibook / [types, commands, entries, toc_render]
 
@@ -330,23 +330,36 @@ const document* = hlHtml"""
 </html>
 """
 
+func nimibookHeadToHtml*(blk: JsonNode, nb: Nb): string =
+  result = withNewlines:
+    "<head>"
+    "</head>"
+
+func nimibookBodyToHtml*(doc: NbDoc, nb: Nb): string =
+  let renderedBlocks = nbContainerToHtml(doc, nb)
+  result = withNewlines:
+    "<body>"
+    renderedBlocks
+    "</body>"
+
 func nimibookNbDocToHtml*(blk: NbBlock, nb: Nb): string =
   let doc = blk.NbDoc
-  let docJson = %[] # it's unused
-  # result = withNewlines:
-  #   "<!DOCTYPE html>"
-  #   """<html lang="en-us">"""
-  #   nb.renderPartial("head", docJson)
-  #   "<body>"
-  #   revealMainToHtml(doc, nb)
-  #   "</body>"
-  #   "</html>"
-  "hello there"
+  let lang = nb.doc.context{"language"}.getStr
+  let defaultTheme = nb.doc.context{"default_theme"}.getStr
+  # it's unused
+  let docJson = %[]
+  result = withNewLines:
+    "<!DOCTYPE HTML>"
+    &"""<html lang="{ lang }" class="sidebar-visible no-js { defaultTheme }">"""
+    nb.renderPartial("head", docJson)
+    nimibookBodyToHtml(doc, nb)
+    "</html>"
 
 proc useNimibook*(nb: var Nb) =
   nb.doc.context["path_to_root"] = %(nb.doc.srcDirRel.string & "/") # I probably should make sure to have / at the end
 
   nb.backend.funcs["NbDoc"] = nimibookNbDocToHtml
+  nb.backend.partials["head"] = nimibookHeadToHtml
 
   # book.json is publicly accessible (sort of a public static api)
   let bookPath = nb.doc.homeDir.string / "book.json"
