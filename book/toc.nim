@@ -9,7 +9,7 @@ As an example here is `nbook.nim` for this book (nimibook documentation):
 """
 nbCode:
   discard
-nb.blk.code = "../nbook.nim".readFile
+nb.blk.NbCode.code = "../nbook.nim".readFile
 nbText: """
 From the above example you can see that:
   - ToC is defined inside `initBookWithToc` block

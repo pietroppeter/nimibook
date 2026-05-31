@@ -1,4 +1,4 @@
-import std / [strutils, os, enumerate, pathnorm]
+import std / [strutils, os, enumerate, pathnorm, json]
 import nimib, nimib / themes
 import nimibook / [types, commands, entries, toc_render]
 
@@ -330,47 +330,57 @@ const document* = hlHtml"""
 </html>
 """
 
-proc useNimibook*(doc: var NbDoc) =
-  doc.context["path_to_root"] = doc.srcDirRel.string & "/" # I probably should make sure to have / at the end
+func nimibookNbDocToHtml*(blk: NbBlock, nb: Nb): string =
+  let doc = blk.NbDoc
+  let docJson = %[] # it's unused
+  # result = withNewlines:
+  #   "<!DOCTYPE html>"
+  #   """<html lang="en-us">"""
+  #   nb.renderPartial("head", docJson)
+  #   "<body>"
+  #   revealMainToHtml(doc, nb)
+  #   "</body>"
+  #   "</html>"
+  "hello there"
 
-  # templates are in memory
-  doc.partials["document"] = document
-  # if they need to be overriden a specific template folder should be created in nbSrcDir
-  doc.templateDirs = @[doc.srcDir.string / "templates"]
+proc useNimibook*(nb: var Nb) =
+  nb.doc.context["path_to_root"] = %(nb.doc.srcDirRel.string & "/") # I probably should make sure to have / at the end
+
+  nb.backend.funcs["NbDoc"] = nimibookNbDocToHtml
 
   # book.json is publicly accessible (sort of a public static api)
-  let bookPath = doc.homeDir.string / "book.json"
+  let bookPath = nb.doc.homeDir.string / "book.json"
   # load book object
   var book = load(bookPath)
 
   # book configuration
-  doc.context["language"] = book.language
-  doc.context["default_theme"] = book.default_theme
-  doc.context["description"] = book.description
-  doc.context["favicon_escaped"] = book.favicon_escaped
-  doc.context["preferred_dark_theme"] = book.preferred_dark_theme
-  doc.context["theme_option"] = book.theme_option
-  doc.context["book_title"] = book.title
-  doc.context["git_repository_url"] = book.git_repository_url
-  doc.context["git_repository_icon"] = book.git_repository_icon
-  doc.context["plausible_analytics_url"] = book.plausible_analytics_url
-  doc.context["highlightJs"] = highlightJsTags
+  nb.doc.context["language"] = %book.language
+  nb.doc.context["default_theme"] = %book.default_theme
+  nb.doc.context["description"] = %book.description
+  nb.doc.context["favicon_escaped"] = %book.favicon_escaped
+  nb.doc.context["preferred_dark_theme"] = %book.preferred_dark_theme
+  nb.doc.context["theme_option"] = %book.theme_option
+  nb.doc.context["book_title"] = %book.title
+  nb.doc.context["git_repository_url"] = %book.git_repository_url
+  nb.doc.context["git_repository_icon"] = %book.git_repository_icon
+  nb.doc.context["plausible_analytics_url"] = %book.plausible_analytics_url
+  nb.doc.context["highlightJs"] = %highlightJsTags
 
   var thisEntry: Entry
   # process toc
   for i, entry in enumerate(book.toc.entries.mitems):
-    if normalizePath(entry.url) == normalizePath(doc.filename.replace('\\', '/')): # replace needed for windows
+    if normalizePath(entry.url) == normalizePath(nb.doc.filename.replace('\\', '/')): # replace needed for windows
       thisEntry = entry
       entry.isActive = true
       let
         prevUrl = book.prevEntryUrl i
         nextUrl = book.nextEntryUrl i
       if prevUrl.len > 0:
-        doc.context["previous"] = prevUrl
+        nb.doc.context["previous"] = %prevUrl
       if nextUrl.len > 0:
-        doc.context["next"] = nextUrl
+        nb.doc.context["next"] = %nextUrl
       break
-  doc.partials["toc"] = render book.toc
+  nb.doc.context["toc"] = %(render book.toc)
 
   # html.head.title (what appears in the tab)
-  doc.context["title"] = thisEntry.title & " - " & book.title
+  nb.doc.context["title"] = %(thisEntry.title & " - " & book.title)

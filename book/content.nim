@@ -13,7 +13,7 @@ The nim file must be a nimib document and the default content (created by `init`
 """
 nbCode:
   discard
-nb.blk.code = emptySrcFile("Default Content", ".nim")
+nb.blk.NbCode.code = emptySrcFile("Default Content", ".nim")
 
 
 nbText: """## Latex
