@@ -1,4 +1,4 @@
-import std / [strutils, os, enumerate, pathnorm, json, strformat]
+import std / [strutils, os, enumerate, pathnorm, json, strformat, sequtils]
 import nimib, nimib / themes
 import nimibook / [types, commands, entries, toc_render]
 
@@ -331,9 +331,22 @@ const document* = hlHtml"""
 """
 
 func nimibookHeadToHtml*(blk: JsonNode, nb: Nb): string =
+  let path_to_root = nb.doc.context{"path_to_root"}.getStr
   let title = nb.doc.context{"title"}.getStr
+  let description = nb.doc.context{"description"}.getStr
   let isPrint = nb.doc.context{"is_print"}.getBool
   let baseUrl = nb.doc.context{"base_url"}.getStr
+  let faviconEscaped = nb.doc.context{"favicon_escaped"}.getStr
+  let faviconSvg = nb.doc.context{"favicon_svg"}.getStr
+  let faviconPng = nb.doc.context{"favicon_png"}.getStr
+  let printEnable = nb.doc.context{"favicon_png"}.getBool
+  let copyFonts = nb.doc.context{"copy_fonts"}.getBool
+  let additionalCSS = nb.doc.context{"additional_css"}.getElems.map(proc(j: JsonNode): string = j.getStr)
+  let mathJaxSupport = nb.doc.context{"mathjax_support"}.getBool
+  let latex = nb.doc.context{"latex"}.getStr
+  let highlightJs = nb.doc.context{"highlightJs"}.getStr
+  let disableHighlightJs = nb.doc.context{"disableHighlightJs"}.getBool
+  let plausibleAnalyticsUrl = nb.doc.context{"plausible_analytics_url"}.getStr
   result = withNewlines:
     hlHtmlF"""
     <head>
@@ -343,14 +356,45 @@ func nimibookHeadToHtml*(blk: JsonNode, nb: Nb): string =
     if isPrint:
       """<meta name="robots" content="noindex" />"""
     if baseUrl.len > 0:
-      &"""<base href="{ baseUrl }">"""
+      hlHtmlF"""<base href="{ baseUrl }">"""
     nb.renderPartial("head", blk)
-    hlHtml"""
+    hlHtmlF"""
       <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-      <meta name="description" content="{{ description }}">
+      <meta name="description" content="{description}">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="theme-color" content="#ffffff" />
+      {faviconEscaped}
     """
+    if faviconSvg.len > 0:
+      hlHtmlF"""<link rel="icon" href="{path_to_root}assets/favicon.svg">"""
+    if faviconPng.len > 0:
+      hlHtmlF"""<link rel="shortcut icon" href="{path_to_root}assets/favicon.png">"""
+    hlHtmlF"""
+      <link rel="stylesheet" href="{path_to_root}assets/css/variables.css">
+      <link rel="stylesheet" href="{path_to_root}assets/css/general.css">
+      <link rel="stylesheet" href="{path_to_root}assets/css/chrome.css">
+    """
+    if printEnable:
+      hlHtmlF"""<link rel="stylesheet" href="{path_to_root}assets/css/print.css" media="print">"""
+    hlHtmlF"""
+      <link rel="stylesheet" href="{path_to_root}assets/FontAwesome/css/font-awesome.min.css">
+    """
+    if copyFonts:
+      hlHtmlF"""<link rel="stylesheet" href="{path_to_root}assets/fonts/fonts.css">"""
+    hlHtmlF"""
+      <link rel="stylesheet" href="{path_to_root}assets/css/highlight.css">
+      <link rel="stylesheet" href="{path_to_root}assets/css/tomorrow-night.css">
+      <link rel="stylesheet" href="{path_to_root}assets/css/ayu-highlight.css">
+    """
+    for stylesheet in additionalCSS:
+      hlHtmlF"""<link rel="stylesheet" href="../{path_to_root}{stylesheet}">"""
+    if mathJaxSupport:
+      hlHtml"""<script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>"""
+    latex
+    if not disableHighlightJs:
+      highlightJs
+    if plausibleAnalyticsUrl.len > 0:
+      hlHtmlF"""<script defer data-domain="{plausibleAnalyticsUrl}" src="https://plausible.io/js/plausible.js"></script>"""
     "</head>"
 
 func nimibookBodyToHtml*(doc: NbDoc, nb: Nb): string =
