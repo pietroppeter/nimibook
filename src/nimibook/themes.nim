@@ -347,6 +347,7 @@ func nimibookHeadToHtml*(blk: JsonNode, nb: Nb): string =
   let highlightJs = nb.doc.context{"highlightJs"}.getStr
   let disableHighlightJs = nb.doc.context{"disableHighlightJs"}.getBool
   let plausibleAnalyticsUrl = nb.doc.context{"plausible_analytics_url"}.getStr
+  # TODO: move all static html content into a single html string
   result = withNewlines:
     hlHtmlF"""
     <head>
@@ -397,11 +398,231 @@ func nimibookHeadToHtml*(blk: JsonNode, nb: Nb): string =
       hlHtmlF"""<script defer data-domain="{plausibleAnalyticsUrl}" src="https://plausible.io/js/plausible.js"></script>"""
     "</head>"
 
-func nimibookBodyToHtml*(doc: NbDoc, nb: Nb): string =
-  let renderedBlocks = nbContainerToHtml(doc, nb)
+func nimibookBodyPreToHtml*(blk: JsonNode, nb: Nb): string =
+  withNewLines:
+    hlHtml"""
+<!-- Provide site root to javascript -->
+<script type="text/javascript">
+    var path_to_root = "{{ path_to_root }}/assets";
+    var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "{{ preferred_dark_theme }}" : "{{ default_theme }}";
+</script>
+
+<!-- Work around some values being stored in localStorage wrapped in quotes -->
+<script type="text/javascript">
+    try {
+        var theme = localStorage.getItem('mdbook-theme');
+        var sidebar = localStorage.getItem('mdbook-sidebar');
+
+        if (theme.startsWith('"') && theme.endsWith('"')) {
+            localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+        }
+
+        if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+            localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+        }
+    } catch (e) { }
+</script>
+
+<!-- Set the theme before any content is loaded, prevents flash -->
+<script type="text/javascript">
+    var theme;
+    try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+    if (theme === null || theme === undefined) { theme = default_theme; }
+    var html = document.querySelector('html');
+    html.classList.remove('no-js')
+    html.classList.remove('{{ default_theme }}')
+    html.classList.add(theme);
+    html.classList.add('js');
+</script>
+
+<!-- Hide / unhide sidebar before it is displayed -->
+<script type="text/javascript">
+    var html = document.querySelector('html');
+    var sidebar = 'hidden';
+    if (document.body.clientWidth >= 1080) {
+        try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+        sidebar = sidebar || 'visible';
+    }
+    html.classList.remove('sidebar-visible');
+    html.classList.add("sidebar-" + sidebar);
+</script>
+    """
+
+func nimibookBodyNavToHtml*(blk: JsonNode, nb: Nb): string =
+  withNewLines:
+    hlHtml"""
+<nav id="sidebar" class="sidebar" aria-label="Table of contents">
+    <div class="sidebar-scrollbox">
+        {{> toc }}<!-- I could use also an unescaped context value -->
+    </div>
+    <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+</nav>    
+"""
+
+func nimibookBodyPageWrapperToHtml*(blk: JsonNode, nb: Nb): string =
+  withNewLines:
+    hlHtml"""
+<div id="page-wrapper" class="page-wrapper">
+
+  <div class="page">
+      {{> header}}
+      <div id="menu-bar-hover-placeholder"></div>
+      <div id="menu-bar" class="menu-bar sticky bordered">
+          <div class="left-buttons">
+              <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                  <i class="fa fa-bars"></i>
+              </button>
+              <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                  <i class="fa fa-paint-brush"></i>
+              </button>
+              <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                  <li role="none"><button role="menuitem" class="theme" id="light">{{#theme_option}}{{light}}{{/theme_option}}</button></li>
+                  <li role="none"><button role="menuitem" class="theme" id="rust">{{#theme_option}}{{rust}}{{/theme_option}}</button></li>
+                  <li role="none"><button role="menuitem" class="theme" id="coal">{{#theme_option}}{{coal}}{{/theme_option}}</button></li>
+                  <li role="none"><button role="menuitem" class="theme" id="navy">{{#theme_option}}{{navy}}{{/theme_option}}</button></li>
+                  <li role="none"><button role="menuitem" class="theme" id="ayu">{{#theme_option}}{{ayu}}{{/theme_option}}</button></li>
+              </ul>
+              {{#search_enabled}}
+              <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                  <i class="fa fa-search"></i>
+              </button>
+              {{/search_enabled}}
+          </div>
+
+          <h1 class="menu-title">{{ book_title }}</h1>
+
+          <div class="right-buttons">
+              {{#print_enable}}
+              <a href="{{ path_to_root }}print.html" title="Print this book" aria-label="Print this book">
+                  <i id="print-button" class="fa fa-print"></i>
+              </a>
+              {{/print_enable}}
+              {{#git_repository_url}}
+              <a href="{{git_repository_url}}" title="Git repository" aria-label="Git repository">
+                  <i id="git-repository-button" class="fa {{git_repository_icon}}"></i>
+              </a>
+              {{/git_repository_url}}
+              {{#git_repository_edit_url}}
+              <a href="{{git_repository_edit_url}}" title="Suggest an edit" aria-label="Suggest an edit">
+                  <i id="git-edit-button" class="fa fa-edit"></i>
+              </a>
+              {{/git_repository_edit_url}}
+
+          </div>
+      </div>
+
+      {{#search_enabled}}
+      <div id="search-wrapper" class="hidden">
+          <form id="searchbar-outer" class="searchbar-outer">
+              <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+          </form>
+          <div id="searchresults-outer" class="searchresults-outer hidden">
+              <div id="searchresults-header" class="searchresults-header"></div>
+              <ul id="searchresults">
+              </ul>
+          </div>
+      </div>
+      {{/search_enabled}}
+
+      <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+      <script type="text/javascript">
+          document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+          document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+          Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+              link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+          });
+      </script>
+
+      <div id="content" class="content">
+          <main>
+              {{#blocks}}
+              {{&.}}
+              {{/blocks}}
+          </main>
+
+          <nav class="nav-wrapper" aria-label="Page navigation">
+              <!-- Mobile navigation buttons -->
+              {{#previous}}
+                  <a rel="prev" href="{{ path_to_root }}{{previous}}" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                      <i class="fa fa-angle-left"></i>
+                  </a>
+              {{/previous}}
+
+              {{#next}}
+                  <a rel="next" href="{{ path_to_root }}{{next}}" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                      <i class="fa fa-angle-right"></i>
+                  </a>
+              {{/next}}
+
+              <div style="clear: both"></div>
+          </nav>
+      </div>
+  </div>
+
+  <nav class="nav-wide-wrapper" aria-label="Page navigation">
+      {{#previous}}
+          <a rel="prev" href="{{ path_to_root }}{{previous}}" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+              <i class="fa fa-angle-left"></i>
+          </a>
+      {{/previous}}
+
+      {{#next}}
+          <a rel="next" href="{{ path_to_root }}{{next}}" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+              <i class="fa fa-angle-right"></i>
+          </a>
+      {{/next}}
+  </nav>
+
+</div>
+"""
+
+func nimibookBodyPostToHtml*(blk: JsonNode, nb: Nb): string =
+  let path_to_root = nb.doc.context{"path_to_root"}.getStr
+  let search_js = nb.doc.context{"search_js"}.getBool
+  let additional_js = nb.doc.context{"additional_js"}.getElems.map(proc(j: JsonNode): string = j.getStr)
+  let is_print = nb.doc.context{"is_print"}.getBool
+  let mathjax_support = nb.doc.context{"mathjax_support"}.getBool
+  withNewLines:
+    if search_js:
+      hlHtmlF"""
+<script src="{path_to_root}elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="{path_to_root}mark.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="{path_to_root}searcher.js" type="text/javascript" charset="utf-8"></script>    
+"""
+    hlHtmlF"""
+<script src="{path_to_root}assets/js/clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="{path_to_root}assets/js/book.js" type="text/javascript" charset="utf-8"></script>
+"""
+    for jsFile in additional_js:
+      hlHtmlF"""<script type="text/javascript" src="{path_to_root}{jsFile}"></script>"""
+    if is_print:
+      if mathjax_support:
+        hlHtml"""
+          <script type="text/javascript">
+window.addEventListener('load', function() {
+    MathJax.Hub.Register.StartupHook('End', function() {
+        window.setTimeout(window.print, 100);
+    });
+});
+</script>
+"""
+      else:
+        hlHtml"""
+<script type="text/javascript">
+window.addEventListener('load', function() {
+    window.setTimeout(window.print, 100);
+});
+</script>
+"""
+
+
+func nimibookBodyToHtml*(blk: JsonNode, nb: Nb): string =
   result = withNewlines:
     "<body>"
-    renderedBlocks
+    nb.renderPartial("nimibook_body_pre", blk)
+    nb.renderPartial("nimibook_body_nav", blk)
+    nb.renderPartial("nimibook_body_page_wrapper", blk)
+    nb.renderPartial("nimibook_body_post", blk)
     "</body>"
 
 func nimibookNbDocToHtml*(blk: NbBlock, nb: Nb): string =
@@ -410,11 +631,15 @@ func nimibookNbDocToHtml*(blk: NbBlock, nb: Nb): string =
   let defaultTheme = nb.doc.context{"default_theme"}.getStr
   # it's unused
   let docJson = %[]
+
+  let renderedBlocks = nbContainerToHtml(doc, nb)
+  doc.context["renderedBlocks"] = %renderedBlocks
+
   result = withNewLines:
     "<!DOCTYPE HTML>"
     &"""<html lang="{ lang }" class="sidebar-visible no-js { defaultTheme }">"""
     nb.renderPartial("nimibook_head", docJson)
-    nimibookBodyToHtml(doc, nb)
+    nb.renderPartial("nimibook_body", docJson)
     "</html>"
 
 proc useNimibook*(nb: var Nb) =
@@ -422,6 +647,11 @@ proc useNimibook*(nb: var Nb) =
 
   nb.backend.funcs["NbDoc"] = nimibookNbDocToHtml
   nb.backend.partials["nimibook_head"] = nimibookHeadToHtml
+  nb.backend.partials["nimibook_body"] = nimibookBodyToHtml
+  nb.backend.partials["nimibook_body_pre"] = nimibookBodyPreToHtml
+  nb.backend.partials["nimibook_body_nav"] = nimibookBodyNavToHtml
+  nb.backend.partials["nimibook_body_page_wrapper"] = nimibookBodyPageWrapperToHtml
+  nb.backend.partials["nimibook_body_post"] = nimibookBodyPostToHtml
 
   # book.json is publicly accessible (sort of a public static api)
   let bookPath = nb.doc.homeDir.string / "book.json"
