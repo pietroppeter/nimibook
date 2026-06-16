@@ -454,7 +454,7 @@ func nimibookBodyPreToHtml*(blk: JsonNode, nb: Nb): string =
     """ % [default_theme]
 
 func nimibookBodyNavToHtml*(blk: JsonNode, nb: Nb): string =
-  let toc = nb.doc.context["toc"].getStr
+  let toc = nb.doc.context{"toc"}.getStr
   hlHtmlF"""
 <nav id="sidebar" class="sidebar" aria-label="Table of contents">
     <div class="sidebar-scrollbox">
@@ -467,19 +467,19 @@ func nimibookBodyNavToHtml*(blk: JsonNode, nb: Nb): string =
 func nimibookBodyPageWrapperToHtml*(blk: JsonNode, nb: Nb): string =
   let path_to_root = nb.doc.context{"path_to_root"}.getStr
   let header = nb.renderPartial("header", blk)
-  let theme_options = nb.doc.context["theme_option"].getFields
+  let theme_options = nb.doc.context{"theme_option"}.getFields
   var themeItems = ""
   for (key, showName) in theme_options.pairs:
-     themeItems &= hlHtmlF"""<li role="none"><button role="menuitem" class="theme" id="{key}">{showName}</button></li>"""
+     themeItems &= hlHtmlF"""<li role="none"><button role="menuitem" class="theme" id="{key}">{showName.getStr}</button></li>"""
   let search_enabled = nb.doc.context{"search_enabled"}.getBool
   let book_title = nb.doc.context{"book_title"}.getStr
   let print_enable = nb.doc.context{"print_enable"}.getBool
   let git_repository_url = nb.doc.context{"git_repository_url"}.getStr
   let git_repository_icon = nb.doc.context{"git_repository_icon"}.getStr
   let git_repository_edit_url = nb.doc.context{"git_repository_edit_url"}.getStr
-  let renderedBlocks = nb.doc.context["renderedBlocks"].getStr
-  let previous = nb.doc.context["previous"].getStr
-  let next = nb.doc.context["next"].getStr
+  let renderedBlocks = nb.doc.context{"renderedBlocks"}.getStr
+  let previous = nb.doc.context{"previous"}.getStr
+  let next = nb.doc.context{"next"}.getStr
   withNewLines:
     hlHtmlF"""
 <div id="page-wrapper" class="page-wrapper">
@@ -589,7 +589,7 @@ func nimibookBodyPageWrapperToHtml*(blk: JsonNode, nb: Nb): string =
 """
     if previous.len > 0:
       hlHtmlF"""
-          <a rel="prev" href="{path_to_root}{{previous}}" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+          <a rel="prev" href="{path_to_root}{previous}" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
               <i class="fa fa-angle-left"></i>
           </a>
 """
@@ -672,7 +672,8 @@ func nimibookNbDocToHtml*(blk: NbBlock, nb: Nb): string =
     "</html>"
 
 proc useNimibook*(nb: var Nb) =
-  nb.doc.context["path_to_root"] = %(nb.doc.srcDirRel.string & "/") # I probably should make sure to have / at the end
+  let path_to_root = nb.doc.srcDirRel.string & "/"
+  nb.doc.context["path_to_root"] = %path_to_root # I probably should make sure to have / at the end
 
   nb.backend.funcs["NbDoc"] = nimibookNbDocToHtml
   nb.backend.partials["nimibook_head"] = nimibookHeadToHtml
@@ -714,7 +715,7 @@ proc useNimibook*(nb: var Nb) =
       if nextUrl.len > 0:
         nb.doc.context["next"] = %nextUrl
       break
-  nb.doc.context["toc"] = %(render book.toc)
+  nb.doc.context["toc"] = %(book.toc.render(path_to_root))
 
   # html.head.title (what appears in the tab)
   nb.doc.context["title"] = %(thisEntry.title & " - " & book.title)

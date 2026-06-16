@@ -1,8 +1,6 @@
 import std / strformat
 import nimibook / [types, entries]
 
-const path_to_root = "{{path_to_root}}"
-
 proc closeSection(): string =
   result.add """
   </ol>
@@ -15,7 +13,7 @@ proc openSection(): string =
   <ol class="section">
 """
 
-proc addEntryImpl(e: Entry): string =
+proc addEntryImpl(e: Entry, path_to_root: string): string =
   let active = if e.isActive: " class=\"active\"" else: ""
   result.add "<li class=\"chapter-item expanded \">\n"
   if e.isDraft:
@@ -44,7 +42,7 @@ proc closeGenToc(): string =
 </ol>
 """
 
-proc render*(toc: Toc): string =
+proc render*(toc: Toc, path_to_root: string): string =
   ## renders toc as a mustache partial
   # assume entries are sorted
   result.add openGenToc()
@@ -58,6 +56,6 @@ proc render*(toc: Toc): string =
       for _ in 1 .. (previousLevel - len(e.levels)):
         result.add closeSection()
 
-    result.add addEntryImpl(e)
+    result.add addEntryImpl(e, path_to_root)
     previousLevel = len(e.levels)
   result.add closeGenToc()

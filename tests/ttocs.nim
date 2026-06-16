@@ -31,6 +31,8 @@ test "toc render": # issue 73
         entry("Should be 2.1.1", "adders/one_adder.nim")
 
     entry("Should be 3.", "CONTRIBUTING.md")
-  let renderedToc = myToc.render
+
+  let path_to_root = "."
+  let renderedToc = myToc.render(path_to_root)
   check renderedToc.count("<ol") == renderedToc.count("</ol>")
   check renderedToc.count("<li") == renderedToc.count("</li>")
