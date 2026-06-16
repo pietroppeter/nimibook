@@ -465,12 +465,27 @@ func nimibookBodyNavToHtml*(blk: JsonNode, nb: Nb): string =
 """
 
 func nimibookBodyPageWrapperToHtml*(blk: JsonNode, nb: Nb): string =
+  let path_to_root = nb.doc.context{"path_to_root"}.getStr
+  let header = nb.renderPartial("header", blk)
+  let theme_options = nb.doc.context["theme_option"].getFields
+  var themeItems = ""
+  for (key, showName) in theme_options.pairs:
+     themeItems &= hlHtmlF"""<li role="none"><button role="menuitem" class="theme" id="{key}">{showName}</button></li>"""
+  let search_enabled = nb.doc.context{"search_enabled"}.getBool
+  let book_title = nb.doc.context{"book_title"}.getStr
+  let print_enable = nb.doc.context{"print_enable"}.getBool
+  let git_repository_url = nb.doc.context{"git_repository_url"}.getStr
+  let git_repository_icon = nb.doc.context{"git_repository_icon"}.getStr
+  let git_repository_edit_url = nb.doc.context{"git_repository_edit_url"}.getStr
+  let renderedBlocks = nb.doc.context["renderedBlocks"].getStr
+  let previous = nb.doc.context["previous"].getStr
+  let next = nb.doc.context["next"].getStr
   withNewLines:
-    hlHtml"""
+    hlHtmlF"""
 <div id="page-wrapper" class="page-wrapper">
 
   <div class="page">
-      {{> header}}
+      {header}
       <div id="menu-bar-hover-placeholder"></div>
       <div id="menu-bar" class="menu-bar sticky bordered">
           <div class="left-buttons">
@@ -481,42 +496,46 @@ func nimibookBodyPageWrapperToHtml*(blk: JsonNode, nb: Nb): string =
                   <i class="fa fa-paint-brush"></i>
               </button>
               <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                  <li role="none"><button role="menuitem" class="theme" id="light">{{#theme_option}}{{light}}{{/theme_option}}</button></li>
-                  <li role="none"><button role="menuitem" class="theme" id="rust">{{#theme_option}}{{rust}}{{/theme_option}}</button></li>
-                  <li role="none"><button role="menuitem" class="theme" id="coal">{{#theme_option}}{{coal}}{{/theme_option}}</button></li>
-                  <li role="none"><button role="menuitem" class="theme" id="navy">{{#theme_option}}{{navy}}{{/theme_option}}</button></li>
-                  <li role="none"><button role="menuitem" class="theme" id="ayu">{{#theme_option}}{{ayu}}{{/theme_option}}</button></li>
+                  {themeItems}
               </ul>
-              {{#search_enabled}}
+"""
+    if search_enabled:
+      hlHtml"""
               <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                   <i class="fa fa-search"></i>
               </button>
-              {{/search_enabled}}
+"""
+    hlHtmlF"""
           </div>
 
-          <h1 class="menu-title">{{ book_title }}</h1>
+          <h1 class="menu-title">{book_title}</h1>
 
           <div class="right-buttons">
-              {{#print_enable}}
-              <a href="{{ path_to_root }}print.html" title="Print this book" aria-label="Print this book">
+"""
+    if print_enable:
+      hlHtmlF"""
+              <a href="{path_to_root}print.html" title="Print this book" aria-label="Print this book">
                   <i id="print-button" class="fa fa-print"></i>
               </a>
-              {{/print_enable}}
-              {{#git_repository_url}}
-              <a href="{{git_repository_url}}" title="Git repository" aria-label="Git repository">
-                  <i id="git-repository-button" class="fa {{git_repository_icon}}"></i>
+"""
+    if git_repository_url.len > 0:
+      hlHtmlF"""
+              <a href="{git_repository_url}" title="Git repository" aria-label="Git repository">
+                  <i id="git-repository-button" class="fa {git_repository_icon}"></i>
               </a>
-              {{/git_repository_url}}
-              {{#git_repository_edit_url}}
-              <a href="{{git_repository_edit_url}}" title="Suggest an edit" aria-label="Suggest an edit">
+"""
+    if git_repository_edit_url.len > 0:
+      hlHtmlF"""
+              <a href="{git_repository_edit_url}" title="Suggest an edit" aria-label="Suggest an edit">
                   <i id="git-edit-button" class="fa fa-edit"></i>
               </a>
-              {{/git_repository_edit_url}}
-
+"""
+    hlHtml"""
           </div>
       </div>
-
-      {{#search_enabled}}
+"""
+    if search_enabled:
+      hlHtml"""
       <div id="search-wrapper" class="hidden">
           <form id="searchbar-outer" class="searchbar-outer">
               <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
@@ -527,8 +546,8 @@ func nimibookBodyPageWrapperToHtml*(blk: JsonNode, nb: Nb): string =
               </ul>
           </div>
       </div>
-      {{/search_enabled}}
-
+"""
+    hlHtml"""
       <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
       <script type="text/javascript">
           document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
@@ -537,27 +556,29 @@ func nimibookBodyPageWrapperToHtml*(blk: JsonNode, nb: Nb): string =
               link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
           });
       </script>
-
+"""
+    hlHtmlF"""
       <div id="content" class="content">
           <main>
-              {{#blocks}}
-              {{&.}}
-              {{/blocks}}
+              {renderedBlocks}
           </main>
 
           <nav class="nav-wrapper" aria-label="Page navigation">
               <!-- Mobile navigation buttons -->
-              {{#previous}}
-                  <a rel="prev" href="{{ path_to_root }}{{previous}}" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+"""
+    if previous.len > 0:
+      hlHtmlF"""
+                  <a rel="prev" href="{path_to_root}{previous}" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                       <i class="fa fa-angle-left"></i>
                   </a>
-              {{/previous}}
-
-              {{#next}}
-                  <a rel="next" href="{{ path_to_root }}{{next}}" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+"""
+    if next.len > 0:
+      hlHtmlF"""
+                  <a rel="next" href="{path_to_root}{next}" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                       <i class="fa fa-angle-right"></i>
                   </a>
-              {{/next}}
+"""
+    hlHtml"""
 
               <div style="clear: both"></div>
           </nav>
@@ -565,17 +586,20 @@ func nimibookBodyPageWrapperToHtml*(blk: JsonNode, nb: Nb): string =
   </div>
 
   <nav class="nav-wide-wrapper" aria-label="Page navigation">
-      {{#previous}}
-          <a rel="prev" href="{{ path_to_root }}{{previous}}" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+"""
+    if previous.len > 0:
+      hlHtmlF"""
+          <a rel="prev" href="{path_to_root}{{previous}}" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
               <i class="fa fa-angle-left"></i>
           </a>
-      {{/previous}}
-
-      {{#next}}
-          <a rel="next" href="{{ path_to_root }}{{next}}" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+"""
+    if next.len > 0:
+      hlHtmlF"""
+          <a rel="next" href="{path_to_root}{next}" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
               <i class="fa fa-angle-right"></i>
           </a>
-      {{/next}}
+"""
+    hlHtml"""
   </nav>
 
 </div>
@@ -584,7 +608,7 @@ func nimibookBodyPageWrapperToHtml*(blk: JsonNode, nb: Nb): string =
 func nimibookBodyPostToHtml*(blk: JsonNode, nb: Nb): string =
   let path_to_root = nb.doc.context{"path_to_root"}.getStr
   let search_js = nb.doc.context{"search_js"}.getBool
-  let additional_js = nb.doc.context{"additional_js"}.getElems.map(proc(j: JsonNode): string = j.getStr)
+  let additional_js = nb.doc.context{"additional_js"}.getElems.mapIt(it.getStr)
   let is_print = nb.doc.context{"is_print"}.getBool
   let mathjax_support = nb.doc.context{"mathjax_support"}.getBool
   withNewLines:
