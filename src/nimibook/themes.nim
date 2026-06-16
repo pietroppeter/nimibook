@@ -399,14 +399,18 @@ func nimibookHeadToHtml*(blk: JsonNode, nb: Nb): string =
     "</head>"
 
 func nimibookBodyPreToHtml*(blk: JsonNode, nb: Nb): string =
+  let path_to_root = nb.doc.context{"path_to_root"}.getStr
+  let preferred_dark_theme = nb.doc.context{"preferred_dark_theme"}.getStr
+  let default_theme = nb.doc.context{"default_theme"}.getStr
   withNewLines:
-    hlHtml"""
+    hlHtmlF"""
 <!-- Provide site root to javascript -->
 <script type="text/javascript">
-    var path_to_root = "{{ path_to_root }}/assets";
-    var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "{{ preferred_dark_theme }}" : "{{ default_theme }}";
+    var path_to_root = "{path_to_root}/assets";
+    var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "{preferred_dark_theme}" : "{default_theme}";
 </script>
-
+"""
+    hlHtml"""
 <!-- Work around some values being stored in localStorage wrapped in quotes -->
 <script type="text/javascript">
     try {
@@ -422,7 +426,8 @@ func nimibookBodyPreToHtml*(blk: JsonNode, nb: Nb): string =
         }
     } catch (e) { }
 </script>
-
+"""
+    hlHtml"""
 <!-- Set the theme before any content is loaded, prevents flash -->
 <script type="text/javascript">
     var theme;
@@ -430,7 +435,7 @@ func nimibookBodyPreToHtml*(blk: JsonNode, nb: Nb): string =
     if (theme === null || theme === undefined) { theme = default_theme; }
     var html = document.querySelector('html');
     html.classList.remove('no-js')
-    html.classList.remove('{{ default_theme }}')
+    html.classList.remove('$1')
     html.classList.add(theme);
     html.classList.add('js');
 </script>
@@ -446,14 +451,14 @@ func nimibookBodyPreToHtml*(blk: JsonNode, nb: Nb): string =
     html.classList.remove('sidebar-visible');
     html.classList.add("sidebar-" + sidebar);
 </script>
-    """
+    """ % [default_theme]
 
 func nimibookBodyNavToHtml*(blk: JsonNode, nb: Nb): string =
-  withNewLines:
-    hlHtml"""
+  let toc = nb.doc.context["toc"].getStr
+  hlHtmlF"""
 <nav id="sidebar" class="sidebar" aria-label="Table of contents">
     <div class="sidebar-scrollbox">
-        {{> toc }}<!-- I could use also an unescaped context value -->
+        {toc}
     </div>
     <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
 </nav>    
