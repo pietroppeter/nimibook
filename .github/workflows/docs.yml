@@ -8,9 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: apt install
+        run: sudo apt install -y libpcre3
       - name: "install_nim"
         id: install_nim
-        uses: iffy/install-nim@v3
+        uses: iffy/install-nim@v5
       - name: install dependencies
         run: nimble install -y
       - name: Gen Book
