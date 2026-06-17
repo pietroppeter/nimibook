@@ -11,7 +11,7 @@ func nimibookHeadToHtml*(blk: JsonNode, nb: Nb): string =
   let faviconEscaped = nb.doc.context{"favicon_escaped"}.getStr
   let faviconSvg = nb.doc.context{"favicon_svg"}.getStr
   let faviconPng = nb.doc.context{"favicon_png"}.getStr
-  let printEnable = nb.doc.context{"favicon_png"}.getBool
+  let printEnable = nb.doc.context{"print_enable"}.getBool
   let copyFonts = nb.doc.context{"copy_fonts"}.getBool
   let additionalCSS = nb.doc.context{"additional_css"}.getElems.map(proc(j: JsonNode): string = j.getStr)
   let mathJaxSupport = nb.doc.context{"mathjax_support"}.getBool
