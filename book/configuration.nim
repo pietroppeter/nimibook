@@ -59,11 +59,11 @@ Here are the available fields:
 As an example here is nimibook configuration:"""
 nbCode: # highlight as nim since it is better than no highlighting...
   discard
-nb.blk.code = "../nimib.toml".readFile
+nb.blk.NbCode.code = "../nimib.toml".readFile
 nbText: "This is the default configuration created by the `init command`:"
 nbCode: # highlight as nim since it is better than no highlighting...
   discard
-nb.blk.code = block:
+nb.blk.NbCode.code = block:
   var book = Book()
   book.setDefaults
   book.renderConfig.skipUntil("[nimibook]")

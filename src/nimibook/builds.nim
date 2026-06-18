@@ -47,9 +47,9 @@ proc buildNim*(entry: Entry, srcDir: string, nimOptions: seq[string]): Future[bo
 proc buildMd*(entry: Entry): bool =
   try:
     nbInit(theme = useNimibook, thisFileRel = entry.path)
-    nbText nb.source
+    nbText nb.doc.source
     nbSave
-    setCurrentDir nb.initDir
+    setCurrentDir nb.doc.initDir
     return true
   except:
     echo "[nimibook.error] error while processing ", entry.path

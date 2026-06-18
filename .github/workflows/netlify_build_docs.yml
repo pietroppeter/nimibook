@@ -9,9 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: sudo apt install libpcre3
       - name: install nim
         id: install_nim
-        uses: iffy/install-nim@v3
+        uses: iffy/install-nim@v5
       # this part might change depending from your project
       - name: install dependencies
         run: nimble install -y
