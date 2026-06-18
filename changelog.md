@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.4.0 (June 2026)
+Update to be compatible with Nimib v0.4.0. It mainly consisted of rewriting the mustahce template using the new rendering system.
+
 ## v0.3.0 (February 2023)
 
 * Improved docs and nim 2.0 compatibility (added to CI) (#56). other minor changes:
